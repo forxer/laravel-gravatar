@@ -114,29 +114,8 @@ Then, define a preset in the configuration file:
 
 Finally, use it in your views by specifying its name.
 
-With the helper:
-
 ```blade
 <img src="{{ gravatar('email@example.com', 'my_preset') }}">
-// or
-<img src="{{ gravatar()->image('email@example.com', 'my_preset') }}">
-// or
-<img src="{{ gravatar()->avatar('email@example.com', 'my_preset') }}">
-
-Or with the facade:
-
-```blade
-<img src="{{ Gravatar::image('email@example.com', 'my_preset') }}">
-// or
-<img src="{{ Gravatar::avatar('email@example.com', 'my_preset') }}">
 ```
 
-Or with the service injection:
 
-```blade
-@inject('gravatar', 'forxer\LaravelGravatar\Gravatar')
-
-<img src="{{ $gravatar->image('email@example.com', 'my_preset') }}">
-// or
-<img src="{{ $gravatar->avatar('email@example.com', 'my_preset') }}">
-```

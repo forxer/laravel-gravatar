@@ -102,17 +102,15 @@ class Gravatar
      */
     protected function getPresetValues($presetName = null)
     {
-        $config = $this->app['config']['gravatar'];
-
         if (null === $presetName) {
-            if (null === $config['default_preset']) {
+            if (null === $this->app['config']['gravatar.default_preset']) {
                 return [];
             }
 
-            $presetName = $config['default_preset'];
+            $presetName = $this->app['config']['gravatar.default_preset'];
         }
 
-        $presetValues= $config["presets.{$presetName}"];
+        $presetValues= $this->app['config']["gravatar.presets.{$presetName}"];
 
         if (!is_array($presetValues) || empty($presetValues)) {
             throw new \InvalidArgumentException("Unable to retrieve Gravatar preset values, \"{$presetName}\" is probably a wrong preset name.");
