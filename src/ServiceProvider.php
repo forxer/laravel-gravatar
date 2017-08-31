@@ -21,9 +21,4 @@ class ServiceProvider extends BaseServiceProvider
             return new Gravatar($app);
         });
     }
-
-    public function provides()
-    {
-        return ['gravatar'];
-    }
 }
