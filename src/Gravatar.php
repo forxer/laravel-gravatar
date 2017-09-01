@@ -28,11 +28,11 @@ class Gravatar
      * @param \Illuminate\Contracts\Foundation\Application $app
      * @param array $config
      */
-    public function __construct(Application $app, array $config)
+    public function __construct(Application $app)
     {
         $this->app = $app;
 
-        $this->config = $config;
+        $this->config = $app['config']['gravatar'];
     }
 
     /**
