@@ -124,7 +124,7 @@ class Gravatar
             $presetName = $this->config['default_preset'];
         }
 
-        if (empty($this->config['presets']) || !is_array($this->config['presets']) || ) {
+        if (empty($this->config['presets']) || !is_array($this->config['presets'])) {
             throw new \InvalidArgumentException("Unable to retrieve Gravatar presets array configuration.");
         }
         elseif (!isset($this->config["presets.{$presetName}"])) {
