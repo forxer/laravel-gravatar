@@ -13,16 +13,26 @@ class Gravatar
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
-    protected $app;
+    private $app;
+
+    /**
+     * Configuration.
+     *
+     * @var array
+     */
+    private $config;
 
     /**
      * Gravatar service constructor.
      *
      * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param array $config
      */
-    public function __construct(Application $app)
+    public function __construct(Application $app, array $config)
     {
         $this->app = $app;
+
+        $this->config = $config;
     }
 
     /**
@@ -74,7 +84,7 @@ class Gravatar
      * @param \forxer\Gravatar\Image $image
      * @param string $presetName
      */
-    protected function applyPreset(Image $image, $presetName = null)
+    private function applyPreset(Image $image, $presetName = null)
     {
         foreach ($this->getPresetValues($presetName) as $k => $v) {
             switch ($k) {
@@ -104,17 +114,21 @@ class Gravatar
      * @throws \InvalidArgumentException
      * @return array
      */
-    protected function getPresetValues($presetName = null)
+    private function getPresetValues($presetName = null)
     {
         if (null === $presetName) {
-            if (null === $this->app['config']['gravatar.default_preset']) {
+            if (empty($this->config['default_preset'])) {
                 return [];
             }
 
-            $presetName = $this->app['config']['gravatar.default_preset'];
+            $presetName = $this->config['default_preset'];
         }
 
-        $presetValues = $this->app['config']["gravatar.presets.{$presetName}"];
+        if (empty($this->config['presets']) || !is_array($this->config['presets'])) {
+            throw new \InvalidArgumentException("Unable to retrieve Gravatar presets array configuration.");
+        }
+
+        $presetValues = $this->config["presets.{$presetName}"];
 
         if (!is_array($presetValues) || empty($presetValues)) {
             throw new \InvalidArgumentException("Unable to retrieve Gravatar preset values, \"{$presetName}\" is probably a wrong preset name.");
