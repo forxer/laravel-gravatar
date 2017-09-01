@@ -11,11 +11,15 @@ class Gravatar
     /**
      * The application instance.
      *
-     * @var Application
+     * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
 
-
+    /**
+     * Gravatar service constructor.
+     *
+     * @param \Illuminate\Contracts\Foundation\Application $app
+     */
     public function __construct(Application $app)
     {
         $this->app = $app;
@@ -67,7 +71,7 @@ class Gravatar
     /**
      * Apply preset to Gravatar image.
      *
-     * @param Image $image
+     * @param \forxer\Gravatar\Image $image
      * @param string $presetName
      */
     protected function applyPreset(Image $image, $presetName = null)
@@ -81,7 +85,7 @@ class Gravatar
                     $image->setDefaultImage($v);
                     break;
                 case 'force_default':
-                    $v ? $image->enableForceDefault() : $image->disableForceDefault();
+                    $image->setForceDefault($v);
                     break;
                 case 'max_rating':
                     $image->setMaxRating($v);
@@ -110,7 +114,7 @@ class Gravatar
             $presetName = $this->app['config']['gravatar.default_preset'];
         }
 
-        $presetValues= $this->app['config']["gravatar.presets.{$presetName}"];
+        $presetValues = $this->app['config']["gravatar.presets.{$presetName}"];
 
         if (!is_array($presetValues) || empty($presetValues)) {
             throw new \InvalidArgumentException("Unable to retrieve Gravatar preset values, \"{$presetName}\" is probably a wrong preset name.");
