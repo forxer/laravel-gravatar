@@ -85,7 +85,7 @@ return [
             | - 'blank': a transparent PNG image
             */
 
-            'default' => null,
+            'default_image' => null,
 
             /*
             |--------------------------------------------------------------------------
@@ -145,7 +145,7 @@ return [
 
             'size' => 120,
 
-            'default' => 'mm',
+            'default_image' => 'mm',
 
             'force_default' => false,
 

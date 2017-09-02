@@ -26,7 +26,6 @@ class Gravatar
      * Gravatar service constructor.
      *
      * @param \Illuminate\Contracts\Foundation\Application $app
-     * @param array $config
      */
     public function __construct(Application $app)
     {
@@ -87,23 +86,13 @@ class Gravatar
     private function applyPreset(Image $image, $presetName = null)
     {
         foreach ($this->getPresetValues($presetName) as $k => $v) {
-            switch ($k) {
-                case 'size':
-                    $image->setSize($v);
-                    break;
-                case 'default':
-                    $image->setDefaultImage($v);
-                    break;
-                case 'force_default':
-                    $image->setForceDefault($v);
-                    break;
-                case 'max_rating':
-                    $image->setMaxRating($v);
-                    break;
-                case 'extension':
-                    $image->setExtension($v);
-                    break;
+            $setter = 'set'.ucfirst(camel_case($k));
+
+            if (!method_exists($image, $setter)) {
+                throw new \InvalidArgumentException("Gravatar image [{$setter}] method does not exists.");
             }
+
+            $image->{$setter}($v);
         }
     }
 
