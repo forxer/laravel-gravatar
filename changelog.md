@@ -7,6 +7,7 @@ To get the diff between two versions, go to https://github.com/forxer/gravatar/c
 
 *BBC* : break backwards changes
 
+- 1.0.1
+    - fix call to default image via presets
 - **1.0**
-
     - first public release
