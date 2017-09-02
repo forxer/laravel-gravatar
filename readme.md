@@ -85,11 +85,11 @@ You can set optional parameters:
 
 There is several available parameters:
 
-- size
-- default image
-- force default
-- max rating
-- extension
+- size `setSize()` `size()` or `s()`
+- default image `setDefaultImage()` `size()` or `s()`
+- force default `setForceDefault()` `defaultImage()` or `d()`
+- max rating `setMaxRating()` `rating()` or `r()`
+- extension `setExtension()` `extension()` or `e()`
 
 For more details, please refer to the [forxer/Gravatar documentation](https://github.com/forxer/gravatar#optional-parameters).
 
