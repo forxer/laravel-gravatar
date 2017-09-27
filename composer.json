@@ -15,7 +15,7 @@
     ],
     "require" : {
         "php" : ">=5.6.4",
-        "illuminate/support" : "~5.4.0",
+        "illuminate/support" : "~5.4.0|~5.5",
         "forxer/gravatar" : "~2.0"
     },
     "autoload" : {
