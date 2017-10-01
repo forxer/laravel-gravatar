@@ -1,13 +1,19 @@
-# CHANGELOG
+CHANGELOG
+=========
 
-This changelog does not reference all the changes, only the most relevant to be included in this document.
+1.1.0 (2017-10-01)
+------------------
 
-To get the diff for a specific change, go to https://github.com/forxer/gravatar/commit/XXX where XXX is the change hash
-To get the diff between two versions, go to https://github.com/forxer/gravatar/compare/1.3...2.0
+- add support for Laravel 5.5
 
-*BBC* : break backwards changes
 
-- 1.0.1
-    - fix call to default image via presets
-- **1.0**
-    - first public release
+1.0.1 (2017-09-02)
+------------------
+
+- fix call to default image via presets
+
+
+1.0.0 (2017-08-31)
+------------------
+
+- first public release
