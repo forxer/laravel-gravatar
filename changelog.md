@@ -1,16 +1,22 @@
 CHANGELOG
 =========
 
+1.5.1 (2019-12-30)
+------------------
+
+- Use Illuminate\Support\Str class instead of depreacated camel_case() helper
+
+
 1.5.0 (2019-09-07)
 ------------------
 
-- add support for Laravel 6.0
+- Add support for Laravel 6.0
 
 
 1.4.0 (2019-03-07)
 ------------------
 
-- add support for Laravel 5.8
+- Add support for Laravel 5.8
 
 
 1.3.0 (2018-09-11)
@@ -34,16 +40,16 @@ CHANGELOG
 1.1.0 (2017-10-01)
 ------------------
 
-- add support for Laravel 5.5
+- Add support for Laravel 5.5
 
 
 1.0.1 (2017-09-02)
 ------------------
 
-- fix call to default image via presets
+- Fix call to default image via presets
 
 
 1.0.0 (2017-08-31)
 ------------------
 
-- first public release
+- First public release

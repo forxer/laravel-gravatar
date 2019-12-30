@@ -3,6 +3,7 @@
 namespace forxer\LaravelGravatar;
 
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Str;
 use forxer\Gravatar\Image;
 use forxer\Gravatar\Profile;
 
@@ -86,7 +87,7 @@ class Gravatar
     private function applyPreset(Image $image, $presetName = null)
     {
         foreach ($this->getPresetValues($presetName) as $k => $v) {
-            $setter = 'set'.ucfirst(camel_case($k));
+            $setter = 'set'.ucfirst(Str::camel($k));
 
             if (!method_exists($image, $setter)) {
                 throw new \InvalidArgumentException("Gravatar image [{$setter}] method does not exists.");
