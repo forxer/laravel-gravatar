@@ -30,11 +30,11 @@ class Gravatar
     /**
      * Return the Gravatar image based on the provided email address.
      *
-     * @param string $sEmail The email to get the gravatar for.
+     * @param string|null $sEmail The email to get the gravatar for.
      * @param string $presetName The preset name to apply.
      * @return Image
      */
-    public function image($email, $presetName = null): Image
+    public function image(?string $email = null, ?string $presetName = null): Image
     {
         $image = new Image($email);
 
@@ -72,12 +72,16 @@ class Gravatar
      * Apply preset to Gravatar image.
      *
      * @param Image $image
-     * @param null|array $presetName
+     * @param null|string $presetName
      * @return Image
      * @throws InvalidArgumentException
      */
-    private function applyPreset(Image $image, ?array $presetName = null): Image
+    private function applyPreset(Image $image, ?string $presetName = null): Image
     {
+        if ($presetName === null) {
+            return $image;
+        }
+
         foreach ($this->getPresetValues($presetName) as $k => $v) {
             $setter = 'set'.ucfirst(Str::camel($k));
 
@@ -109,9 +113,8 @@ class Gravatar
         }
 
         if (empty($this->config['presets']) || ! is_array($this->config['presets'])) {
-            throw new InvalidArgumentException("Unable to retrieve Gravatar presets array configuration.");
-        }
-        elseif (! isset($this->config['presets'][$presetName])) {
+            throw new InvalidArgumentException('Unable to retrieve Gravatar presets array configuration.');
+        } elseif (! isset($this->config['presets'][$presetName])) {
             throw new InvalidArgumentException("Unable to retrieve Gravatar preset values, \"{$presetName}\" is probably a wrong preset name.");
         }
 

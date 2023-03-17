@@ -19,7 +19,7 @@ class ServiceProvider extends BaseServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/gravatar.php' => $this->app->configPath('gravatar.php'),
+                __DIR__.'/../config/gravatar.php' => $this->app->configPath('gravatar.php'),
             ], 'gravatar-config');
         }
     }

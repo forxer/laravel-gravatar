@@ -15,7 +15,7 @@ return [
     */
 
     'default_preset' => null,
-//  'default_preset' => 'gravatar',
+    //  'default_preset' => 'gravatar',
 
     /*
     |--------------------------------------------------------------------------
@@ -154,7 +154,7 @@ return [
 
             'extension' => 'jpg',
 
-         ],
+        ],
 
     ],
 
