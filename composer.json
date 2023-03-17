@@ -9,35 +9,34 @@
     "license" : "MIT",
     "authors" : [{
             "name" : "Vincent Garnier",
-            "email" : "forxer@gmail.org",
-            "homepage" : "http://forx.fr"
+            "email" : "forxer@gmail.org"
         }
     ],
+    "support" : {
+        "issues" : "https://github.com/forxer/laravel-gravatar/issues",
+        "email" : "forxer@gmail.com"
+    },
     "require" : {
-        "php" : ">=5.6.4",
-        "illuminate/support" : "^5.4 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0",
-        "forxer/gravatar" : "^2.0"
+        "php" : "^8.0.0",
+        "illuminate/support" : "^8.0 || ^9.0 || ^10.0",
+        "forxer/gravatar" : "^4.0"
     },
     "autoload" : {
         "psr-4" : {
-            "forxer\\LaravelGravatar\\" : "src"
+            "LaravelGravatar\\" : "src"
         },
         "files" : [
             "src/helpers.php"
         ]
     },
     "minimum-stability" : "dev",
-    "support" : {
-        "issues" : "https://github.com/forxer/laravel-gravatar/issues",
-        "email" : "forxer@gmail.com"
-    },
     "extra": {
         "laravel": {
             "providers": [
-                "forxer\\LaravelGravatar\\ServiceProvider"
+                "LaravelGravatar\\ServiceProvider"
             ],
             "aliases":{
-                "Gravatar": "forxer\\LaravelGravatar\\Facade"
+                "Gravatar": "LaravelGravatar\\Facade"
             }
         }
     }

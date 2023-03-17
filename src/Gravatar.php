@@ -1,21 +1,14 @@
 <?php
 
-namespace forxer\LaravelGravatar;
+namespace LaravelGravatar;
 
-use Illuminate\Contracts\Foundation\Application;
+use Gravatar\Image;
+use Gravatar\Profile;
 use Illuminate\Support\Str;
-use forxer\Gravatar\Image;
-use forxer\Gravatar\Profile;
+use InvalidArgumentException;
 
 class Gravatar
 {
-    /**
-     * The application instance.
-     *
-     * @var \Illuminate\Contracts\Foundation\Application
-     */
-    private $app;
-
     /**
      * Configuration.
      *
@@ -26,13 +19,12 @@ class Gravatar
     /**
      * Gravatar service constructor.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param array $config
+     * @return void
      */
-    public function __construct(Application $app)
+    public function __construct(array $config)
     {
-        $this->app = $app;
-
-        $this->config = $app['config']['gravatar'];
+        $this->config = $config;
     }
 
     /**
@@ -40,14 +32,13 @@ class Gravatar
      *
      * @param string $sEmail The email to get the gravatar for.
      * @param string $presetName The preset name to apply.
-     * @return \forxer\Gravatar\Image
+     * @return Image
      */
-    public function image($email, $presetName = null)
+    public function image($email, $presetName = null): Image
     {
-        $image = (new Image())
-            ->setEmail($email);
+        $image = new Image($email);
 
-        $this->applyPreset($image, $presetName);
+        $image = $this->applyPreset($image, $presetName);
 
         return $image;
     }
@@ -55,11 +46,11 @@ class Gravatar
     /**
      * Alias for the "image" method.
      *
-     * @param string $sEmail The email to get the gravatar for.
-     * @param string $presetName The preset name to apply.
-     * @return \forxer\Gravatar\Image
+     * @param string|null $email The email to get the gravatar for.
+     * @param string|null $presetName The preset name to apply.
+     * @return Image
      */
-    public function avatar($email, $presetName = null)
+    public function avatar(?string $email = null, ?string $presetName = null): Image
     {
         return $this->image($email, $presetName);
     }
@@ -67,46 +58,49 @@ class Gravatar
     /**
      * Return the Gravatar profile URL based on the provided email address.
      *
-     * @param string $sEmail The email to get the Gravatar profile for.
-     * @param string $sFormat The profile format to use.
-     * @return \forxer\Gravatar\Profile
+     * @param string|null $email The email to get the Gravatar profile for.
+     * @param string|null $format The profile format to use.
+     * @return Profile
      */
-    public function profile($sEmail, $sFormat = null)
+    public function profile(?string $email = null, ?string $format = null): Profile
     {
-        return (new Profile())
-            ->setEmail($sEmail)
-            ->setFormat($sFormat);
+        return (new Profile($email))
+            ->setFormat($format);
     }
 
     /**
      * Apply preset to Gravatar image.
      *
-     * @param \forxer\Gravatar\Image $image
-     * @param string $presetName
+     * @param Image $image
+     * @param null|array $presetName
+     * @return Image
+     * @throws InvalidArgumentException
      */
-    private function applyPreset(Image $image, $presetName = null)
+    private function applyPreset(Image $image, ?array $presetName = null): Image
     {
         foreach ($this->getPresetValues($presetName) as $k => $v) {
             $setter = 'set'.ucfirst(Str::camel($k));
 
-            if (!method_exists($image, $setter)) {
-                throw new \InvalidArgumentException("Gravatar image [{$setter}] method does not exists.");
+            if (! method_exists($image, $setter)) {
+                throw new InvalidArgumentException("Gravatar image [{$setter}] method does not exists.");
             }
 
             $image->{$setter}($v);
         }
+
+        return $image;
     }
 
     /**
      * Return preset values to use.
      *
      * @param string $presetName
-     * @throws \InvalidArgumentException
      * @return array
+     * @throws InvalidArgumentException
      */
-    private function getPresetValues($presetName = null)
+    private function getPresetValues(?string $presetName = null): array
     {
-        if (null === $presetName) {
+        if ($presetName === null) {
             if (empty($this->config['default_preset'])) {
                 return [];
             }
@@ -114,17 +108,17 @@ class Gravatar
             $presetName = $this->config['default_preset'];
         }
 
-        if (empty($this->config['presets']) || !is_array($this->config['presets'])) {
-            throw new \InvalidArgumentException("Unable to retrieve Gravatar presets array configuration.");
+        if (empty($this->config['presets']) || ! is_array($this->config['presets'])) {
+            throw new InvalidArgumentException("Unable to retrieve Gravatar presets array configuration.");
         }
-        elseif (!isset($this->config['presets'][$presetName])) {
-            throw new \InvalidArgumentException("Unable to retrieve Gravatar preset values, \"{$presetName}\" is probably a wrong preset name.");
+        elseif (! isset($this->config['presets'][$presetName])) {
+            throw new InvalidArgumentException("Unable to retrieve Gravatar preset values, \"{$presetName}\" is probably a wrong preset name.");
         }
 
         $presetValues = $this->config['presets'][$presetName];
 
-        if (empty($presetValues) || !is_array($presetValues)) {
-            throw new \InvalidArgumentException("Unable to retrieve Gravatar \"{$presetName}\" preset values.");
+        if (empty($presetValues) || ! is_array($presetValues)) {
+            throw new InvalidArgumentException("Unable to retrieve Gravatar \"{$presetName}\" preset values.");
         }
 
         return $presetValues;

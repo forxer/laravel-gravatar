@@ -1,14 +1,19 @@
 <?php
 
+use Gravatar\Image;
+use LaravelGravatar\Gravatar;
+
 if (!function_exists('gravatar')) {
     /**
      * Return a gravatar instance.
      *
-     * @return \forxer\LaravelGravatar\Gravatar
+     * @param string|null $email
+     * @param string|null $presetName
+     * @return Gravatar|Image
      */
-    function gravatar($email = null, $presetName = null)
+    function gravatar(?string $email = null, ?string $presetName = null): Gravatar|Image
     {
-        if (null === $email) {
+        if ($email === null) {
             return app()->make('gravatar');
         }
 

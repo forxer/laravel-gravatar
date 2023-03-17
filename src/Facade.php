@@ -1,6 +1,6 @@
 <?php
 
-namespace forxer\LaravelGravatar;
+namespace LaravelGravatar;
 
 use Illuminate\Support\Facades\Facade as BaseFacade;
 

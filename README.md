@@ -1,5 +1,9 @@
-Laravel Gravatar
-================
+[![Latest Stable Version](http://poser.pugx.org/forxer/laravel-gravatar/v)](https://packagist.org/packages/forxer/laravel-gravatar)
+[![Total Downloads](http://poser.pugx.org/forxer/laravel-gravatar/downloads)](https://packagist.org/packages/forxer/laravel-gravatar)
+[![License](http://poser.pugx.org/forxer/laravel-gravatar/license)](https://packagist.org/packages/forxer/laravel-gravatar)
+
+Gravatar for Laravel
+====================
 
 This package provides an easy Gravatar integration in a Laravel project.
 
@@ -12,34 +16,6 @@ Install through composer:
 
 ```sh
 composer require forxer/laravel-gravatar
-```
-
-In Laravel 5.5 the service provider will automatically get registered.
-In older versions of the framework just add the service provider
-to the array of providers in `config/app.php`:
-
-```php
-// config/app.php
-
-'provider' => [
-    //...
-    forxer\LaravelGravatar\ServiceProvider::class,
-    //...
-];
-```
-
-In Laravel 5.5 the facade will automatically get registered.
-In older versions of the framework just add the facade
-to the array of aliases in `config/app.php`:
-
-```php
-// config/app.php
-
-'aliases' => [
-    //...
-    'Gravatar' => forxer\LaravelGravatar\Facade::class,
-    //...
-];
 ```
 
 Usage for Gravatar Images
