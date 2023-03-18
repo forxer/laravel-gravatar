@@ -1,11 +1,12 @@
 CHANGELOG
 =========
 
-2.0.0 (2023-03-xx)
+2.0.0 (2023-03-18)
 ------------------
 
 - Removed support for PHP prior to 8.0
 - Removed support for Laravel prior to 8.0
+- Use at least `forxer/gravatar` 4.0
 - Renamed `forxer\LaravelGravatar\` namespace to `LaravelGravatar\`
 
 
