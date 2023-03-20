@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+2.0.1 (2023-03-20)
+------------------
+
+- Improved preset support
+- Added some defaults customs presets
+- Rewritten README file
+
+
 2.0.0 (2023-03-18)
 ------------------
 

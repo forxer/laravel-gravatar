@@ -15,7 +15,6 @@ return [
     */
 
     'default_preset' => null,
-    //  'default_preset' => 'gravatar',
 
     /*
     |--------------------------------------------------------------------------
@@ -77,7 +76,7 @@ return [
             | - null value to fallback to the default Gravatar
             | - a string represanting the URL of your own default image
             | - '404': do not load any image if none is associated with the email hash, instead return an HTTP 404 (File Not Found) response
-            | - 'mm': (mystery-person) a simple, cartoon-style silhouetted outline of a person (does not vary by email hash)
+            | - 'mp': (mystery-person) a simple, cartoon-style silhouetted outline of a person (does not vary by email hash)
             | - 'identicon': a geometric pattern based on an email hash
             | - 'monsterid': a generated 'monster' with different colors, faces, etc
             | - 'wavatar': generated faces with differing features and backgrounds
@@ -138,24 +137,34 @@ return [
         | Another Preset
         |--------------------------------------------------------------------------
         |
-        | Here is another example of a preset.
+        | Define here your own presets.
         |
         */
 
-        'another_preset' => [
-
-            'size' => 120,
-
+        'xxs' => [
+            'size' => 23,
             'default_image' => 'mp',
+        ],
 
-            'force_default' => false,
+        'xs' => [
+            'size' => 35,
+            'default_image' => 'mp',
+        ],
 
-            'max_rating' => 'g',
+        'sm' => [
+            'size' => 90,
+            'default_image' => 'mp',
+        ],
 
-            'extension' => 'jpg',
+        'md' => [
+            'size' => 180,
+            'default_image' => 'mp',
+        ],
 
+        'lg' => [
+            'size' => 360,
+            'default_image' => 'mp',
         ],
 
     ],
-
 ];

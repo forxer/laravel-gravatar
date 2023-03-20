@@ -27,6 +27,11 @@ class Gravatar
         $this->config = $config;
     }
 
+    public static function create()
+    {
+        return app()->make('gravatar');
+    }
+
     /**
      * Return the Gravatar image based on the provided email address.
      *
@@ -82,27 +87,38 @@ class Gravatar
             return $image;
         }
 
-        foreach ($this->getPresetValues($presetName) as $k => $v) {
-            $setter = 'set'.ucfirst(Str::camel($k));
+        $presetValues = $this->presetValues($presetName);
 
-            if (! method_exists($image, $setter)) {
-                throw new InvalidArgumentException("Gravatar image [{$setter}] method does not exists.");
+        if (empty($presetValues)) {
+            return $image;
+        }
+
+        foreach ($presetValues as $k => $v) {
+            if (! in_array($k, $this->allowedSetterPresetKeys())) {
+                throw new InvalidArgumentException(
+                    "Gravatar image could not find method to use \"$k\" key".
+                    "Allowed preset keys are: ".implode(',', $this->allowedSetterPresetKeys()).'.'
+                );
             }
 
-            $image->{$setter}($v);
+            if (strlen($k) === 1) {
+                $image->{$k}($v);
+            } else {
+                $image->{Str::camel($k)}($v);
+            }
         }
 
         return $image;
     }
 
     /**
-     * Return preset values to use.
+     * Return preset values to use from configuration file.
      *
      * @param string $presetName
      * @return array
      * @throws InvalidArgumentException
      */
-    private function getPresetValues(?string $presetName = null): array
+    private function presetValues(?string $presetName = null): array
     {
         if ($presetName === null) {
             if (empty($this->config['default_preset'])) {
@@ -125,5 +141,16 @@ class Gravatar
         }
 
         return $presetValues;
+    }
+
+    private function allowedSetterPresetKeys()
+    {
+        return [
+            'size', 's',
+            'default_image', 'd',
+            'max_rating', 'r',
+            'extension', 'e',
+            'force_default', 'f',
+        ];
     }
 }

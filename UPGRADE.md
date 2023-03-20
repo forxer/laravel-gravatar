@@ -10,3 +10,6 @@ Namespaces have been renamed from `forxer\LaravelGravatar\` to `LaravelGravatar\
 
 - Find: `use forxer\LaravelGravatar\`
 - Replace: `use LaravelGravatar\`
+
+Since this version, if you use an undefined preset an exception is thrown. You must define presets before you can use them.
+Please consult the chapter of the README concerning presets to adjust your settings.
