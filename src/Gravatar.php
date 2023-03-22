@@ -2,11 +2,6 @@
 
 namespace LaravelGravatar;
 
-use Gravatar\Image;
-use Gravatar\Profile;
-use Illuminate\Support\Str;
-use InvalidArgumentException;
-
 class Gravatar
 {
     /**
@@ -41,11 +36,7 @@ class Gravatar
      */
     public function image(?string $email = null, ?string $presetName = null): Image
     {
-        $image = new Image($email);
-
-        $image = $this->applyPreset($image, $presetName);
-
-        return $image;
+        return new Image($this->config, $email, $presetName);
     }
 
     /**
@@ -71,86 +62,5 @@ class Gravatar
     {
         return (new Profile($email))
             ->setFormat($format);
-    }
-
-    /**
-     * Apply preset to Gravatar image.
-     *
-     * @param Image $image
-     * @param null|string $presetName
-     * @return Image
-     * @throws InvalidArgumentException
-     */
-    private function applyPreset(Image $image, ?string $presetName = null): Image
-    {
-        if ($presetName === null) {
-            return $image;
-        }
-
-        $presetValues = $this->presetValues($presetName);
-
-        if (empty($presetValues)) {
-            return $image;
-        }
-
-        foreach ($presetValues as $k => $v) {
-            if (! in_array($k, $this->allowedSetterPresetKeys())) {
-                throw new InvalidArgumentException(
-                    "Gravatar image could not find method to use \"$k\" key".
-                    "Allowed preset keys are: ".implode(',', $this->allowedSetterPresetKeys()).'.'
-                );
-            }
-
-            if (strlen($k) === 1) {
-                $image->{$k}($v);
-            } else {
-                $image->{Str::camel($k)}($v);
-            }
-        }
-
-        return $image;
-    }
-
-    /**
-     * Return preset values to use from configuration file.
-     *
-     * @param string $presetName
-     * @return array
-     * @throws InvalidArgumentException
-     */
-    private function presetValues(?string $presetName = null): array
-    {
-        if ($presetName === null) {
-            if (empty($this->config['default_preset'])) {
-                return [];
-            }
-
-            $presetName = $this->config['default_preset'];
-        }
-
-        if (empty($this->config['presets']) || ! is_array($this->config['presets'])) {
-            throw new InvalidArgumentException('Unable to retrieve Gravatar presets array configuration.');
-        } elseif (! isset($this->config['presets'][$presetName])) {
-            throw new InvalidArgumentException("Unable to retrieve Gravatar preset values, \"{$presetName}\" is probably a wrong preset name.");
-        }
-
-        $presetValues = $this->config['presets'][$presetName];
-
-        if (empty($presetValues) || ! is_array($presetValues)) {
-            throw new InvalidArgumentException("Unable to retrieve Gravatar \"{$presetName}\" preset values.");
-        }
-
-        return $presetValues;
-    }
-
-    private function allowedSetterPresetKeys()
-    {
-        return [
-            'size', 's',
-            'default_image', 'd',
-            'max_rating', 'r',
-            'extension', 'e',
-            'force_default', 'f',
-        ];
     }
 }

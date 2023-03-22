@@ -1,6 +1,27 @@
 UPGRADE
 =======
 
+From 2.x to 3.x
+---------------
+
+Facade class moved/renamed from `LaravelGravatar\Facade` to `LaravelGravatar\Facades\Gravatar`, you need to replace calls to this one if you used it.
+
+For example:
+
+- Find: `use LaravelGravatar\Facade as Gravatar;`
+- Replace: `use LaravelGravatar\Facades\Gravatar;`
+
+Integration of our own `LaravelGravatar\Image` and `LaravelGravatar\Profile` classes which respectively extend `Gravatar\Image` and `Gravatar\Profile` from "parent" package. You should replace calls to these if you used them.
+
+For example:
+
+- Find: `use Gravatar\Image;`
+- Replace: `use LaravelGravatar\Image;`
+
+- Find: `use Gravatar\Profile;`
+- Replace: `use LaravelGravatar\Profile;`
+
+
 From 1.x to 2.x
 ---------------
 

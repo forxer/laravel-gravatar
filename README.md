@@ -18,6 +18,9 @@ $avatar = gravatar('email@example.com')
 echo $avatar;
 ```
 
+Index
+-----
+
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
@@ -32,11 +35,13 @@ echo $avatar;
     - [Force to always use the default image](#force-to-always-use-the-default-image)
     - [Combine them](#combine-them)
 - [Image presets](#image-presets)
+- [Casts](#casts)
+
 
 Requirements
 ------------
 
-- PHP 8.0.0 or newer
+- PHP 8.0 or newer
 - Laravel 8.0 or newer
 
 If you want to use it with a version earlier than PHP 8 and/or a version earlier than Laravel 8, please use [version 1](https://github.com/forxer/laravel-gravatar/tree/1.x).
@@ -61,11 +66,11 @@ There are three ways to use this library:
 
 All of these ways return an instance of the `LaravelGravatar\Gravatar` service. The Gravatar service has 3 main methods :
 
-- `image()` which return an instance of `Gravatar\Image` from [forxer/Gravatar](https://github.com/forxer/gravatar)
+- `image()` which return an instance of `LaravelGravatar\Image` wich extends `Gravatar\Image` from [forxer/Gravatar](https://github.com/forxer/gravatar)
 - `avatar()` which is an alias of the first
-- `profile()` which return an instance of `Gravatar\Profile` from [forxer/Gravatar](https://github.com/forxer/gravatar)
+- `profile()` which return an instance of `LaravelGravatar\Profile` wich extends `Gravatar\Profile` from [forxer/Gravatar](https://github.com/forxer/gravatar)
 
-This instances of `Gravatar\Image` and `Gravatar\Profile` allow you to define specific settings/parameters as needed. So you can use them to build Gravatar images/profiles URL.
+This instances of `LaravelGravatar\Image` and `LaravelGravatar\Profile` allow you to define specific settings/parameters as needed. So you can use them to build Gravatar images/profiles URL.
 
 Whatever method you use, you could use the `url()` method to retrieve it. Or display the URL directly because they implement the `__toString()` method.
 
@@ -78,34 +83,34 @@ $gravatar = gravatar();
 // LaravelGravatar\Gravatar instance
 
 $avatar = gravatar('email@example.com');
-// Gravatar\Image instance
+// LaravelGravatar\Image instance
 
 $avatar = gravatar()->image('email@example.com');
-// Gravatar\Image instance
+// LaravelGravatar\Image instance
 
 $avatar = gravatar()->avatar('email@example.com');
-// Gravatar\Image instance
+// LaravelGravatar\Image instance
 
 $profile = gravatar()->profile('email@example.com');
-// Gravatar\Profile instance
+// LaravelGravatar\Profile instance
 ```
 
 Or with the facade:
 
 ```php
-use LaravelGravatar\Facade as Gravatar;
+use LaravelGravatar\Facades\Gravatar;
 
 $gravatar = Gravatar::create();
 // LaravelGravatar\Gravatar instance
 
 $avatar = Gravatar::image('email@example.com');
-// Gravatar\Image instance
+// LaravelGravatar\Image instance
 
 $avatar = Gravatar::avatar('email@example.com');
-// Gravatar\Image instance
+// LaravelGravatar\Image instance
 
 $profile = Gravatar::profile('email@example.com');
-// Gravatar\Profile instance
+// LaravelGravatar\Profile instance
 ```
 
 Or with the service injection:
@@ -146,11 +151,11 @@ Obviously the email address is a mandatory parameter that can be entered in diff
 // pass it as argument of the helper
 $gravatarImage = gravatar($email);
 
-// or use the `setEmail()` method of a `Gravatar\Image` instance
+// or use the `setEmail()` method
 $gravatarImage = gravatar();
 $gravatarImage->setEmail($email);
 
-// or the `email()` helper method of a `Gravatar\Image` instance
+// or the `email()` helper method
 $gravatarImage = gravatar();
 $gravatarImage->email($email);
 ```
@@ -174,16 +179,16 @@ so requesting larger sizes may result in pixelation/low-quality images.
 An avatar size should be an integer representing the size in pixels.
 
 ```php
-// use the `setSize()` method of a `Gravatar\Image` instance
+// use the `setSize()` method
 $gravatarImage = gravatar($email);
 $gravatarImage->setSize(120);
 
-// or the `size()` helper method of a `Gravatar\Image` instance
+// or the `size()` helper method
 $gravatarImage = gravatar($email);
 $gravatarImage->size(120);
 
 // or its alias `s()` (as in the generated query string)
-$gravatarImage = new Gravatar\Image($email);
+$gravatarImage = gravatar($email);
 $gravatarImage->s(120);
 ```
 
@@ -219,11 +224,11 @@ To use these options, just pass one of the following keywords:
 ![Blank default Gravatar image](http://www.gravatar.com/avatar/00000000000000000000000000000000?d=blank&f=y)
 
 ```php
-// use the `setDefaultImage()` method of a `Gravatar\Image` instance
+// use the `setDefaultImage()` method
 $gravatarImage = gravatar($email);
 $gravatarImage->setDefaultImage('mp');
 
-// or the `defaultImage()` helper method of a `Gravatar\Image` instance
+// or the `defaultImage()` helper method
 $gravatarImage = gravatar($email);
 $gravatarImage->defaultImage('mp');
 
@@ -247,11 +252,11 @@ You may specify one of the following ratings to request images up to and includi
 - 'x': may contain hardcore sexual imagery or extremely disturbing violence.
 
 ```php
-// use the `setMaxRating()` method of a `Gravatar\Image` instance
+// use the `setMaxRating()` method
 $gravatarImage = gravatar($email);
 $gravatarImage->setMaxRating('g');
 
-// or the `maxRating()` helper method of a `Gravatar\Image` instance
+// or the `maxRating()` helper method
 $gravatarImage = gravatar($email);
 $gravatarImage->maxRating('g');
 
@@ -275,11 +280,11 @@ You can specify one of the following extensions for the generated URL:
 - 'webp'
 
 ```php
-// use the `setExtension()` method of a `Gravatar\Image` instance
+// use the `setExtension()` method
 $gravatarImage = gravatar($email);
 $gravatarImage->setExtension('jpg');
 
-// or the `extension()` helper method of a `Gravatar\Image` instance
+// or the `extension()` helper method
 $gravatarImage = gravatar($email);
 $gravatarImage->extension('jpg');
 
@@ -295,11 +300,11 @@ $gravatarImage->e('jpg');
 If for some reason you wanted to force the default image to always be load, you can do it:
 
 ```php
-// use the `setForceDefault()` method of a `Gravatar\Image` instance
+// use the `setForceDefault()` method
 $gravatarImage = gravatar($email);
 $gravatarImage->setForceDefault(true);
 
-// or the `forceDefault()` helper method of a `Gravatar\Image` instance
+// or the `forceDefault()` helper method
 $gravatarImage = gravatar($email);
 $gravatarImage->forceDefault(true);
 
@@ -307,15 +312,12 @@ $gravatarImage->forceDefault(true);
 $gravatarImage = gravatar($email);
 $gravatarImage->f(true);
 
-$gravatarImage = new Gravatar\Image($email);
-$gravatarImage->f(true);
-
-// or use the `enableForceDefault()` method of a `Gravatar\Image` instance
+// or use the `enableForceDefault()` method
 $gravatarImage = gravatar($email);
 $gravatarImage->setForceDefault(true);
 ```
 
-To check to see if you are forcing default image, call the method `forcingDefault()` of `Gravatar\Image`,
+To check to see if you are forcing default image, call the method `forcingDefault()` of `LaravelGravatar\Image`,
 which will return a boolean value regarding whether or not forcing default is enabled.
 
 ```php
@@ -356,7 +358,7 @@ First, publish the config file of the package using artisan:
 php artisan vendor:publish --tag="gravatar-config"
 ```
 
-Then, define some presets in the configuration file in the 'presets' array, for example:
+And define some presets in the configuration file in the 'presets' array. There are a few predefined presets for the example in the configuration file, but you are of course free to delete them and define ones that suit your needs. For example:
 
 ```php
     'my_default' => [
@@ -375,26 +377,12 @@ Then, define some presets in the configuration file in the 'presets' array, for 
      ],
     'large' => [
         'size' => 360,
-        'extension' => 'jpg',
-     ],
-     'profile' => [
-        'size' => 360,
         'default_image' => 'robohash',
         'max_rating' => 'pg',
      ],
 ```
 
-Finally, use it in your application with the second argument:
-
-```php
-$navbarAvatar = gravatar('email@example.com', 'small');
-
-$lateralAvatar = gravatar()->image('email@example.com', 'medium');
-
-$ProfileAvatar = Gravatar::image('email@example.com', 'profile');
-```
-
-For the preset key name, as these are array keys and we follow naming conventions, you can use either:
+In the configuration file, for the values key name, as these are array keys and we follow naming conventions, you can use either:
 
 - `'size'` or `'s'`
 - `'default_image'` or `'d'`
@@ -408,5 +396,88 @@ If you wish you can default to one of these presets at the top of the configurat
     'default_preset' => 'my_default',
 ```
 
+Then, use it in your application with the second argument:
+
+```php
+$gravatarImage = gravatar($email, 'small');
+
+$gravatarImage = gravatar()->image($email, 'medium');
+
+$gravatarImage = Gravatar::image($email, 'large');
+```
+
+Or you can set it later after instantiation:
+
+```php
+// use the `setPreset()` method
+$gravatarImage = gravatar($email);
+$gravatarImage->setPreset('small');
+
+// or the `preset()` helper method
+$gravatarImage = gravatar($email);
+$gravatarImage->preset('small');
+```
+
 [Back to top ^](#gravatar-for-Laravel)
 
+Casts
+-----
+
+Let's imagine that your user model has a column "gravatar" which represents the email to use. You can cast this attribute to directly obtain an instance of `LaravelGravatar\Image`:
+
+```php
+use LaravelGravatar\Casts\GravatarImage;
+
+class Post extends Model
+{
+    protected $casts = [
+        'gravatar' => GravatarImage::class,
+    ];
+}
+```
+
+Thus it is easy to access the instance and manipulate it:
+
+```php
+use App\Models\User;
+
+class UserController
+{
+    public function show(User $user)
+    {
+        $user->gravatar->preset('small');
+
+        return view('users.show', [
+            'user' => $user,
+        ]);
+    }
+}
+```
+
+You can even define a preset name to be used when casting by appending it's name to the cast:
+
+```php
+use LaravelGravatar\Casts\GravatarImage;
+
+class Post extends Model
+{
+    protected $casts = [
+        'gravatar' => GravatarImage::class.':small',
+    ];
+}
+```
+
+You can also cast to an instance of `LaravelGravatar\Profile`:
+
+```php
+use LaravelGravatar\Casts\GravatarProfile;
+
+class Post extends Model
+{
+    protected $casts = [
+        'gravatar' => GravatarProfile::class,
+    ];
+}
+```
+
+[Back to top ^](#gravatar-for-Laravel)

@@ -1,6 +1,6 @@
 {
     "name" : "forxer/laravel-gravatar",
-    "description" : "A library providing easy gravatar integration in Laravel.",
+    "description" : "A library providing easy gravatar integration in a Laravel project.",
     "keywords" : [
         "gravatar",
         "laravel"
@@ -36,7 +36,7 @@
                 "LaravelGravatar\\ServiceProvider"
             ],
             "aliases":{
-                "Gravatar": "LaravelGravatar\\Facade"
+                "Gravatar": "LaravelGravatar\\Facades\\Gravatar"
             }
         }
     }

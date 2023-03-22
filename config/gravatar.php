@@ -134,36 +134,29 @@ return [
 
         /*
         |--------------------------------------------------------------------------
-        | Another Preset
+        | Another Presets
         |--------------------------------------------------------------------------
         |
         | Define here your own presets.
         |
         */
 
-        'xxs' => [
-            'size' => 23,
+        'small' => [
+            'size' => 40,
             'default_image' => 'mp',
+            'extension' => 'jpg',
         ],
 
-        'xs' => [
-            'size' => 35,
+        'medium' => [
+            'size' => 120,
             'default_image' => 'mp',
+            'extension' => 'jpg',
         ],
 
-        'sm' => [
-            'size' => 90,
-            'default_image' => 'mp',
-        ],
-
-        'md' => [
-            'size' => 180,
-            'default_image' => 'mp',
-        ],
-
-        'lg' => [
+        'large' => [
             'size' => 360,
             'default_image' => 'mp',
+            'extension' => 'jpg',
         ],
 
     ],

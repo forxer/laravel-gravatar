@@ -1,6 +1,16 @@
 CHANGELOG
 =========
 
+
+3.0.0 (2023-03-21)
+------------------
+
+- Moved/renamed facade class from `LaravelGravatar\Facade` to `LaravelGravatar\Facades\Gravatar`
+- Added `LaravelGravatar\Casts\GravatarImage` and `LaravelGravatar\Casts\GravatarProfile` casters
+- Added methods for programmatic manipulation of image presets
+- Integration of our own `LaravelGravatar\Image` and `LaravelGravatar\Profile` classes which respectively extend `Gravatar\Image` and `Gravatar\Profile` from "parent" package
+
+
 2.0.1 (2023-03-20)
 ------------------
 
