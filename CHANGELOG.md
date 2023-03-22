@@ -1,8 +1,7 @@
 CHANGELOG
 =========
 
-
-3.0.0 (2023-03-21)
+3.0.0 (2023-03-22)
 ------------------
 
 - Moved/renamed facade class from `LaravelGravatar\Facade` to `LaravelGravatar\Facades\Gravatar`
