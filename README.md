@@ -140,7 +140,7 @@ class UserController
 <img src="{{ $avatar }}">
 ```
 
-[Back to top ^](#gravatar-for-Laravel)
+[Back to top ^](#gravatar-for-laravel)
 
 Mandatory parameter
 -------------------
@@ -162,7 +162,7 @@ $gravatarImage->email($email);
 
 These previous examples are also valid for the profile.
 
-[Back to top ^](#gravatar-for-Laravel)
+[Back to top ^](#gravatar-for-laravel)
 
 Optional parameters
 -------------------
@@ -192,7 +192,7 @@ $gravatarImage = gravatar($email);
 $gravatarImage->s(120);
 ```
 
-[Back to top ^](#gravatar-for-Laravel)
+[Back to top ^](#gravatar-for-laravel)
 
 ### Default Gravatar image
 
@@ -237,7 +237,7 @@ $gravatarImage = gravatar($email);
 $gravatarImage->d('mp');
 ```
 
-[Back to top ^](#gravatar-for-Laravel)
+[Back to top ^](#gravatar-for-laravel)
 
 ### Gravatar image max rating
 
@@ -265,7 +265,7 @@ $gravatarImage = gravatar($email);
 $gravatarImage->r('g');
 ```
 
-[Back to top ^](#gravatar-for-Laravel)
+[Back to top ^](#gravatar-for-laravel)
 
 ### Gravatar image file-type extension
 
@@ -293,7 +293,7 @@ $gravatarImage = gravatar($email);
 $gravatarImage->e('jpg');
 ```
 
-[Back to top ^](#gravatar-for-Laravel)
+[Back to top ^](#gravatar-for-laravel)
 
 ### Force to always use the default image
 
@@ -331,7 +331,7 @@ $gravatarImage->disableForceDefault();
 $gravatarImage->forcingDefault(); // false
 ```
 
-[Back to top ^](#gravatar-for-Laravel)
+[Back to top ^](#gravatar-for-laravel)
 
 ### Combine them
 
@@ -345,7 +345,7 @@ $avatar = gravatar('email@example.com')
     ->extension('jpg');
 ```
 
-[Back to top ^](#gravatar-for-Laravel)
+[Back to top ^](#gravatar-for-laravel)
 
 Image presets
 -------------
@@ -418,7 +418,7 @@ $gravatarImage = gravatar($email);
 $gravatarImage->preset('small');
 ```
 
-[Back to top ^](#gravatar-for-Laravel)
+[Back to top ^](#gravatar-for-laravel)
 
 Casts
 -----
@@ -480,4 +480,4 @@ class Post extends Model
 }
 ```
 
-[Back to top ^](#gravatar-for-Laravel)
+[Back to top ^](#gravatar-for-laravel)
