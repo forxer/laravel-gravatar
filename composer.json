@@ -1,41 +1,53 @@
 {
-    "name" : "forxer/laravel-gravatar",
-    "description" : "A library providing easy gravatar integration in a Laravel project.",
-    "keywords" : [
+    "name": "forxer/laravel-gravatar",
+    "description": "A library providing easy gravatar integration in a Laravel project.",
+    "homepage": "https://github.com/forxer/laravel-gravatar",
+    "keywords": [
         "gravatar",
         "laravel"
     ],
-    "type" : "library",
-    "license" : "MIT",
-    "authors" : [{
-            "name" : "Vincent Garnier",
-            "email" : "forxer@gmail.org"
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vincent Garnier",
+            "email": "forxer@gmail.org"
         }
     ],
-    "support" : {
-        "issues" : "https://github.com/forxer/laravel-gravatar/issues",
-        "email" : "forxer@gmail.com"
+    "support": {
+        "issues": "https://github.com/forxer/laravel-gravatar/issues",
+        "email": "forxer@gmail.com"
     },
-    "require" : {
-        "php" : "^8.0.0",
-        "illuminate/support" : "^8.0 || ^9.0 || ^10.0",
-        "forxer/gravatar" : "^4.0"
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^10.0 || ^11.0",
+        "forxer/gravatar": "^4.0"
     },
-    "autoload" : {
-        "psr-4" : {
-            "LaravelGravatar\\" : "src"
+    "require-dev": {
+        "laravel/pint": "^1.16.0",
+        "driftingly/rector-laravel": "^1.2",
+        "rector/rector": "^1.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "LaravelGravatar\\": "src"
         },
-        "files" : [
+        "files": [
             "src/helpers.php"
         ]
     },
-    "minimum-stability" : "dev",
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "extra": {
         "laravel": {
             "providers": [
                 "LaravelGravatar\\ServiceProvider"
             ],
-            "aliases":{
+            "aliases": {
                 "Gravatar": "LaravelGravatar\\Facades\\Gravatar"
             }
         }
