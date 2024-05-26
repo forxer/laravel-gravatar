@@ -2,8 +2,8 @@
 
 namespace LaravelGravatar;
 
-use Gravatar\Profile as BaseProfile;
+use Gravatar\Profile as GravatarProfile;
 
-class Profile extends BaseProfile
+class Profile extends GravatarProfile
 {
 }

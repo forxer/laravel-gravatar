@@ -2,10 +2,10 @@
 
 namespace LaravelGravatar;
 
-use Gravatar\Image as BaseImage;
+use Gravatar\Image as GravatarImage;
 use LaravelGravatar\Concerns\ImageHasPresets;
 
-class Image extends BaseImage
+class Image extends GravatarImage
 {
     use ImageHasPresets;
 
