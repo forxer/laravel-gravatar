@@ -1,6 +1,12 @@
 UPGRADE
 =======
 
+From 3.x to 4.x
+---------------
+
+This package now requires at least **PHP 8.2** and **Laravel 10**, your project must correspond to this prerequisites.
+
+
 From 2.x to 3.x
 ---------------
 

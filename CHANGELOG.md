@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+4.0.0 (2024-05-26)
+------------------
+
+- Added support for Laravel 11.0
+- Removed support for PHP prior to 8.2
+- Removed support for Laravel prior to 10.0
+- Removed support for `forxer/gravatar` prior to 5.0
+
+
 3.0.0 (2023-03-22)
 ------------------
 
@@ -23,7 +32,7 @@ CHANGELOG
 
 - Removed support for PHP prior to 8.0
 - Removed support for Laravel prior to 8.0
-- Use at least `forxer/gravatar` 4.0
+- Removed support for `forxer/gravatar` prior to 4.0
 - Renamed `forxer\LaravelGravatar\` namespace to `LaravelGravatar\`
 
 

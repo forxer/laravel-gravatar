@@ -25,6 +25,7 @@ Index
 - [Installation](#installation)
 - [Usage](#usage)
     - [Retrieve instances](#retrieve-instances)
+    - [Retrieve the Gravatar URL](#retrieve-the-gravatar-url)
     - [Show directly in your views](#show-directly-in-your-views)
 - [Mandatory parameter](#mandatory-parameter)
 - [Optional parameters](#optional-parameters)
@@ -41,10 +42,11 @@ Index
 Requirements
 ------------
 
-- PHP 8.0 or newer
-- Laravel 8.0 or newer
+- PHP 8.2 or newer
+- Laravel 10.0 or newer
 
-If you want to use it with a version earlier than PHP 8 and/or a version earlier than Laravel 8, please use [version 1](https://github.com/forxer/laravel-gravatar/tree/1.x).
+If you want to use it with a version earlier than PHP 8.2 and/or a version earlier than Laravel 10, please use [version 2](https://github.com/forxer/laravel-gravatar/tree/2.x) or [version 1](https://github.com/forxer/laravel-gravatar/tree/1.x).
+
 
 Installation
 ------------
@@ -76,7 +78,7 @@ Whatever method you use, you could use the `url()` method to retrieve it. Or dis
 
 ### Retrieve instances
 
-With the helper
+With the helper:
 
 ```php
 $gravatar = gravatar();
@@ -130,7 +132,21 @@ class UserController
 }
 ```
 
+### Retrieve the Gravatar URL
+
+Simply use the `url()` method.
+
+```php
+$gravatar = gravatar('email@example.com');
+$gravatarUrl = $gravatar->url();
+
+$gravatar = Gravatar::avatar('email@example.com');
+$gravatarUrl = $gravatar->url();
+```
+
 ### Show directly in your views
+
+As classes implement the `toString()` method you can use instances directly.
 
 ```blade
 <img src="{{ gravatar('email@example.com') }}">
@@ -141,6 +157,7 @@ class UserController
 ```
 
 [Back to top ^](#gravatar-for-laravel)
+
 
 Mandatory parameter
 -------------------
@@ -163,6 +180,7 @@ $gravatarImage->email($email);
 These previous examples are also valid for the profile.
 
 [Back to top ^](#gravatar-for-laravel)
+
 
 Optional parameters
 -------------------
@@ -347,6 +365,7 @@ $avatar = gravatar('email@example.com')
 
 [Back to top ^](#gravatar-for-laravel)
 
+
 Image presets
 -------------
 
@@ -420,15 +439,21 @@ $gravatarImage->preset('small');
 
 [Back to top ^](#gravatar-for-laravel)
 
+
 Casts
 -----
 
 Let's imagine that your user model has a column "gravatar" which represents the email to use. You can cast this attribute to directly obtain an instance of `LaravelGravatar\Image`:
 
 ```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
 use LaravelGravatar\Casts\GravatarImage;
 
-class Post extends Model
+class User extends Model
 {
     protected $casts = [
         'gravatar' => GravatarImage::class,
@@ -472,7 +497,7 @@ You can also cast to an instance of `LaravelGravatar\Profile`:
 ```php
 use LaravelGravatar\Casts\GravatarProfile;
 
-class Post extends Model
+class User extends Model
 {
     protected $casts = [
         'gravatar' => GravatarProfile::class,

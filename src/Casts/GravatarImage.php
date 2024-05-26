@@ -4,41 +4,24 @@ declare(strict_types=1);
 
 namespace LaravelGravatar\Casts;
 
-use Gravatar\Image;
-use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Container\Container;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
 class GravatarImage implements CastsAttributes
 {
-    protected $presetName;
-
-    /**
-     * Constructor.
-     */
-    public function __construct(?string $presetName = null)
-    {
-        $this->presetName = $presetName;
+    public function __construct(
+        protected ?string $presetName = null
+    ) {
     }
 
-    /**
-     * Cast the given value.
-     *
-     * @return Image
-     *
-     * @throws BindingResolutionException
-     */
     public function get(Model $model, string $key, mixed $value, array $attributes)
     {
-        return app()->make('gravatar')->image($value)->setPreset($this->presetName);
+        return Container::getInstance()->make('gravatar')
+            ->image($value)
+            ->setPreset($this->presetName);
     }
 
-    /**
-     * Prepare the given value for storage.
-     *
-     * @param  mixed|null  $value
-     * @return mixed
-     */
     public function set(Model $model, string $key, mixed $value, array $attributes)
     {
         return $value;

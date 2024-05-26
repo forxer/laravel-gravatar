@@ -8,14 +8,14 @@ use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 class ServiceProvider extends BaseServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/gravatar.php', 'gravatar');
 
-        $this->app->singleton('gravatar', fn ($app) => new Gravatar($app['config']['gravatar']));
+        $this->app->singleton('gravatar', fn ($app): Gravatar => new Gravatar($app['config']['gravatar']));
     }
 
-    public function boot()
+    public function boot(): void
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([

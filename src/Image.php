@@ -12,11 +12,6 @@ class Image extends GravatarImage
 {
     protected ?string $presetName = null;
 
-    /**
-     * Construct Image instance
-     *
-     * @return void
-     */
     public function __construct(
         private array $config,
         ?string $email = null,
@@ -33,8 +28,6 @@ class Image extends GravatarImage
 
     /**
      * Build the avatar URL based on the provided settings.
-     *
-     * @return string The URL to the gravatar.
      */
     public function url(): string
     {
@@ -45,10 +38,8 @@ class Image extends GravatarImage
 
     /**
      * Get or set the preset name to be used.
-     *
-     * @param  string|null  $email
      */
-    public function preset(?string $presetName = null): Image|string|null
+    public function preset(?string $presetName = null): self|string|null
     {
         if ($presetName === null) {
             return $this->getPreset();
@@ -59,8 +50,6 @@ class Image extends GravatarImage
 
     /**
      * Get the preset name to be used.
-     *
-     * @return int The current avatar size in use.
      */
     public function getPreset(): ?string
     {
@@ -70,7 +59,7 @@ class Image extends GravatarImage
     /**
      * Set the preset name to be used.
      */
-    public function setPreset(?string $presetName): Image
+    public function setPreset(?string $presetName): self
     {
         $this->presetName = $presetName;
 
@@ -90,15 +79,15 @@ class Image extends GravatarImage
 
         $presetValues = $this->presetValues();
 
-        if (empty($presetValues)) {
+        if ($presetValues === []) {
             return $this;
         }
 
         foreach ($presetValues as $k => $v) {
             if (! \in_array($k, $this->allowedSetterPresetKeys())) {
                 throw new InvalidArgumentException(
-                    "Gravatar image could not find method to use \"$k\" key".
-                    'Allowed preset keys are: '.implode(',', $this->allowedSetterPresetKeys()).'.'
+                    sprintf('Gravatar image could not find method to use "%s" key', $k).
+                    sprintf('Allowed preset keys are: "%s".', implode('", "', $this->allowedSetterPresetKeys()))
                 );
             }
 
@@ -129,27 +118,38 @@ class Image extends GravatarImage
 
         if (empty($this->config['presets']) || ! \is_array($this->config['presets'])) {
             throw new InvalidArgumentException('Unable to retrieve Gravatar presets array configuration.');
-        } elseif (! isset($this->config['presets'][$this->presetName])) {
-            throw new InvalidArgumentException("Unable to retrieve Gravatar preset values, \"{$this->presetName}\" is probably a wrong preset name.");
+        }
+
+        if (! isset($this->config['presets'][$this->presetName])) {
+            throw new InvalidArgumentException(sprintf('Unable to retrieve Gravatar preset values, "%s" is probably a wrong preset name.', $this->presetName));
         }
 
         $presetValues = $this->config['presets'][$this->presetName];
 
         if (empty($presetValues) || ! \is_array($presetValues)) {
-            throw new InvalidArgumentException("Unable to retrieve Gravatar \"{$this->presetName}\" preset values.");
+            throw new InvalidArgumentException(sprintf('Unable to retrieve Gravatar "%s" preset values.', $this->presetName));
         }
 
         return $presetValues;
     }
 
-    private function allowedSetterPresetKeys()
+    private function allowedSetterPresetKeys(): array
     {
         return [
-            'size', 's',
-            'default_image', 'd',
-            'max_rating', 'r',
-            'extension', 'e',
-            'force_default', 'f',
+            'size',
+            's',
+
+            'default_image',
+            'd',
+
+            'max_rating',
+            'r',
+
+            'extension',
+            'e',
+
+            'force_default',
+            'f',
         ];
     }
 }
