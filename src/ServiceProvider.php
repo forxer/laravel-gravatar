@@ -12,9 +12,7 @@ class ServiceProvider extends BaseServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/../config/gravatar.php', 'gravatar');
 
-        $this->app->singleton('gravatar', function ($app) {
-            return new Gravatar($app['config']['gravatar']);
-        });
+        $this->app->singleton('gravatar', fn ($app) => new Gravatar($app['config']['gravatar']));
     }
 
     public function boot()

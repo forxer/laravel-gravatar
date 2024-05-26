@@ -10,25 +10,18 @@ use InvalidArgumentException;
 
 class Image extends GravatarImage
 {
-    /**
-     * Preset name in use.
-     */
-    protected ?string $presetName;
-
-    /**
-     * Configuration.
-     */
-    private array $config;
+    protected ?string $presetName = null;
 
     /**
      * Construct Image instance
      *
      * @return void
      */
-    public function __construct(array $config, ?string $email = null, ?string $presetName = null)
-    {
-        $this->config = $config;
-
+    public function __construct(
+        private array $config,
+        ?string $email = null,
+        ?string $presetName = null,
+    ) {
         if ($email !== null) {
             $this->setEmail($email);
         }
