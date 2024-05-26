@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaravelGravatar;
 
 use Gravatar\Image as GravatarImage;
@@ -19,9 +21,6 @@ class Image extends GravatarImage
     /**
      * Construct Image instance
      *
-     * @param array $config
-     * @param null|string $email
-     * @param null|string $presetName
      * @return void
      */
     public function __construct(array $config, ?string $email = null, ?string $presetName = null)

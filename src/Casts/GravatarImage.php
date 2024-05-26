@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaravelGravatar\Casts;
 
 use Gravatar\Image;
@@ -13,8 +15,6 @@ class GravatarImage implements CastsAttributes
 
     /**
      * Constructor.
-     *
-     * @param string|null $presetName
      */
     public function __construct(?string $presetName = null)
     {
@@ -24,11 +24,8 @@ class GravatarImage implements CastsAttributes
     /**
      * Cast the given value.
      *
-     * @param Model $model
-     * @param string $key
-     * @param mixed $value
-     * @param array $attributes
      * @return Image
+     *
      * @throws BindingResolutionException
      */
     public function get(Model $model, string $key, mixed $value, array $attributes)
@@ -39,10 +36,7 @@ class GravatarImage implements CastsAttributes
     /**
      * Prepare the given value for storage.
      *
-     * @param Model $model
-     * @param string $key
-     * @param mixed|null $value
-     * @param array $attributes
+     * @param  mixed|null  $value
      * @return mixed
      */
     public function set(Model $model, string $key, mixed $value, array $attributes)

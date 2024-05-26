@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaravelGravatar\Concerns;
 
 use Illuminate\Support\Str;
@@ -13,8 +15,7 @@ trait ImageHasPresets
     /**
      * Get or set the preset name to be used.
      *
-     * @param string|null $email
-     * @return Image|string|null
+     * @param  string|null  $email
      */
     public function preset(?string $presetName = null): Image|string|null
     {
@@ -37,9 +38,6 @@ trait ImageHasPresets
 
     /**
      * Set the preset name to be used.
-     *
-     * @param string|null $presetName
-     * @return Image
      */
     public function setPreset(?string $presetName): Image
     {
@@ -51,7 +49,6 @@ trait ImageHasPresets
     /**
      * Apply preset to Gravatar image.
      *
-     * @return Image
      * @throws InvalidArgumentException
      */
     private function applyPreset(): Image
@@ -67,14 +64,14 @@ trait ImageHasPresets
         }
 
         foreach ($presetValues as $k => $v) {
-            if (! in_array($k, $this->allowedSetterPresetKeys())) {
+            if (! \in_array($k, $this->allowedSetterPresetKeys())) {
                 throw new InvalidArgumentException(
                     "Gravatar image could not find method to use \"$k\" key".
                     'Allowed preset keys are: '.implode(',', $this->allowedSetterPresetKeys()).'.'
                 );
             }
 
-            if (strlen($k) === 1) {
+            if (\strlen($k) === 1) {
                 $this->{$k}($v);
             } else {
                 $this->{Str::camel($k)}($v);
@@ -87,7 +84,6 @@ trait ImageHasPresets
     /**
      * Return preset values to use from configuration file.
      *
-     * @return array
      * @throws InvalidArgumentException
      */
     private function presetValues(): array
@@ -100,7 +96,7 @@ trait ImageHasPresets
             $this->presetName = $this->config['default_preset'];
         }
 
-        if (empty($this->config['presets']) || ! is_array($this->config['presets'])) {
+        if (empty($this->config['presets']) || ! \is_array($this->config['presets'])) {
             throw new InvalidArgumentException('Unable to retrieve Gravatar presets array configuration.');
         } elseif (! isset($this->config['presets'][$this->presetName])) {
             throw new InvalidArgumentException("Unable to retrieve Gravatar preset values, \"{$this->presetName}\" is probably a wrong preset name.");
@@ -108,7 +104,7 @@ trait ImageHasPresets
 
         $presetValues = $this->config['presets'][$this->presetName];
 
-        if (empty($presetValues) || ! is_array($presetValues)) {
+        if (empty($presetValues) || ! \is_array($presetValues)) {
             throw new InvalidArgumentException("Unable to retrieve Gravatar \"{$this->presetName}\" preset values.");
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaravelGravatar;
 
 class Gravatar
@@ -14,7 +16,6 @@ class Gravatar
     /**
      * Gravatar service constructor.
      *
-     * @param array $config
      * @return void
      */
     public function __construct(array $config)
@@ -30,9 +31,8 @@ class Gravatar
     /**
      * Return the Gravatar image based on the provided email address.
      *
-     * @param string|null $sEmail The email to get the gravatar for.
-     * @param string $presetName The preset name to apply.
-     * @return Image
+     * @param  string|null  $sEmail  The email to get the gravatar for.
+     * @param  string  $presetName  The preset name to apply.
      */
     public function image(?string $email = null, ?string $presetName = null): Image
     {
@@ -42,9 +42,8 @@ class Gravatar
     /**
      * Alias for the "image" method.
      *
-     * @param string|null $email The email to get the gravatar for.
-     * @param string|null $presetName The preset name to apply.
-     * @return Image
+     * @param  string|null  $email  The email to get the gravatar for.
+     * @param  string|null  $presetName  The preset name to apply.
      */
     public function avatar(?string $email = null, ?string $presetName = null): Image
     {
@@ -54,9 +53,8 @@ class Gravatar
     /**
      * Return the Gravatar profile URL based on the provided email address.
      *
-     * @param string|null $email The email to get the Gravatar profile for.
-     * @param string|null $format The profile format to use.
-     * @return Profile
+     * @param  string|null  $email  The email to get the Gravatar profile for.
+     * @param  string|null  $format  The profile format to use.
      */
     public function profile(?string $email = null, ?string $format = null): Profile
     {
