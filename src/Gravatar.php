@@ -7,9 +7,8 @@ namespace LaravelGravatar;
 class Gravatar
 {
     public function __construct(
-        private readonly array $config
-    ) {
-    }
+        private readonly array $config,
+    ) {}
 
     public static function create()
     {

@@ -11,9 +11,8 @@ use Illuminate\Database\Eloquent\Model;
 class GravatarImage implements CastsAttributes
 {
     public function __construct(
-        protected ?string $presetName = null
-    ) {
-    }
+        protected ?string $presetName = null,
+    ) {}
 
     public function get(Model $model, string $key, mixed $value, array $attributes)
     {
