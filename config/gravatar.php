@@ -75,6 +75,8 @@ return [
             | Possible values:
             | - null value to fallback to the default Gravatar
             | - a string represanting the URL of your own default image
+            | - 'initials': uses the profile name as initials, with a generated background and foreground color
+            | - 'color': a generated color
             | - '404': do not load any image if none is associated with the email hash, instead return an HTTP 404 (File Not Found) response
             | - 'mp': (mystery-person) a simple, cartoon-style silhouetted outline of a person (does not vary by email hash)
             | - 'identicon': a geometric pattern based on an email hash

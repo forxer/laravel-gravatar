@@ -7,8 +7,6 @@ Gravatar for Laravel
 
 This package provides an easy Gravatar integration in a Laravel project.
 
-This package is built on top of [forxer/Gravatar](https://github.com/forxer/gravatar). If you want to dig deeper, you can find additional information on its README file.
-
 ```php
 $avatar = gravatar('email@example.com')
     ->size(120)
@@ -17,6 +15,20 @@ $avatar = gravatar('email@example.com')
 //...
 echo $avatar;
 ```
+
+## About this package
+
+This Laravel package is built on top of the framework-agnostic **[forxer/gravatar](https://github.com/forxer/gravatar)** library. It extends the base functionality by adding:
+
+- **Laravel-specific features**: Service providers, facades, helper functions, and configuration
+- **Extended classes**: `LaravelGravatar\Image` extends `Gravatar\Image`, and `LaravelGravatar\Profile` extends `Gravatar\Profile`
+- **Additional Laravel integrations**: Eloquent casts, preset configurations, and base64 conversion with Laravel's HTTP client
+
+All the core Gravatar functionality from the parent library is available in this package. This documentation focuses on Laravel-specific features, but you can also refer to the [forxer/gravatar README](https://github.com/forxer/gravatar#readme) for:
+
+- Additional usage examples
+- Detailed explanations of core methods
+- Framework-agnostic implementation patterns
 
 Index
 -----
@@ -28,9 +40,11 @@ Index
     - [Retrieve the Gravatar URL](#retrieve-the-gravatar-url)
     - [Show directly in your views](#show-directly-in-your-views)
 - [Mandatory parameter](#mandatory-parameter)
+- [Copying instances](#copying-instances)
 - [Optional parameters](#optional-parameters)
     - [Gravatar image size](#gravatar-image-size)
     - [Default Gravatar image](#default-gravatar-image)
+        - [Customize the initials default image](#customize-the-initials-default-image)
     - [Gravatar image max rating](#gravatar-image-max-rating)
     - [Gravatar image file-type extension](#gravatar-image-file-type-extension)
     - [Force to always use the default image](#force-to-always-use-the-default-image)
@@ -183,6 +197,73 @@ These previous examples are also valid for the profile.
 [Back to top ^](#gravatar-for-laravel)
 
 
+Copying instances
+-----------------
+
+You can create a copy of an existing `LaravelGravatar\Image` or `LaravelGravatar\Profile` instance with all its settings using the `copy()` method. This is useful when you want to reuse a base configuration with different email addresses or slight variations.
+
+```php
+// Create a base configuration
+$baseAvatar = gravatar()->image('');
+$baseAvatar->size(120)
+    ->defaultImage('robohash')
+    ->maxRating('pg');
+
+// Create copies with different emails
+$avatar1 = $baseAvatar->copy('user1@example.com');
+$avatar2 = $baseAvatar->copy('user2@example.com');
+
+// Create a copy with the same email but modify other settings
+$largeAvatar = $baseAvatar->copy()->size(200);
+```
+
+Using the facade:
+
+```php
+use LaravelGravatar\Facades\Gravatar;
+
+$baseAvatar = Gravatar::image('base@example.com')
+    ->size(120)
+    ->defaultImage('mp');
+
+$avatar1 = $baseAvatar->copy('user1@example.com');
+$avatar2 = $baseAvatar->copy('user2@example.com');
+```
+
+The same works for profiles:
+
+```php
+$baseProfile = gravatar()->profile('');
+$baseProfile->format('json');
+
+$profile1 = $baseProfile->copy('user1@example.com');
+$profile2 = $baseProfile->copy('user2@example.com');
+```
+
+This is particularly useful when you need to generate multiple avatars with consistent settings:
+
+```php
+// In a controller
+public function index()
+{
+    $users = User::all();
+
+    $avatarConfig = gravatar()->image('')
+        ->size(64)
+        ->defaultImage('identicon')
+        ->extension('webp');
+
+    foreach ($users as $user) {
+        $user->avatar_url = $avatarConfig->copy($user->email)->url();
+    }
+
+    return view('users.index', compact('users'));
+}
+```
+
+[Back to top ^](#gravatar-for-laravel)
+
+
 Optional parameters
 -------------------
 
@@ -226,6 +307,8 @@ In addition to allowing you to use your own image, Gravatar has a number of buil
 Most of these work by taking the requested email hash and using it to generate a themed image that is unique to that email address.
 To use these options, just pass one of the following keywords:
 
+- 'initials': uses the profile name as initials, with a generated background and foreground color
+- 'color': a generated color
 - '404': do not load any image if none is associated with the email hash, instead return an HTTP 404 (File Not Found) response
 - 'mp': (mystery-person) a simple, cartoon-style silhouetted outline of a person (does not vary by email hash)
 - 'identicon': a geometric pattern based on an email hash
@@ -235,7 +318,8 @@ To use these options, just pass one of the following keywords:
 - 'robohash': a generated robot with different colors, faces, etc
 - 'blank': a transparent PNG image
 
-![Mystery-man default Gravatar image](http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y)
+![Initials default Gravatar image](http://www.gravatar.com/avatar/00000000000000000000000000000000?d=initials&initials=JD&f=y)
+![Mystery-person default Gravatar image](http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y)
 ![Identicon default Gravatar image](http://www.gravatar.com/avatar/00000000000000000000000000000000?d=identicon&f=y)
 ![Wavatar default Gravatar image](http://www.gravatar.com/avatar/00000000000000000000000000000000?d=wavatar&f=y)
 ![Retro default Gravatar image](http://www.gravatar.com/avatar/00000000000000000000000000000000?d=retro&f=y)
@@ -255,6 +339,71 @@ $gravatarImage->defaultImage('mp');
 $gravatarImage = gravatar($email);
 $gravatarImage->d('mp');
 ```
+
+#### Customize the initials default image
+
+When using `initials` as the default image type, Gravatar will display initials from the user's profile along with a generated background and foreground color.
+
+You can customize which initials are displayed by providing them explicitly or by providing a name from which the initials will be extracted.
+
+**Using convenience methods (recommended):**
+
+```php
+// use the `withInitials()` method - automatically sets default image to 'initials'
+$gravatarImage = gravatar($email);
+$gravatarImage->withInitials('JD');
+
+// or use the `withName()` method - automatically sets default image to 'initials'
+$gravatarImage = gravatar($email);
+$gravatarImage->withName('John Doe');
+
+// with the facade
+use LaravelGravatar\Facades\Gravatar;
+
+$avatar = Gravatar::image($email)->withInitials('JD');
+$avatar = Gravatar::image($email)->withName('John Doe');
+```
+
+**Using explicit methods:**
+
+```php
+// manually set default image and then provide initials
+$gravatarImage = gravatar($email);
+$gravatarImage->defaultImage('initials')->initials('JD');
+
+// manually set default image and then provide name
+$gravatarImage = gravatar($email);
+$gravatarImage->defaultImage('initials')->name('John Doe');
+```
+
+**Practical example in a controller:**
+
+```php
+use App\Models\User;
+use LaravelGravatar\Facades\Gravatar;
+
+class UserController
+{
+    public function show(User $user)
+    {
+        // Generate avatar with user's initials from their name
+        $avatar = Gravatar::image($user->email)
+            ->withName($user->name)
+            ->size(120);
+
+        return view('users.show', [
+            'user' => $user,
+            'avatar' => $avatar
+        ]);
+    }
+}
+```
+
+> [!NOTE]
+> The `initials()` and `name()` methods only have an effect when the default image is set to `'initials'`. These parameters are ignored for other default image types. To avoid confusion, use the convenience methods `withInitials()` or `withName()` which automatically set the default image type.
+
+> [!IMPORTANT]
+> If you provide both initials and a name, the explicitly provided initials will take precedence over the name.
 
 [Back to top ^](#gravatar-for-laravel)
 
@@ -458,7 +607,8 @@ $base64 = $avatar->toBase64(timeout: 10);
 echo '<img src="'.$base64.'" alt="Avatar">';
 ```
 
-**Note:** Gravatar always returns PNG images regardless of the extension specified in the URL.
+> [!NOTE]
+> Gravatar always returns PNG images regardless of the extension specified in the URL.
 
 The method returns `null` if the image cannot be fetched (network error, invalid response, etc.). Failed attempts are logged for debugging purposes.
 

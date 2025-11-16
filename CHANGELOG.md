@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+4.3.0 (2025-11-16)
+------------------
+
+- Using `forxer/gravatar` 5.3
+- Improved documentation
+
+
 4.2.1 (2025-11-12)
 ------------------
 
