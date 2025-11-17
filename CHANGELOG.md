@@ -34,6 +34,10 @@ CHANGELOG
   - Fixed `Image::toBase64()` to use property access (`$this->email`) instead of removed `getEmail()` method
   - Fixed `Gravatar::profile()` to use `format()` method instead of removed `setFormat()` method
   - Removed short aliases from preset configuration allowed keys
+  - Added support for `initials` and `initials_name` keys in preset configurations
+- **Profile enhancements**:
+  - Direct access to `Profile::getData()` method for fetching Gravatar profile data
+  - Inherited from parent library automatically
 - **Comprehensive documentation restructure**:
   - Split documentation into dedicated files in `docs/` directory
   - Added Laravel-focused documentation for all features

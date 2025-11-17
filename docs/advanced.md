@@ -181,6 +181,23 @@ $qr = gravatar_profile('user@example.com')->formatQr();
 
 ### Fetching Profile Data
 
+You can fetch profile data using Laravel's HTTP client or use the built-in `getData()` method:
+
+**Method 1: Using getData() (recommended)**
+
+```php
+$profile = gravatar_profile('user@example.com');
+$data = $profile->getData('user@example.com');
+
+if ($data) {
+    $displayName = $data['entry'][0]['displayName'] ?? null;
+    $avatar = $data['entry'][0]['thumbnailUrl'] ?? null;
+    // ... other profile fields
+}
+```
+
+**Method 2: Using Laravel's HTTP client**
+
 ```php
 use Illuminate\Support\Facades\Http;
 

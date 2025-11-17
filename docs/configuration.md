@@ -71,6 +71,8 @@ Presets are named groups of default settings that can be reused throughout your 
 - `max_rating` - Maximum allowed rating ('g', 'pg', 'r', 'x')
 - `extension` - File extension ('jpg', 'jpeg', 'png', 'gif', 'webp')
 - `force_default` - Force default image (boolean)
+- `initials` - Explicit initials (e.g., 'JD') when using 'initials' default image
+- `initials_name` - Full name (e.g., 'John Doe') - initials will be extracted
 
 ## Using Presets
 
@@ -134,7 +136,7 @@ Here's a complete example configuration file:
 
 return [
     'default_preset' => 'default',
-    
+
     'presets' => [
         'default' => [
             'size' => 80,
@@ -142,23 +144,30 @@ return [
             'max_rating' => 'g',
             'extension' => 'webp',
         ],
-        
+
         'thumbnail' => [
             'size' => 40,
             'extension' => 'jpg',
         ],
-        
+
         'profile' => [
             'size' => 200,
             'default_image' => 'identicon',
             'max_rating' => 'pg',
             'extension' => 'webp',
         ],
-        
+
         'admin' => [
             'size' => 120,
             'default_image' => 'robohash',
             'extension' => 'png',
+        ],
+
+        'with_initials' => [
+            'size' => 100,
+            'default_image' => 'initials',
+            'initials_name' => 'User Name', // Can be overridden
+            'extension' => 'webp',
         ],
     ],
 ];

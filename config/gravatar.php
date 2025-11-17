@@ -129,6 +129,8 @@ return [
             |
             | If you require a file-type extension (some places do) then you may also specify it.
             |
+            | Possible values: 'jpg', 'jpeg', 'png', 'gif', 'webp'
+            |
             */
 
             'extension' => null,
@@ -160,6 +162,5 @@ return [
             'default_image' => 'mp',
             'extension' => 'jpg',
         ],
-
     ],
 ];

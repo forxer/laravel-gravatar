@@ -194,6 +194,8 @@ class Image extends GravatarImage
             'max_rating',
             'extension',
             'force_default',
+            'initials',
+            'initials_name',
         ];
     }
 }
