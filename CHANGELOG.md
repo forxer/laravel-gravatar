@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-5.0.0 (unreleased)
+5.0.0 (2025-11-17)
 ------------------
 
 ### Breaking Changes
