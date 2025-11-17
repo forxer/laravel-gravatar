@@ -17,19 +17,28 @@ CHANGELOG
 
 ### Improvements
 
-- **PHP 8.4 Property Hooks**: All properties in the parent library now use property hooks with automatic conversion and validation
+- **PHP 8.4 Property Hooks**: All properties now use property hooks with automatic conversion and validation
 - **Type-safe Enums**: Can now use enum classes (`Rating`, `Extension`, `DefaultImage`, `ProfileFormat`) for better IDE support and type safety
-- **Fluent Shorthand Methods**: Added support for convenient fluent methods from parent library:
+- **Fluent Shorthand Methods**: Added support for convenient fluent methods (convenience methods):
   - Rating: `ratingG()`, `ratingPg()`, `ratingR()`, `ratingX()`
   - Extension: `extensionJpg()`, `extensionJpeg()`, `extensionGif()`, `extensionPng()`, `extensionWebp()`
-  - Default images: `defaultImageInitials()`, `defaultImageRobohash()`, etc.
+  - Default images: `defaultImageInitials()`, `defaultImageColor()`, `defaultImageNotFound()`, `defaultImageMp()`, `defaultImageIdenticon()`, `defaultImageMonsterid()`, `defaultImageWavatar()`, `defaultImageRetro()`, `defaultImageRobohash()`, `defaultImageBlank()`
   - Profile formats: `formatJson()`, `formatXml()`, `formatPhp()`, `formatVcf()`, `formatQr()`
-- **Direct Property Assignment**: Properties can now be assigned directly with automatic validation through PHP 8.4 property hooks
+  - Initials: `withInitials()`, `withInitialsName()`
+  - Force default: `enableForceDefault()`, `disableForceDefault()`, `forcingDefault()`
+- **Direct Property Assignment**: Properties can now be assigned directly with automatic validation through PHP 8.4 property hooks (e.g., `$avatar->size = 120`)
 - **Dual-mode helper methods**: All helper methods work in both setter mode (with argument) and getter mode (without argument) for maximum flexibility
 - **Improved `gravatar()` helper**: Now always returns an `Image` instance (even when called without parameters), making it more consistent and intuitive
-- **New `gravatar_profile()` helper**: Added a dedicated helper function for creating profile instances, following the pattern recommended in the parent library
-- **Updated internal code**: Fixed `Image::toBase64()` to use property access (`$this->email`) instead of removed `getEmail()` method
-- **Enhanced documentation**: Added comprehensive sections on type-safe enums and fluent shorthand methods
+- **New `gravatar_profile()` helper**: Added a dedicated helper function for creating profile instances, following the pattern from the parent library
+- **Updated internal code**:
+  - Fixed `Image::toBase64()` to use property access (`$this->email`) instead of removed `getEmail()` method
+  - Fixed `Gravatar::profile()` to use `format()` method instead of removed `setFormat()` method
+  - Removed short aliases from preset configuration allowed keys
+- **Comprehensive documentation restructure**:
+  - Split documentation into dedicated files in `docs/` directory
+  - Added Laravel-focused documentation for all features
+  - All properties documented in order: 1) Helper methods, 2) Convenience methods, 3) Direct properties
+  - Complete migration guide in UPGRADE.md
 
 
 4.3.0 (2025-11-16)
