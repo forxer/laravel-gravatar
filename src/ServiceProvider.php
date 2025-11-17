@@ -6,8 +6,18 @@ namespace LaravelGravatar;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
+/**
+ * Laravel Gravatar Service Provider.
+ *
+ * Registers the Gravatar service and publishes configuration files.
+ */
 class ServiceProvider extends BaseServiceProvider
 {
+    /**
+     * Register the Gravatar service in the container.
+     *
+     * Merges package configuration and binds the Gravatar singleton.
+     */
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/gravatar.php', 'gravatar');
@@ -15,6 +25,11 @@ class ServiceProvider extends BaseServiceProvider
         $this->app->singleton('gravatar', fn ($app): Gravatar => new Gravatar($app['config']['gravatar']));
     }
 
+    /**
+     * Bootstrap the Gravatar service.
+     *
+     * Publishes configuration file when running in console.
+     */
     public function boot(): void
     {
         if ($this->app->runningInConsole()) {

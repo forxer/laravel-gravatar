@@ -11,12 +11,45 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 
+/**
+ * Laravel-specific Gravatar image class.
+ *
+ * Extends the base Gravatar image class from forxer/gravatar package
+ * to provide Laravel-specific functionality including:
+ * - Configuration presets
+ * - Base64 conversion with Laravel's HTTP client
+ * - Integration with Laravel's logging system
+ *
+ * @see https://docs.gravatar.com/api/avatars/
+ */
 class Image extends GravatarImage
 {
-    protected ?string $presetName = null;
+    /**
+     * Allowed preset configuration keys.
+     *
+     * @var array<int, string>
+     */
+    private const ALLOWED_PRESET_KEYS = [
+        'size',
+        'default_image',
+        'max_rating',
+        'extension',
+        'force_default',
+        'initials',
+        'initials_name',
+    ];
 
+    public private(set) ?string $presetName = null;
+
+    /**
+     * Create a new Gravatar Image instance.
+     *
+     * @param  array<string, mixed>  $config  Configuration array from Laravel config
+     * @param  string|null  $email  The email address to generate the Gravatar for
+     * @param  string|null  $presetName  Optional preset name to apply
+     */
     public function __construct(
-        private array $config,
+        public private(set) array $config,
         ?string $email = null,
         ?string $presetName = null,
     ) {
@@ -29,6 +62,10 @@ class Image extends GravatarImage
 
     /**
      * Build the avatar URL based on the provided settings.
+     *
+     * Applies preset configuration before building the URL.
+     *
+     * @return string The complete Gravatar image URL
      */
     public function url(): string
     {
@@ -45,8 +82,6 @@ class Image extends GravatarImage
      */
     public function toBase64(int $timeout = 5): ?string
     {
-        $url = null;
-
         try {
             // Apply preset before building URL
             $this->applyPreset();
@@ -57,25 +92,24 @@ class Image extends GravatarImage
             // Download the image
             $response = Http::timeout($timeout)->get($url);
 
-            if ($response->successful()) {
-                $imageData = $response->body();
+            if (! $response->successful()) {
+                Log::warning('Gravatar request unsuccessful', [
+                    'email' => $this->email,
+                    'url' => $url,
+                    'status' => $response->status(),
+                ]);
 
-                // Gravatar always returns PNG images
-                return 'data:image/png;base64,'.base64_encode($imageData);
+                return null;
             }
 
-            // Log warning for unsuccessful response
-            Log::warning('Gravatar request unsuccessful', [
-                'email' => $this->email,
-                'url' => $url,
-                'status' => $response->status(),
-            ]);
+            $imageData = $response->body();
 
-            return null;
+            // Gravatar always returns PNG images
+            return 'data:image/png;base64,'.base64_encode($imageData);
         } catch (Exception $exception) {
             Log::warning('Failed to convert Gravatar to base64', [
                 'email' => $this->email,
-                'url' => $url,
+                'url' => $url ?? null,
                 'error' => $exception->getMessage(),
             ]);
 
@@ -86,7 +120,11 @@ class Image extends GravatarImage
     /**
      * Get or set the preset name to be used.
      *
-     * @return $this|string|null
+     * When called with a preset name, applies that preset and returns the instance for chaining.
+     * When called without arguments, returns the current preset name or null if none is set.
+     *
+     * @param  string|null  $presetName  The name of the preset to apply
+     * @return ($presetName is null ? string|null : static)
      */
     public function preset(?string $presetName = null): static|string|null
     {
@@ -108,7 +146,8 @@ class Image extends GravatarImage
     /**
      * Set the preset name to be used.
      *
-     * @return $this
+     * @param  string|null  $presetName  The name of the preset to apply, or null to clear
+     * @return static Returns the instance for method chaining
      */
     public function setPreset(?string $presetName): static
     {
@@ -118,11 +157,11 @@ class Image extends GravatarImage
     }
 
     /**
-     * Apply preset to Gravatar image.
+     * Apply preset configuration to Gravatar image.
      *
-     * @return $this
+     * @return static Returns the instance for method chaining
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidArgumentException When preset keys are invalid or preset is not found
      */
     private function applyPreset(): static
     {
@@ -137,10 +176,10 @@ class Image extends GravatarImage
         }
 
         foreach ($presetValues as $k => $v) {
-            if (! \in_array($k, $this->allowedSetterPresetKeys())) {
+            if (! \in_array($k, self::ALLOWED_PRESET_KEYS)) {
                 throw new InvalidArgumentException(
                     \sprintf('Gravatar image could not find method to use "%s" key', $k).
-                    \sprintf('Allowed preset keys are: "%s".', implode('", "', $this->allowedSetterPresetKeys()))
+                    \sprintf('Allowed preset keys are: "%s".', implode('", "', self::ALLOWED_PRESET_KEYS))
                 );
             }
 
@@ -157,7 +196,9 @@ class Image extends GravatarImage
     /**
      * Return preset values to use from configuration file.
      *
-     * @throws InvalidArgumentException
+     * @return array<string, mixed> Associative array of preset configuration values
+     *
+     * @throws InvalidArgumentException When preset configuration is missing or invalid
      */
     private function presetValues(): array
     {
@@ -184,18 +225,5 @@ class Image extends GravatarImage
         }
 
         return $presetValues;
-    }
-
-    private function allowedSetterPresetKeys(): array
-    {
-        return [
-            'size',
-            'default_image',
-            'max_rating',
-            'extension',
-            'force_default',
-            'initials',
-            'initials_name',
-        ];
     }
 }

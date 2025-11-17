@@ -17,7 +17,10 @@ CHANGELOG
 
 ### Improvements
 
-- **PHP 8.4 Property Hooks**: All properties now use property hooks with automatic conversion and validation
+- **PHP 8.4 Features**:
+  - Property Hooks: All properties use property hooks with automatic conversion and validation
+  - Asymmetric Visibility: `config` and `presetName` properties use `public private(set)` for read-public, write-private access
+  - Strict Types: All files now use `declare(strict_types=1)`
 - **Type-safe Enums**: Can now use enum classes (`Rating`, `Extension`, `DefaultImage`, `ProfileFormat`) for better IDE support and type safety
 - **Fluent Shorthand Methods**: Added support for convenient fluent methods (convenience methods):
   - Rating: `ratingG()`, `ratingPg()`, `ratingR()`, `ratingX()`
@@ -30,6 +33,15 @@ CHANGELOG
 - **Dual-mode helper methods**: All helper methods work in both setter mode (with argument) and getter mode (without argument) for maximum flexibility
 - **Improved `gravatar()` helper**: Now always returns an `Image` instance (even when called without parameters), making it more consistent and intuitive
 - **New `gravatar_profile()` helper**: Added a dedicated helper function for creating profile instances, following the pattern from the parent library
+- **Code Quality Improvements**:
+  - Converted `allowedSetterPresetKeys()` method to `ALLOWED_PRESET_KEYS` constant for better performance
+  - Refactored `toBase64()` with early returns pattern for improved readability
+  - Simplified `profile()` method from 7 lines to 3 lines
+  - Modernized with Laravel 12 patterns: replaced `Container::getInstance()` with `app()` helper
+  - Added comprehensive PHPDoc documentation with array shapes and conditional return types
+  - Fixed incorrect return type in `GravatarProfile` cast (was `Image`, now `Profile`)
+  - Enhanced PHPDoc consistency: all constructors, helpers, and facade methods fully documented
+  - All return types explicitly declared across the entire codebase
 - **Updated internal code**:
   - Fixed `Image::toBase64()` to use property access (`$this->email`) instead of removed `getEmail()` method
   - Fixed `Gravatar::profile()` to use `format()` method instead of removed `setFormat()` method
