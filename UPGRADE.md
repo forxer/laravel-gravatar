@@ -136,7 +136,32 @@ If you use custom presets in your `config/gravatar.php` file, ensure you're usin
 
 ### New features in v5.x
 
-#### 1. Type-safe enums
+#### 1. New `gravatar_profile()` helper
+
+A dedicated helper function for creating profile instances:
+
+```php
+// Before (v4.x) - no dedicated helper for profiles
+use LaravelGravatar\Facades\Gravatar;
+$profile = Gravatar::profile('email@example.com');
+
+// After (v5.x) - dedicated helper available
+$profile = gravatar_profile('email@example.com');
+$profile = gravatar_profile('email@example.com', 'json');
+```
+
+#### 2. Improved `gravatar()` helper
+
+The `gravatar()` helper now always returns an `Image` instance for consistency:
+
+```php
+// Both return Image instances
+$avatar = gravatar('email@example.com');
+$avatar = gravatar();  // Email can be set later
+$avatar->email = 'email@example.com';
+```
+
+#### 3. Type-safe enums
 
 You can now use enum classes for better type safety and IDE support:
 
@@ -150,7 +175,7 @@ $image->maxRating(Rating::PG)
       ->defaultImage(DefaultImage::ROBOHASH);
 ```
 
-#### 2. Fluent shorthand methods
+#### 4. Fluent shorthand methods
 
 New fluent methods provide cleaner syntax:
 

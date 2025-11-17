@@ -8,21 +8,37 @@ Gravatar for Laravel
 This package provides an easy Gravatar integration in a Laravel project.
 
 ```php
+use Gravatar\Enum\DefaultImage;
+use Gravatar\Enum\Extension;
+
+// Simple usage
 $avatar = gravatar('email@example.com')
     ->size(120)
     ->defaultImage('robohash')
     ->extension('jpg');
-//...
 echo $avatar;
+
+// With type-safe enums
+$avatar = gravatar('email@example.com')
+    ->size(120)
+    ->defaultImage(DefaultImage::ROBOHASH)
+    ->extension(Extension::JPG);
+
+// With fluent shorthand methods
+$avatar = gravatar('email@example.com')
+    ->size(120)
+    ->extensionJpg()
+    ->defaultImageRobohash();
 ```
 
 ## About this package
 
 This Laravel package is built on top of the framework-agnostic **[forxer/gravatar](https://github.com/forxer/gravatar)** library. It extends the base functionality by adding:
 
-- **Laravel-specific features**: Service providers, facades, helper functions, and configuration
+- **Laravel-specific features**: Service providers, facades, helper functions (`gravatar()` and `gravatar_profile()`), and configuration
 - **Extended classes**: `LaravelGravatar\Image` extends `Gravatar\Image`, and `LaravelGravatar\Profile` extends `Gravatar\Profile`
 - **Additional Laravel integrations**: Eloquent casts, preset configurations, and base64 conversion with Laravel's HTTP client
+- **Full support for PHP 8.4 features**: Property hooks, type-safe enums, and fluent shorthand methods from the parent library
 
 All the core Gravatar functionality from the parent library is available in this package. This documentation focuses on Laravel-specific features, but you can also refer to the [forxer/gravatar README](https://github.com/forxer/gravatar#readme) for:
 
@@ -80,49 +96,50 @@ composer require forxer/laravel-gravatar
 Usage
 -----
 
-There are three ways to use this library:
+There are several ways to use this library:
 
-- With the `gravatar()` helper fonction
-- With the facade `Gravatar::create()`
+- With the `gravatar()` and `gravatar_profile()` helper functions
+- With the facade `Gravatar::image()`, `Gravatar::avatar()`, and `Gravatar::profile()`
 - Or by injecting the `LaravelGravatar\Gravatar` service
 
-All of these ways return an instance of the `LaravelGravatar\Gravatar` service. The Gravatar service has 3 main methods :
+The `gravatar()` helper returns an instance of `LaravelGravatar\Image`, and the `gravatar_profile()` helper returns an instance of `LaravelGravatar\Profile`. These classes extend the base classes from [forxer/Gravatar](https://github.com/forxer/gravatar) and add Laravel-specific features like presets, casts, and base64 conversion.
 
-- `image()` which return an instance of `LaravelGravatar\Image` wich extends `Gravatar\Image` from [forxer/Gravatar](https://github.com/forxer/gravatar)
-- `avatar()` which is an alias of the first
-- `profile()` which return an instance of `LaravelGravatar\Profile` wich extends `Gravatar\Profile` from [forxer/Gravatar](https://github.com/forxer/gravatar)
+When using the facade or service injection, you have access to:
+- `image()` which returns an instance of `LaravelGravatar\Image`
+- `avatar()` which is an alias of `image()`
+- `profile()` which returns an instance of `LaravelGravatar\Profile`
 
-This instances of `LaravelGravatar\Image` and `LaravelGravatar\Profile` allow you to define specific settings/parameters as needed. So you can use them to build Gravatar images/profiles URL.
-
-Whatever method you use, you could use the `url()` method to retrieve it. Or display the URL directly because they implement the `__toString()` method.
+These instances allow you to define specific settings/parameters as needed to build Gravatar images/profiles URLs. Whatever method you use, you can use the `url()` method to retrieve the URL, or display it directly since they implement the `__toString()` method.
 
 ### Retrieve instances
 
-With the helper:
+With the helpers:
 
 ```php
-$gravatar = gravatar();
-// LaravelGravatar\Gravatar instance
-
+// Gravatar images
 $avatar = gravatar('email@example.com');
 // LaravelGravatar\Image instance
 
-$avatar = gravatar()->image('email@example.com');
-// LaravelGravatar\Image instance
+$avatar = gravatar();
+// LaravelGravatar\Image instance (email can be set later)
 
-$avatar = gravatar()->avatar('email@example.com');
-// LaravelGravatar\Image instance
+$avatar = gravatar('email@example.com', 'small');
+// LaravelGravatar\Image instance with 'small' preset
 
-$profile = gravatar()->profile('email@example.com');
+// Gravatar profiles
+$profile = gravatar_profile('email@example.com');
 // LaravelGravatar\Profile instance
+
+$profile = gravatar_profile('email@example.com', 'json');
+// LaravelGravatar\Profile instance with JSON format
 ```
 
-Or with the facade:
+To access the Gravatar service, use the facade:
 
 ```php
 use LaravelGravatar\Facades\Gravatar;
 
-$gravatar = Gravatar::create();
+$service = Gravatar::create();
 // LaravelGravatar\Gravatar instance
 
 $avatar = Gravatar::image('email@example.com');
@@ -135,7 +152,7 @@ $profile = Gravatar::profile('email@example.com');
 // LaravelGravatar\Profile instance
 ```
 
-Or with the service injection:
+Or with service injection:
 
 ```php
 use App\Models\User;
@@ -169,11 +186,17 @@ $gravatarUrl = $gravatar->url();
 As classes implement the `toString()` method you can use instances directly.
 
 ```blade
+{{-- Gravatar images --}}
 <img src="{{ gravatar('email@example.com') }}">
 
 <img src="{{ Gravatar::avatar('email@example.com') }}">
 
 <img src="{{ $avatar }}">
+
+{{-- Gravatar profiles --}}
+<a href="{{ gravatar_profile('email@example.com') }}">View Profile</a>
+
+<a href="{{ gravatar_profile('email@example.com', 'json') }}">Profile JSON</a>
 ```
 
 [Back to top ^](#gravatar-for-laravel)

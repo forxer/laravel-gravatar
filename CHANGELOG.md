@@ -25,6 +25,8 @@ CHANGELOG
   - Default images: `defaultImageInitials()`, `defaultImageRobohash()`, etc.
   - Profile formats: `formatJson()`, `formatXml()`, `formatPhp()`, `formatVcf()`, `formatQr()`
 - **Direct Property Assignment**: Properties can now be assigned directly with automatic validation through PHP 8.4 property hooks
+- **Improved `gravatar()` helper**: Now always returns an `Image` instance (even when called without parameters), making it more consistent and intuitive
+- **New `gravatar_profile()` helper**: Added a dedicated helper function for creating profile instances, following the pattern recommended in the parent library
 - **Updated internal code**: Fixed `Image::toBase64()` to use property access (`$this->email`) instead of removed `getEmail()` method
 - **Enhanced documentation**: Added comprehensive sections on type-safe enums and fluent shorthand methods
 

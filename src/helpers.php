@@ -3,16 +3,25 @@
 declare(strict_types=1);
 
 use Illuminate\Container\Container;
-use LaravelGravatar\Gravatar;
 use LaravelGravatar\Image;
+use LaravelGravatar\Profile;
 
 if (! function_exists('gravatar')) {
-    function gravatar(?string $email = null, ?string $presetName = null): Gravatar|Image
+    /**
+     * Return a new Gravatar Image instance.
+     */
+    function gravatar(?string $email = null, ?string $presetName = null): Image
     {
-        if ($email === null) {
-            return Container::getInstance()->make('gravatar');
-        }
-
         return Container::getInstance()->make('gravatar')->image($email, $presetName);
+    }
+}
+
+if (! function_exists('gravatar_profile')) {
+    /**
+     * Return a new Gravatar Profile instance.
+     */
+    function gravatar_profile(?string $email = null, ?string $format = null): Profile
+    {
+        return Container::getInstance()->make('gravatar')->profile($email, $format);
     }
 }
