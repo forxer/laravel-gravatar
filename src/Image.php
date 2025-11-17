@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use LaravelGravatar\Enum\PresetKey;
 
 /**
  * Laravel-specific Gravatar image class.
@@ -27,21 +28,6 @@ use InvalidArgumentException;
  */
 class Image extends GravatarImage
 {
-    /**
-     * Allowed preset configuration keys.
-     *
-     * @var array<int, string>
-     */
-    private const array ALLOWED_PRESET_KEYS = [
-        'size',
-        'default_image',
-        'max_rating',
-        'extension',
-        'force_default',
-        'initials',
-        'initials_name',
-    ];
-
     public private(set) ?string $presetName = null;
 
     /**
@@ -179,10 +165,10 @@ class Image extends GravatarImage
         }
 
         foreach ($presetValues as $k => $v) {
-            if (! \in_array($k, self::ALLOWED_PRESET_KEYS)) {
+            if (! PresetKey::isValid($k)) {
                 throw new InvalidArgumentException(
                     \sprintf('Gravatar image could not find method to use "%s" key', $k).
-                    \sprintf('Allowed preset keys are: "%s".', implode('", "', self::ALLOWED_PRESET_KEYS))
+                    \sprintf('Allowed preset keys are: "%s".', implode('", "', PresetKey::values()))
                 );
             }
 
@@ -215,13 +201,13 @@ class Image extends GravatarImage
         }
 
         $error = match ($key) {
-            'extension' => \in_array($value, Extension::values())
+            PresetKey::EXTENSION->value => \in_array($value, Extension::values())
                 ? null
                 : \sprintf('Invalid extension "%s". Valid values: %s', $value, implode(', ', Extension::values())),
-            'max_rating' => \in_array($value, Rating::values())
+            PresetKey::MAX_RATING->value => \in_array($value, Rating::values())
                 ? null
                 : \sprintf('Invalid rating "%s". Valid values: %s', $value, implode(', ', Rating::values())),
-            'default_image' => ! \in_array($value, DefaultImage::values()) && ! filter_var($value, FILTER_VALIDATE_URL)
+            PresetKey::DEFAULT_IMAGE->value => ! \in_array($value, DefaultImage::values()) && ! filter_var($value, FILTER_VALIDATE_URL)
                 ? \sprintf('Invalid default image "%s". Valid values: %s or a valid URL', $value, implode(', ', DefaultImage::values()))
                 : null,
             default => null,

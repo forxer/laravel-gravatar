@@ -456,5 +456,5 @@ public function test_user_has_gravatar()
 ## Next Steps
 
 - [View all parameters](parameters.md) - Complete parameter reference
+- [Configure presets](presets.md) - Optimize with reusable configs
 - [Use enums](enums.md) - Type-safe enums and fluent methods
-- [Configure presets](configuration.md) - Optimize with reusable configs

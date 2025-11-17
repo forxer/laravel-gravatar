@@ -37,7 +37,7 @@ $avatar->email = 'user@example.com';
 $avatar->size(120);
 ```
 
-With a preset (see [Configuration](configuration.md)):
+With a preset (see [Presets](presets.md)):
 
 ```php
 $avatar = gravatar('user@example.com', 'small');
@@ -194,7 +194,7 @@ This is useful when you need to generate multiple avatars with consistent settin
 
 ## Next Steps
 
-- [Configure presets](configuration.md) - Define reusable configurations
+- [Configure presets](presets.md) - Define reusable configurations
 - [Learn about parameters](parameters.md) - Customize size, rating, default image, etc.
 - [Use enums](enums.md) - Type-safe values and fluent methods
 - [Add Eloquent casts](casts.md) - Seamlessly integrate with your models

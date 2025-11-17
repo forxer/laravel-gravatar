@@ -250,7 +250,7 @@ class Admin extends Model
 }
 ```
 
-Where `'admin'` is a preset defined in `config/gravatar.php`:
+Where `'admin'` is a preset defined in `config/gravatar.php` (see [Presets](presets.md)):
 
 ```php
 'presets' => [
@@ -283,6 +283,6 @@ $emailString = $user->getRawOriginal('email');
 
 ## Next Steps
 
-- [Configure presets](configuration.md) - Set up presets for your casts
+- [Configure presets](presets.md) - Set up presets for your casts
 - [Learn about parameters](parameters.md) - Customize your Gravatars
 - [Advanced features](advanced.md) - Base64 conversion and more

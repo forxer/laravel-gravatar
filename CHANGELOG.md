@@ -22,7 +22,9 @@ CHANGELOG
   - Asymmetric Visibility: `presetName` property uses `public private(set)` for read-public, write-private access
   - Readonly Properties: `config` property uses `public readonly` for complete immutability after construction
   - Strict Types: All files now use `declare(strict_types=1)`
-- **Type-safe Enums**: Can now use enum classes (`Rating`, `Extension`, `DefaultImage`, `ProfileFormat`) for better IDE support and type safety
+- **Type-safe Enums**:
+  - Can now use enum classes from parent library (`Rating`, `Extension`, `DefaultImage`, `ProfileFormat`) for better IDE support and type safety
+  - **New `PresetKey` enum**: Laravel-specific enum for preset configuration keys validation
 - **Fluent Shorthand Methods**: Added support for convenient fluent methods (convenience methods):
   - Rating: `ratingG()`, `ratingPg()`, `ratingR()`, `ratingX()`
   - Extension: `extensionJpg()`, `extensionJpeg()`, `extensionGif()`, `extensionPng()`, `extensionWebp()`
@@ -35,7 +37,7 @@ CHANGELOG
 - **Improved `gravatar()` helper**: Now always returns an `Image` instance (even when called without parameters), making it more consistent and intuitive
 - **New `gravatar_profile()` helper**: Added a dedicated helper function for creating profile instances, following the pattern from the parent library
 - **Code Quality Improvements**:
-  - Converted `allowedSetterPresetKeys()` method to `ALLOWED_PRESET_KEYS` constant for better performance
+  - Replaced `ALLOWED_PRESET_KEYS` constant array with `PresetKey` enum for type-safe preset key validation
   - Refactored `toBase64()` with early returns pattern for improved readability
   - Simplified `profile()` method from 7 lines to 3 lines
   - Modernized with Laravel 12 patterns: replaced `Container::getInstance()` with `app()` helper
@@ -43,8 +45,8 @@ CHANGELOG
   - Fixed incorrect return type in `GravatarProfile` cast (was `Image`, now `Profile`)
   - Enhanced PHPDoc consistency: all constructors, helpers, and facade methods fully documented
   - All return types explicitly declared across the entire codebase
-  - **Enum-based validation**: Added `validatePresetValue()` method using `Extension`, `Rating`, and `DefaultImage` enums for preset configuration validation
-  - Imported and utilized enums from parent library for type safety and consistency
+  - **Enum-based validation**: Added `validatePresetValue()` method using `PresetKey`, `Extension`, `Rating`, and `DefaultImage` enums for complete type-safe validation
+  - All enums from parent library fully integrated and utilized for consistency
 - **Updated internal code**:
   - Fixed `Image::toBase64()` to use property access (`$this->email`) instead of removed `getEmail()` method
   - Fixed `Gravatar::profile()` to use `format()` method instead of removed `setFormat()` method
@@ -56,6 +58,7 @@ CHANGELOG
 - **Comprehensive documentation restructure**:
   - Split documentation into dedicated files in `docs/` directory
   - Added Laravel-focused documentation for all features
+  - New `docs/presets.md`: Complete guide to preset configurations consolidating all preset-related documentation
   - All properties documented in order: 1) Helper methods, 2) Convenience methods, 3) Direct properties
   - Complete migration guide in UPGRADE.md
 

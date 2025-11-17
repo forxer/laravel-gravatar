@@ -57,5 +57,5 @@ php artisan tinker
 ## Next Steps
 
 - [Learn basic usage](usage.md) - Helpers, facades, and dependency injection
-- [Configure presets](configuration.md) - Set up reusable avatar configurations
+- [Configure presets](presets.md) - Set up reusable avatar configurations
 - [Explore parameters](parameters.md) - Customize your Gravatars

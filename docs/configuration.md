@@ -20,14 +20,16 @@ This creates `config/gravatar.php` in your application.
 
 return [
     'default_preset' => null,
-    
+
     'presets' => [
         // Your presets here
     ],
 ];
 ```
 
-## Default Preset
+## Configuration Options
+
+### Default Preset
 
 You can specify a default preset to be applied to all Gravatars unless overridden:
 
@@ -37,99 +39,20 @@ You can specify a default preset to be applied to all Gravatars unless overridde
 
 Set to `null` to disable the default preset.
 
-## Defining Presets
+### Presets
 
-Presets are named groups of default settings that can be reused throughout your application:
+The `presets` array contains named configurations that can be reused throughout your application.
 
-```php
-'presets' => [
-    'small' => [
-        'size' => 40,
-        'default_image' => 'mp',
-        'extension' => 'jpg',
-    ],
-    
-    'medium' => [
-        'size' => 120,
-        'default_image' => 'mp',
-        'extension' => 'jpg',
-    ],
-    
-    'large' => [
-        'size' => 360,
-        'default_image' => 'robohash',
-        'max_rating' => 'pg',
-        'extension' => 'webp',
-    ],
-],
-```
-
-### Available Preset Keys
-
-- `size` - Avatar size in pixels (1-2048)
-- `default_image` - Default image type or URL
-- `max_rating` - Maximum allowed rating ('g', 'pg', 'r', 'x')
-- `extension` - File extension ('jpg', 'jpeg', 'png', 'gif', 'webp')
-- `force_default` - Force default image (boolean)
-- `initials` - Explicit initials (e.g., 'JD') when using 'initials' default image
-- `initials_name` - Full name (e.g., 'John Doe') - initials will be extracted
-
-## Using Presets
-
-**1. Using helper method:**
-
-```php
-// Use preset in helper argument
-$avatar = gravatar('user@example.com', 'small');
-
-// Or apply preset after creation
-$avatar = gravatar('user@example.com')->preset('medium');
-
-// Getter mode
-$currentPreset = $avatar->preset(); // Returns current preset name if set
-```
-
-**2. Using direct property:**
-
-```php
-$avatar = gravatar('user@example.com');
-$avatar->preset = 'small';
-```
-
-### In Blade
-
-```blade
-<img src="{{ gravatar($user->email, 'small') }}" alt="Avatar">
-```
-
-### With Eloquent Casts
-
-You can specify a preset when casting model attributes:
-
-```php
-use LaravelGravatar\Casts\GravatarImage;
-
-class User extends Model
-{
-    protected $casts = [
-        'avatar' => GravatarImage::class.':small',
-    ];
-}
-```
-
-## Preset Inheritance
-
-Presets are applied before any other settings, so you can override preset values:
-
-```php
-$avatar = gravatar('user@example.com', 'small')
-    ->size(60)  // Overrides preset size
-    ->extensionWebp();  // Overrides preset extension
-```
+See the **[Presets documentation](presets.md)** for complete details on:
+- Defining presets
+- Available preset keys
+- Preset validation
+- Using presets
+- Examples
 
 ## Example Configuration
 
-Here's a complete example configuration file:
+Here's a minimal example configuration file:
 
 ```php
 <?php
@@ -156,73 +79,12 @@ return [
             'max_rating' => 'pg',
             'extension' => 'webp',
         ],
-
-        'admin' => [
-            'size' => 120,
-            'default_image' => 'robohash',
-            'extension' => 'png',
-        ],
-
-        'with_initials' => [
-            'size' => 100,
-            'default_image' => 'initials',
-            'initials_name' => 'User Name', // Can be overridden
-            'extension' => 'webp',
-        ],
     ],
 ];
 ```
 
-## Preset Validation
-
-Laravel Gravatar automatically validates preset values using enums from the parent library for type safety:
-
-### Validated Keys
-
-The following preset keys are validated against their respective enums:
-
-- **`extension`** - Must be one of: `jpg`, `jpeg`, `png`, `gif`, `webp`
-- **`max_rating`** - Must be one of: `g`, `pg`, `r`, `x`
-- **`default_image`** - Must be one of: `initials`, `color`, `404`, `mp`, `identicon`, `monsterid`, `wavatar`, `retro`, `robohash`, `blank`, or a valid URL
-
-### Error Handling
-
-If you provide an invalid value in your preset configuration:
-
-```php
-'presets' => [
-    'invalid' => [
-        'extension' => 'bmp',  // ❌ Invalid
-    ],
-],
-```
-
-You'll receive a detailed error message when the preset is applied:
-
-```
-InvalidArgumentException: Invalid extension "bmp". Valid values: jpg, jpeg, png, gif, webp
-```
-
-### Valid Configuration
-
-```php
-'presets' => [
-    'validated' => [
-        'size' => 120,
-        'extension' => 'webp',        // ✅ Valid
-        'max_rating' => 'pg',         // ✅ Valid
-        'default_image' => 'robohash', // ✅ Valid
-    ],
-
-    'custom_url' => [
-        'default_image' => 'https://example.com/avatar.png', // ✅ Valid (URL)
-    ],
-],
-```
-
-This validation ensures configuration errors are caught early at runtime, preventing invalid URLs from being generated.
-
 ## Next Steps
 
-- [Learn about parameters](parameters.md) - All available Gravatar parameters
-- [Use enums](enums.md) - Type-safe values and fluent methods
+- **[Presets](presets.md)** - Complete guide to preset configurations
+- [Parameters](parameters.md) - All available Gravatar parameters
+- [Enums](enums.md) - Type-safe values and fluent methods

@@ -39,7 +39,8 @@ echo $avatar; // Outputs the Gravatar URL
 
 - **[Installation](installation.md)** - Install and configure the package
 - **[Usage](usage.md)** - Learn how to use helpers, facades, and dependency injection
-- **[Configuration](configuration.md)** - Set up presets and customize defaults
+- **[Configuration](configuration.md)** - Configure the package
+- **[Presets](presets.md)** - Complete guide to preset configurations
 - **[Parameters](parameters.md)** - Understand all available Gravatar parameters
 - **[Enums](enums.md)** - Use type-safe enums and fluent shorthand methods
 - **[Casts](casts.md)** - Use Eloquent casts for seamless integration
