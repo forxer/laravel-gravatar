@@ -49,10 +49,10 @@ All the core Gravatar functionality from the parent library is available in this
 - **[Overview](docs/index.md)** - Introduction and quick start
 - **[Installation](docs/installation.md)** - Install and configure
 - **[Usage](docs/usage.md)** - Helpers, facades, and dependency injection
-- **[Configuration](docs/configuration.md)** - Configure the package
-- **[Presets](docs/presets.md)** - Complete guide to preset configurations
 - **[Parameters](docs/parameters.md)** - All available Gravatar parameters
 - **[Enums](docs/enums.md)** - Type-safe enums and fluent methods
+- **[Configuration](docs/configuration.md)** - Configure the package
+- **[Presets](docs/presets.md)** - Complete guide to preset configurations
 - **[Casts](docs/casts.md)** - Eloquent model integration
 - **[Advanced Features](docs/advanced.md)** - Base64 conversion, copying, and more
 

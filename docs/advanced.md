@@ -453,8 +453,8 @@ public function test_user_has_gravatar()
 >
 ```
 
-## Next Steps
+## Further Resources
 
-- [View all parameters](parameters.md) - Complete parameter reference
-- [Configure presets](presets.md) - Optimize with reusable configs
-- [Use enums](enums.md) - Type-safe enums and fluent methods
+- [Gravatar Official Documentation](https://gravatar.com/site/implement/) - Official Gravatar API documentation
+- [forxer/gravatar Library](https://github.com/forxer/gravatar) - The parent framework-agnostic library
+- [GitHub Repository](https://github.com/forxer/laravel-gravatar) - Source code and issue tracker

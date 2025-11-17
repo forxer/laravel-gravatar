@@ -449,7 +449,5 @@ The Laravel package uses the parent library's enums for **validating preset valu
 
 ## Next Steps
 
-- [Configuration](configuration.md) - Other configuration options
-- [Enums](enums.md) - Use type-safe enums and fluent methods
-- [Parameters](parameters.md) - All available Gravatar parameters
-- [Casts](casts.md) - Eloquent model integration
+- [Add Eloquent casts](casts.md) - Seamlessly integrate with your models
+- [Explore advanced features](advanced.md) - Base64 conversion, copying instances

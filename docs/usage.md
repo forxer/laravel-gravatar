@@ -194,7 +194,6 @@ This is useful when you need to generate multiple avatars with consistent settin
 
 ## Next Steps
 
-- [Configure presets](presets.md) - Define reusable configurations
 - [Learn about parameters](parameters.md) - Customize size, rating, default image, etc.
-- [Use enums](enums.md) - Type-safe values and fluent methods
-- [Add Eloquent casts](casts.md) - Seamlessly integrate with your models
+- [View type-safe enums](enums.md) - Use enums for better type safety
+- [Define presets](presets.md) - Create reusable configurations

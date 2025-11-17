@@ -85,6 +85,6 @@ return [
 
 ## Next Steps
 
-- **[Presets](presets.md)** - Complete guide to preset configurations
-- [Parameters](parameters.md) - All available Gravatar parameters
-- [Enums](enums.md) - Type-safe values and fluent methods
+- [Define presets](presets.md) - Complete guide to preset configurations
+- [Add Eloquent casts](casts.md) - Seamlessly integrate with your models
+- [Explore advanced features](advanced.md) - Base64 conversion, copying instances

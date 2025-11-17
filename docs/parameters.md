@@ -319,6 +319,6 @@ echo $profile->format; // 'xml'
 
 ## Next Steps
 
-- [Use type-safe enums](enums.md) - Type-safe values and fluent shorthand methods
-- [Configure presets](presets.md) - Reuse parameter combinations
-- [Advanced features](advanced.md) - Copying instances, base64 conversion
+- [View type-safe enums](enums.md) - Use enums for better type safety
+- [Configure settings](configuration.md) - Set up global configuration
+- [Define presets](presets.md) - Create reusable parameter combinations

@@ -283,6 +283,4 @@ $emailString = $user->getRawOriginal('email');
 
 ## Next Steps
 
-- [Configure presets](presets.md) - Set up presets for your casts
-- [Learn about parameters](parameters.md) - Customize your Gravatars
-- [Advanced features](advanced.md) - Base64 conversion and more
+- [Explore advanced features](advanced.md) - Base64 conversion, copying instances, and more

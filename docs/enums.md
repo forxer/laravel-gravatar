@@ -271,6 +271,6 @@ class UserController
 
 ## Next Steps
 
-- [Learn about parameters](parameters.md) - Detailed parameter documentation
-- [Configure presets](presets.md) - Combine settings into reusable presets
-- [Advanced features](advanced.md) - Base64 conversion, copying instances
+- [Configure settings](configuration.md) - Set up global configuration
+- [Define presets](presets.md) - Combine settings into reusable presets
+- [Add Eloquent casts](casts.md) - Seamlessly integrate with your models
