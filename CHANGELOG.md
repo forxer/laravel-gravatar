@@ -19,7 +19,8 @@ CHANGELOG
 
 - **PHP 8.4 Features**:
   - Property Hooks: All properties use property hooks with automatic conversion and validation
-  - Asymmetric Visibility: `config` and `presetName` properties use `public private(set)` for read-public, write-private access
+  - Asymmetric Visibility: `presetName` property uses `public private(set)` for read-public, write-private access
+  - Readonly Properties: `config` property uses `public readonly` for complete immutability after construction
   - Strict Types: All files now use `declare(strict_types=1)`
 - **Type-safe Enums**: Can now use enum classes (`Rating`, `Extension`, `DefaultImage`, `ProfileFormat`) for better IDE support and type safety
 - **Fluent Shorthand Methods**: Added support for convenient fluent methods (convenience methods):

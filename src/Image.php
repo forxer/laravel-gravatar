@@ -52,7 +52,7 @@ class Image extends GravatarImage
      * @param  string|null  $presetName  Optional preset name to apply
      */
     public function __construct(
-        public private(set) array $config,
+        public readonly array $config,
         ?string $email = null,
         ?string $presetName = null,
     ) {
@@ -241,6 +241,7 @@ class Image extends GravatarImage
      */
     private function presetValues(): array
     {
+        // Resolve preset name from default config if not set
         if ($this->presetName === null) {
             if (empty($this->config['default_preset'])) {
                 return [];
@@ -249,18 +250,25 @@ class Image extends GravatarImage
             $this->presetName = $this->config['default_preset'];
         }
 
+        // Validate presets configuration exists
         if (empty($this->config['presets']) || ! \is_array($this->config['presets'])) {
             throw new InvalidArgumentException('Unable to retrieve Gravatar presets array configuration.');
         }
 
+        // Validate preset exists
         if (! isset($this->config['presets'][$this->presetName])) {
-            throw new InvalidArgumentException(\sprintf('Unable to retrieve Gravatar preset values, "%s" is probably a wrong preset name.', $this->presetName));
+            throw new InvalidArgumentException(
+                \sprintf('Unable to retrieve Gravatar preset values, "%s" is probably a wrong preset name.', $this->presetName)
+            );
         }
 
         $presetValues = $this->config['presets'][$this->presetName];
 
+        // Validate preset values
         if (empty($presetValues) || ! \is_array($presetValues)) {
-            throw new InvalidArgumentException(\sprintf('Unable to retrieve Gravatar "%s" preset values.', $this->presetName));
+            throw new InvalidArgumentException(
+                \sprintf('Unable to retrieve Gravatar "%s" preset values.', $this->presetName)
+            );
         }
 
         return $presetValues;

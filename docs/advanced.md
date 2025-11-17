@@ -275,13 +275,13 @@ echo $avatar->config['default_preset'];  // Access config
 // $avatar->config = [];  // Error: Cannot modify private(set) property
 ```
 
-**Protected properties with asymmetric visibility:**
-- **`presetName`** - The currently applied preset name (read-only from outside)
-- **`config`** - The configuration array from Laravel config (read-only from outside)
+**Protected properties:**
+- **`presetName`** - Uses `public private(set)` - The currently applied preset name (read-only from outside, can be modified internally via `setPreset()`)
+- **`config`** - Uses `public readonly` - The configuration array from Laravel config (completely immutable after construction)
 
-These properties use `public private(set)` visibility, meaning:
-- Anyone can **read** the value
-- Only the class itself can **write** the value
+**Visibility types explained:**
+- `public private(set)` - Anyone can read, only the class can write (used for `presetName` which changes via presets)
+- `public readonly` - Anyone can read, no one can write after construction (used for `config` which never changes)
 
 This ensures configuration integrity while providing transparency about the current state.
 
