@@ -1,6 +1,16 @@
 CHANGELOG
 =========
 
+5.0.0 (unreleased)
+------------------
+
+- Added support for PHP 8.4
+- Added support for Laravel 12.0
+- Removed support for PHP prior to 8.4
+- Removed support for Laravel prior to 12.0
+- Updated to `forxer/gravatar` 6.0
+
+
 4.3.0 (2025-11-16)
 ------------------
 

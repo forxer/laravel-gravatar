@@ -57,10 +57,13 @@ Index
 Requirements
 ------------
 
-- PHP 8.2 or newer
-- Laravel 10.0 or newer
+- PHP 8.4 or newer
+- Laravel 12.0 or newer
 
-If you want to use it with a version earlier than PHP 8.2 and/or a version earlier than Laravel 10, please use [version 2](https://github.com/forxer/laravel-gravatar/tree/2.x) or [version 1](https://github.com/forxer/laravel-gravatar/tree/1.x).
+If you want to use it with earlier versions, please use:
+- [version 4.x](https://github.com/forxer/laravel-gravatar/tree/4.x) for PHP 8.2+ and Laravel 10.0+
+- [version 2.x](https://github.com/forxer/laravel-gravatar/tree/2.x) for PHP 8.0+ and Laravel 8.0+
+- [version 1.x](https://github.com/forxer/laravel-gravatar/tree/1.x) for older versions
 
 
 Installation

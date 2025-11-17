@@ -1,6 +1,26 @@
 UPGRADE
 =======
 
+From 4.x to 5.x
+---------------
+
+This package now requires at least **PHP 8.4** and **Laravel 12**, your project must correspond to these prerequisites.
+
+### Breaking changes
+
+- **PHP version**: Minimum PHP version raised from 8.2 to 8.4
+- **Laravel version**: Support dropped for Laravel 10 and 11, now requires Laravel 12+
+- **Gravatar library**: Updated to `forxer/gravatar` 6.0
+
+### Migration steps
+
+1. Update your project to PHP 8.4 or newer
+2. Update your Laravel application to version 12.0 or newer
+3. Update the package: `composer require forxer/laravel-gravatar:^5.0`
+
+No code changes should be necessary for most applications, as this is primarily a dependency update. However, you should test your application thoroughly to ensure compatibility with PHP 8.4 and Laravel 12.
+
+
 From 3.x to 4.x
 ---------------
 
