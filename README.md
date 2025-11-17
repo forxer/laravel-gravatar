@@ -297,6 +297,36 @@ Optional parameters
 
 In all the examples below we will use the helper but it obviously works with the facade or the dependency injection of the service.
 
+> [!NOTE]
+> All helper methods can work in **two modes**:
+> - **Setter mode**: When called with an argument, sets the value and returns `$this` for chaining
+> - **Getter mode**: When called without arguments, returns the current value
+>
+> ```php
+> $avatar = gravatar('email@example.com');
+> $avatar->size(120);              // Setter: sets size to 120, returns $this
+> $currentSize = $avatar->size();  // Getter: returns 120
+> ```
+
+> [!TIP]
+> Thanks to **PHP 8.4 Property Hooks**, you can also read and write properties directly:
+>
+> ```php
+> $avatar = gravatar('email@example.com');
+>
+> // Direct property assignment (with automatic validation)
+> $avatar->size = 120;
+> $avatar->extension = 'webp';
+> $avatar->maxRating = 'pg';
+>
+> // Direct property reading
+> echo $avatar->size;       // 120
+> echo $avatar->extension;  // webp
+> echo $avatar->maxRating;  // pg
+> ```
+>
+> Both approaches (helper methods and direct property access) trigger the same validation through property hooks!
+
 ### Gravatar image size
 
 By default, images are presented at 80px by 80px if no size parameter is supplied.
@@ -573,14 +603,14 @@ use LaravelGravatar\Facades\Gravatar;
 $avatar = Gravatar::image('email@example.com')
     ->maxRating(Rating::G)
     ->extension(Extension::JPG)
-    ->defaultImage(DefaultImage::MP);
+    ->defaultImage(DefaultImage::MYSTERY_PERSON);
 ```
 
 **Available enums:**
 
 - **Rating**: `Rating::G`, `Rating::PG`, `Rating::R`, `Rating::X`
 - **Extension**: `Extension::JPG`, `Extension::JPEG`, `Extension::GIF`, `Extension::PNG`, `Extension::WEBP`
-- **DefaultImage**: `DefaultImage::INITIALS`, `DefaultImage::COLOR`, `DefaultImage::NOT_FOUND` (404), `DefaultImage::MP`, `DefaultImage::IDENTICON`, `DefaultImage::MONSTERID`, `DefaultImage::WAVATAR`, `DefaultImage::RETRO`, `DefaultImage::ROBOHASH`, `DefaultImage::BLANK`
+- **DefaultImage**: `DefaultImage::INITIALS`, `DefaultImage::COLOR`, `DefaultImage::NOT_FOUND` (404), `DefaultImage::MYSTERY_PERSON` (mp), `DefaultImage::IDENTICON`, `DefaultImage::MONSTERID`, `DefaultImage::WAVATAR`, `DefaultImage::RETRO`, `DefaultImage::ROBOHASH`, `DefaultImage::BLANK`
 - **ProfileFormat**: `ProfileFormat::JSON`, `ProfileFormat::XML`, `ProfileFormat::PHP`, `ProfileFormat::VCF`, `ProfileFormat::QR`
 
 [Back to top ^](#gravatar-for-laravel)
