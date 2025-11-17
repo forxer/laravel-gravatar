@@ -62,6 +62,6 @@ class Gravatar
      */
     public function profile(?string $email = null, ?string $format = null): Profile
     {
-        return (new Profile($email))->format($format);
+        return new Profile($email)->format($format);
     }
 }

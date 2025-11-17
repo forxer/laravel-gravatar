@@ -12,6 +12,9 @@ use Gravatar\Profile as GravatarProfile;
  * Extends the base Gravatar profile class from forxer/gravatar package
  * to provide Laravel-specific functionality and integration.
  *
+ * Supports format validation using ProfileFormat enum from parent library.
+ *
  * @see https://docs.gravatar.com/api/profiles/
+ * @see \Gravatar\Enum\ProfileFormat
  */
 class Profile extends GravatarProfile {}

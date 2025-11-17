@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace LaravelGravatar;
 
 use Exception;
+use Gravatar\Enum\DefaultImage;
+use Gravatar\Enum\Extension;
+use Gravatar\Enum\Rating;
 use Gravatar\Image as GravatarImage;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -29,7 +32,7 @@ class Image extends GravatarImage
      *
      * @var array<int, string>
      */
-    private const ALLOWED_PRESET_KEYS = [
+    private const array ALLOWED_PRESET_KEYS = [
         'size',
         'default_image',
         'max_rating',
@@ -183,6 +186,9 @@ class Image extends GravatarImage
                 );
             }
 
+            // Validate enum values before applying
+            $this->validatePresetValue($k, $v);
+
             if (\strlen((string) $k) === 1) {
                 $this->{$k}($v);
             } else {
@@ -191,6 +197,39 @@ class Image extends GravatarImage
         }
 
         return $this;
+    }
+
+    /**
+     * Validate preset value using enums for type safety.
+     *
+     * @param  string  $key  The preset key
+     * @param  mixed  $value  The value to validate
+     *
+     * @throws InvalidArgumentException When value is invalid for the given key
+     */
+    private function validatePresetValue(string $key, mixed $value): void
+    {
+        // Skip validation for null values and non-string values
+        if ($value === null || ! \is_string($value)) {
+            return;
+        }
+
+        $error = match ($key) {
+            'extension' => \in_array($value, Extension::values())
+                ? null
+                : \sprintf('Invalid extension "%s". Valid values: %s', $value, implode(', ', Extension::values())),
+            'max_rating' => \in_array($value, Rating::values())
+                ? null
+                : \sprintf('Invalid rating "%s". Valid values: %s', $value, implode(', ', Rating::values())),
+            'default_image' => ! \in_array($value, DefaultImage::values()) && ! filter_var($value, FILTER_VALIDATE_URL)
+                ? \sprintf('Invalid default image "%s". Valid values: %s or a valid URL', $value, implode(', ', DefaultImage::values()))
+                : null,
+            default => null,
+        };
+
+        if ($error !== null) {
+            throw new InvalidArgumentException($error);
+        }
     }
 
     /**

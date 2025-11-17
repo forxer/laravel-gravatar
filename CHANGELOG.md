@@ -42,6 +42,8 @@ CHANGELOG
   - Fixed incorrect return type in `GravatarProfile` cast (was `Image`, now `Profile`)
   - Enhanced PHPDoc consistency: all constructors, helpers, and facade methods fully documented
   - All return types explicitly declared across the entire codebase
+  - **Enum-based validation**: Added `validatePresetValue()` method using `Extension`, `Rating`, and `DefaultImage` enums for preset configuration validation
+  - Imported and utilized enums from parent library for type safety and consistency
 - **Updated internal code**:
   - Fixed `Image::toBase64()` to use property access (`$this->email`) instead of removed `getEmail()` method
   - Fixed `Gravatar::profile()` to use `format()` method instead of removed `setFormat()` method
