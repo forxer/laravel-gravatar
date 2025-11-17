@@ -3,6 +3,7 @@
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
 use Rector\Php81\Rector\Array_\FirstClassCallableRector;
+use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 use RectorLaravel\Rector\Class_\UnifyModelDatesWithCastsRector;
 use RectorLaravel\Rector\FuncCall\RemoveDumpDataDeadCodeRector;
 use RectorLaravel\Rector\MethodCall\EloquentWhereRelationTypeHintingParameterRector;
@@ -33,14 +34,16 @@ return RectorConfig::configure()
     // Up from PHP X.x to 8.2
     ->withPhpSets()
 
-    // only PHP 8.2
-    // ->withPhpSets(php82: true)
+    // only PHP 8.4
+    // ->withPhpSets(php84: true)
 
     ->withSkip([
         // Désactivation de cette règle car elle
         // transforme :     array_map('intval',
         // en :             array_map(intval(...),
         FirstClassCallableRector::class,
+
+        AddOverrideAttributeToOverriddenMethodsRector::class,
     ])
     ->withRules([
         EloquentWhereRelationTypeHintingParameterRector::class,

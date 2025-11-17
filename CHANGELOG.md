@@ -4,11 +4,29 @@ CHANGELOG
 5.0.0 (unreleased)
 ------------------
 
-- Added support for PHP 8.4
-- Added support for Laravel 12.0
-- Removed support for PHP prior to 8.4
-- Removed support for Laravel prior to 12.0
-- Updated to `forxer/gravatar` 6.0
+### Breaking Changes
+
+- **Minimum PHP version increased to 8.4**
+- **Minimum Laravel version increased to 12.0** - dropped support for Laravel 10 and 11
+- **Updated to `forxer/gravatar` 6.0** - inherits all breaking changes from the parent library:
+  - Removed getter methods: `getEmail()`, `getSize()`, `getExtension()`, `getMaxRating()`, `getDefaultImage()`, `getInitials()`, `getName()`, `getForceDefault()` - use direct property access instead (e.g., `$image->size` instead of `$image->getSize()`)
+  - Removed setter methods: `setEmail()`, `setSize()`, `setExtension()`, `setMaxRating()`, `setDefaultImage()`, `setInitials()`, `setName()`, `setForceDefault()` - use helper methods or direct property assignment instead (e.g., `$image->size(120)` or `$image->size = 120`)
+  - Renamed property and method: `name` → `initialsName` and `withName()` → `withInitialsName()` for better clarity
+  - Removed short alias methods: `s()`, `e()`, `r()`, `d()`, `f()` - use full helper method names or new fluent shorthand methods instead
+- **Preset configuration keys**: Short aliases (`s`, `e`, `r`, `d`, `f`) are no longer supported in preset configurations - use full key names (`size`, `extension`, `max_rating`, `default_image`, `force_default`)
+
+### Improvements
+
+- **PHP 8.4 Property Hooks**: All properties in the parent library now use property hooks with automatic conversion and validation
+- **Type-safe Enums**: Can now use enum classes (`Rating`, `Extension`, `DefaultImage`, `ProfileFormat`) for better IDE support and type safety
+- **Fluent Shorthand Methods**: Added support for convenient fluent methods from parent library:
+  - Rating: `ratingG()`, `ratingPg()`, `ratingR()`, `ratingX()`
+  - Extension: `extensionJpg()`, `extensionJpeg()`, `extensionGif()`, `extensionPng()`, `extensionWebp()`
+  - Default images: `defaultImageInitials()`, `defaultImageRobohash()`, etc.
+  - Profile formats: `formatJson()`, `formatXml()`, `formatPhp()`, `formatVcf()`, `formatQr()`
+- **Direct Property Assignment**: Properties can now be assigned directly with automatic validation through PHP 8.4 property hooks
+- **Updated internal code**: Fixed `Image::toBase64()` to use property access (`$this->email`) instead of removed `getEmail()` method
+- **Enhanced documentation**: Added comprehensive sections on type-safe enums and fluent shorthand methods
 
 
 4.3.0 (2025-11-16)

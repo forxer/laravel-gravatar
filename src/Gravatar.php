@@ -39,7 +39,12 @@ class Gravatar
      */
     public function profile(?string $email = null, ?string $format = null): Profile
     {
-        return (new Profile($email))
-            ->setFormat($format);
+        $profile = new Profile($email);
+
+        if ($format !== null) {
+            $profile->format($format);
+        }
+
+        return $profile;
     }
 }

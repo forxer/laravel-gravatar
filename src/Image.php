@@ -66,7 +66,7 @@ class Image extends GravatarImage
 
             // Log warning for unsuccessful response
             Log::warning('Gravatar request unsuccessful', [
-                'email' => $this->getEmail(),
+                'email' => $this->email,
                 'url' => $url,
                 'status' => $response->status(),
             ]);
@@ -74,7 +74,7 @@ class Image extends GravatarImage
             return null;
         } catch (Exception $exception) {
             Log::warning('Failed to convert Gravatar to base64', [
-                'email' => $this->getEmail(),
+                'email' => $this->email,
                 'url' => $url,
                 'error' => $exception->getMessage(),
             ]);
@@ -190,19 +190,10 @@ class Image extends GravatarImage
     {
         return [
             'size',
-            's',
-
             'default_image',
-            'd',
-
             'max_rating',
-            'r',
-
             'extension',
-            'e',
-
             'force_default',
-            'f',
         ];
     }
 }

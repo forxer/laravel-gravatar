@@ -49,6 +49,8 @@ Index
     - [Gravatar image file-type extension](#gravatar-image-file-type-extension)
     - [Force to always use the default image](#force-to-always-use-the-default-image)
     - [Combine them](#combine-them)
+- [Type-safe enums](#type-safe-enums)
+- [Fluent shorthand methods](#fluent-shorthand-methods)
 - [Image presets](#image-presets)
 - [Convert to Base64](#convert-to-base64)
 - [Casts](#casts)
@@ -356,15 +358,15 @@ You can customize which initials are displayed by providing them explicitly or b
 $gravatarImage = gravatar($email);
 $gravatarImage->withInitials('JD');
 
-// or use the `withName()` method - automatically sets default image to 'initials'
+// or use the `withInitialsName()` method - automatically sets default image to 'initials'
 $gravatarImage = gravatar($email);
-$gravatarImage->withName('John Doe');
+$gravatarImage->withInitialsName('John Doe');
 
 // with the facade
 use LaravelGravatar\Facades\Gravatar;
 
 $avatar = Gravatar::image($email)->withInitials('JD');
-$avatar = Gravatar::image($email)->withName('John Doe');
+$avatar = Gravatar::image($email)->withInitialsName('John Doe');
 ```
 
 **Using explicit methods:**
@@ -374,9 +376,9 @@ $avatar = Gravatar::image($email)->withName('John Doe');
 $gravatarImage = gravatar($email);
 $gravatarImage->defaultImage('initials')->initials('JD');
 
-// manually set default image and then provide name
+// manually set default image and then provide initialsName
 $gravatarImage = gravatar($email);
-$gravatarImage->defaultImage('initials')->name('John Doe');
+$gravatarImage->defaultImage('initials')->initialsName('John Doe');
 ```
 
 **Practical example in a controller:**
@@ -391,7 +393,7 @@ class UserController
     {
         // Generate avatar with user's initials from their name
         $avatar = Gravatar::image($user->email)
-            ->withName($user->name)
+            ->withInitialsName($user->name)
             ->size(120);
 
         return view('users.show', [
@@ -403,10 +405,10 @@ class UserController
 ```
 
 > [!NOTE]
-> The `initials()` and `name()` methods only have an effect when the default image is set to `'initials'`. These parameters are ignored for other default image types. To avoid confusion, use the convenience methods `withInitials()` or `withName()` which automatically set the default image type.
+> The `initials()` and `initialsName()` methods only have an effect when the default image is set to `'initials'`. These parameters are ignored for other default image types. To avoid confusion, use the convenience methods `withInitials()` or `withInitialsName()` which automatically set the default image type.
 
 > [!IMPORTANT]
-> If you provide both initials and a name, the explicitly provided initials will take precedence over the name.
+> If you provide both initials and an initialsName, the explicitly provided initials will take precedence over the initialsName.
 
 [Back to top ^](#gravatar-for-laravel)
 
@@ -514,6 +516,128 @@ $avatar = gravatar('email@example.com')
     ->rating('pg')
     ->defaultImage('robohash')
     ->extension('jpg');
+```
+
+[Back to top ^](#gravatar-for-laravel)
+
+
+Type-safe enums
+---------------
+
+Since version 5.0 (using `forxer/gravatar` 6.0), you can use type-safe enums instead of strings for better IDE support and type safety. All methods that accept string values also accept their corresponding enum values.
+
+```php
+use Gravatar\Enum\Rating;
+use Gravatar\Enum\Extension;
+use Gravatar\Enum\DefaultImage;
+use Gravatar\Enum\ProfileFormat;
+
+// Using enums for better type safety
+$avatar = gravatar('email@example.com')
+    ->maxRating(Rating::PG)
+    ->extension(Extension::WEBP)
+    ->defaultImage(DefaultImage::ROBOHASH);
+
+// Strings still work for backward compatibility
+$avatar = gravatar('email@example.com')
+    ->maxRating('pg')
+    ->extension('webp')
+    ->defaultImage('robohash');
+
+// With the facade
+use LaravelGravatar\Facades\Gravatar;
+
+$avatar = Gravatar::image('email@example.com')
+    ->maxRating(Rating::G)
+    ->extension(Extension::JPG)
+    ->defaultImage(DefaultImage::MP);
+```
+
+**Available enums:**
+
+- **Rating**: `Rating::G`, `Rating::PG`, `Rating::R`, `Rating::X`
+- **Extension**: `Extension::JPG`, `Extension::JPEG`, `Extension::GIF`, `Extension::PNG`, `Extension::WEBP`
+- **DefaultImage**: `DefaultImage::INITIALS`, `DefaultImage::COLOR`, `DefaultImage::NOT_FOUND` (404), `DefaultImage::MP`, `DefaultImage::IDENTICON`, `DefaultImage::MONSTERID`, `DefaultImage::WAVATAR`, `DefaultImage::RETRO`, `DefaultImage::ROBOHASH`, `DefaultImage::BLANK`
+- **ProfileFormat**: `ProfileFormat::JSON`, `ProfileFormat::XML`, `ProfileFormat::PHP`, `ProfileFormat::VCF`, `ProfileFormat::QR`
+
+[Back to top ^](#gravatar-for-laravel)
+
+
+Fluent shorthand methods
+-------------------------
+
+Version 5.0 introduces new fluent shorthand methods for cleaner, more expressive syntax. These methods provide a concise way to set common parameters without using enums or strings.
+
+```php
+// Instead of this:
+$avatar = gravatar('email@example.com')
+    ->maxRating('pg')
+    ->extension('webp')
+    ->defaultImage('robohash');
+
+// You can write this:
+$avatar = gravatar('email@example.com')
+    ->ratingPg()
+    ->extensionWebp()
+    ->defaultImageRobohash();
+```
+
+**Available fluent methods:**
+
+**Ratings:**
+- `ratingG()` - G rated
+- `ratingPg()` - PG rated
+- `ratingR()` - R rated
+- `ratingX()` - X rated
+
+**Extensions:**
+- `extensionJpg()` - JPG format
+- `extensionJpeg()` - JPEG format
+- `extensionGif()` - GIF format
+- `extensionPng()` - PNG format
+- `extensionWebp()` - WebP format
+
+**Default images:**
+- `defaultImageInitials()` - Initials with generated colors
+- `defaultImageColor()` - Generated color
+- `defaultImageNotFound()` - Return 404 if no gravatar
+- `defaultImageMp()` - Mystery person silhouette
+- `defaultImageIdenticon()` - Geometric pattern
+- `defaultImageMonsterid()` - Generated monster
+- `defaultImageWavatar()` - Generated face
+- `defaultImageRetro()` - 8-bit pixelated face
+- `defaultImageRobohash()` - Generated robot
+- `defaultImageBlank()` - Transparent image
+
+**Profile formats:**
+- `formatJson()` - JSON format
+- `formatXml()` - XML format
+- `formatPhp()` - PHP serialized format
+- `formatVcf()` - VCard format
+- `formatQr()` - QR code
+
+**Example in a controller:**
+
+```php
+use App\Models\User;
+use LaravelGravatar\Facades\Gravatar;
+
+class UserController
+{
+    public function show(User $user)
+    {
+        $avatar = Gravatar::image($user->email)
+            ->size(120)
+            ->ratingPg()
+            ->extensionWebp()
+            ->defaultImageRobohash();
+
+        return view('users.show', [
+            'user' => $user,
+            'avatar' => $avatar
+        ]);
+    }
+}
 ```
 
 [Back to top ^](#gravatar-for-laravel)
