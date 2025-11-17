@@ -173,6 +173,55 @@ return [
 ];
 ```
 
+## Preset Validation
+
+Laravel Gravatar automatically validates preset values using enums from the parent library for type safety:
+
+### Validated Keys
+
+The following preset keys are validated against their respective enums:
+
+- **`extension`** - Must be one of: `jpg`, `jpeg`, `png`, `gif`, `webp`
+- **`max_rating`** - Must be one of: `g`, `pg`, `r`, `x`
+- **`default_image`** - Must be one of: `initials`, `color`, `404`, `mp`, `identicon`, `monsterid`, `wavatar`, `retro`, `robohash`, `blank`, or a valid URL
+
+### Error Handling
+
+If you provide an invalid value in your preset configuration:
+
+```php
+'presets' => [
+    'invalid' => [
+        'extension' => 'bmp',  // ❌ Invalid
+    ],
+],
+```
+
+You'll receive a detailed error message when the preset is applied:
+
+```
+InvalidArgumentException: Invalid extension "bmp". Valid values: jpg, jpeg, png, gif, webp
+```
+
+### Valid Configuration
+
+```php
+'presets' => [
+    'validated' => [
+        'size' => 120,
+        'extension' => 'webp',        // ✅ Valid
+        'max_rating' => 'pg',         // ✅ Valid
+        'default_image' => 'robohash', // ✅ Valid
+    ],
+
+    'custom_url' => [
+        'default_image' => 'https://example.com/avatar.png', // ✅ Valid (URL)
+    ],
+],
+```
+
+This validation ensures configuration errors are caught early at runtime, preventing invalid URLs from being generated.
+
 ## Next Steps
 
 - [Learn about parameters](parameters.md) - All available Gravatar parameters

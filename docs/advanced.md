@@ -259,6 +259,46 @@ echo $avatar->maxRating;   // 'pg'
 echo $avatar->email;       // 'user@example.com'
 ```
 
+### Asymmetric Visibility (PHP 8.4)
+
+Laravel Gravatar uses PHP 8.4's asymmetric visibility feature for internal properties that should be readable but not writable from outside:
+
+```php
+$avatar = gravatar('user@example.com', 'medium');
+
+// ✅ Reading is public
+echo $avatar->presetName;  // 'medium'
+echo $avatar->config['default_preset'];  // Access config
+
+// ❌ Writing is private (will cause error)
+// $avatar->presetName = 'other';  // Error: Cannot modify private(set) property
+// $avatar->config = [];  // Error: Cannot modify private(set) property
+```
+
+**Protected properties with asymmetric visibility:**
+- **`presetName`** - The currently applied preset name (read-only from outside)
+- **`config`** - The configuration array from Laravel config (read-only from outside)
+
+These properties use `public private(set)` visibility, meaning:
+- Anyone can **read** the value
+- Only the class itself can **write** the value
+
+This ensures configuration integrity while providing transparency about the current state.
+
+**Use case:**
+
+```php
+$avatar = gravatar($email, 'large');
+
+// Check which preset is applied
+if ($avatar->presetName === 'large') {
+    // Preset is applied
+}
+
+// Access configuration settings
+$defaultPreset = $avatar->config['default_preset'] ?? null;
+```
+
 ## Customizing with Initials
 
 ### Using Initials as Default

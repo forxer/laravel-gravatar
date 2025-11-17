@@ -187,6 +187,31 @@ $image->ratingPg()
 
 See the [README](README.md) for complete documentation on enums and fluent methods.
 
+#### 4. Preset validation with enums
+
+**New in v5.0:** Preset configurations are now automatically validated using enums at runtime.
+
+Invalid preset values will throw detailed exceptions:
+
+```php
+// config/gravatar.php
+'presets' => [
+    'invalid' => [
+        'extension' => 'bmp',  // ❌ Will throw InvalidArgumentException
+    ],
+],
+
+// Exception message:
+// Invalid extension "bmp". Valid values: jpg, jpeg, png, gif, webp
+```
+
+**Action required:** Review your preset configurations to ensure all values are valid:
+- `extension`: Must be `jpg`, `jpeg`, `png`, `gif`, or `webp`
+- `max_rating`: Must be `g`, `pg`, `r`, or `x`
+- `default_image`: Must be a valid enum value or a URL
+
+This validation helps catch configuration errors early, preventing invalid Gravatar URLs from being generated.
+
 ### Migration steps
 
 1. **Update your PHP version to 8.4 or higher**
