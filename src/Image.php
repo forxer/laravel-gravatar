@@ -195,6 +195,13 @@ class Image extends GravatarImage
      */
     private function validatePresetValue(string $key, mixed $value): void
     {
+        // force_default requires a boolean value
+        if ($key === PresetKey::FORCE_DEFAULT->value && ! \is_bool($value)) {
+            throw new InvalidArgumentException(
+                \sprintf('The "force_default" preset value must be a boolean, %s given.', get_debug_type($value))
+            );
+        }
+
         // Skip validation for null values and non-string values
         if ($value === null || ! \is_string($value)) {
             return;
