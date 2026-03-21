@@ -1,3 +1,5 @@
+/.phpunit.cache
 /.rector_cache
+/tests/.pest
 /vendor
 composer.lock

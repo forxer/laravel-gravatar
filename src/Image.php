@@ -154,10 +154,6 @@ class Image extends GravatarImage
      */
     private function applyPreset(): static
     {
-        if ($this->presetName === null) {
-            return $this;
-        }
-
         $presetValues = $this->presetValues();
 
         if ($presetValues === []) {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaravelGravatar;
 
+use Gravatar\Enum\ProfileFormat;
 use Gravatar\Profile as GravatarProfile;
 
 /**
@@ -15,6 +16,6 @@ use Gravatar\Profile as GravatarProfile;
  * Supports format validation using ProfileFormat enum from parent library.
  *
  * @see https://docs.gravatar.com/api/profiles/
- * @see \Gravatar\Enum\ProfileFormat
+ * @see ProfileFormat
  */
 class Profile extends GravatarProfile {}
