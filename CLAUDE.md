@@ -50,6 +50,14 @@ Tests use **Pest** with **Orchestra Testbench** for Laravel integration. 92 test
 
 Presets are defined in `config/gravatar.php` under the `presets` key. When applied, `Image::applyPreset()` validates keys against `PresetKey` enum (via `tryFrom()`), then calls the corresponding methods via `Str::camel()` conversion. Value validation is handled by the parent library's property hooks.
 
+### Laravel Boost Assets
+
+The package provides Laravel Boost integration assets in `resources/boost/`:
+- **Guidelines** (`guidelines/core.blade.php`): Package overview for AI assistants
+- **Skill** (`skills/gravatar/SKILL.blade.php`): Detailed usage patterns, preset configuration, Eloquent casts, and advanced features
+
+**Important:** These files must be kept up to date when components, configuration keys, or usage patterns change. When adding, renaming, or removing components or config options, update the corresponding Boost assets accordingly.
+
 ## Code Style
 
 - **Pint** with `laravel` preset, plus custom rules in `pint.json` (notably `blank_line_before_statement` for many statement types and `native_function_invocation` with `@compiler_optimized`).
