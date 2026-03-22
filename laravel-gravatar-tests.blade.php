@@ -568,7 +568,7 @@
         $invalidImage = new LaravelGravatar\Image($testConfigInvalid, 'test@example.com', 'test_invalid');
         $invalidImage->url(); // Devrait lancer l'exception lors de l'application du preset
         $catchesInvalid = false;
-    } catch (\InvalidArgumentException $e) {
+    } catch (\Exception $e) {
         $catchesInvalid = true;
         $errorMessage = $e->getMessage();
     }

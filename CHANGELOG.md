@@ -34,7 +34,6 @@ CHANGELOG
 - **Fix**: Config typos corrected (`represanting`, `to always be load`, `avatar preset`, `Another Presets`)
 - **Refactor**: `PresetKey::isValid()` now uses idiomatic `tryFrom()` instead of `in_array()`
 - **Refactor**: Removed `validatePresetValue()` — validation delegated to parent library's property hooks (avoids divergence)
-- **Refactor**: `Image::$config` visibility changed from `public readonly` to `private readonly`
 - **Refactor**: `Gravatar` is now a `readonly class`
 - **Refactor**: `GravatarImage` cast `$presetName` is now `readonly`
 - **Cleanup**: Removed dead code branch for single-character preset keys (no longer exist in gravatar v7)

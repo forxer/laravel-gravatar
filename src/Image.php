@@ -35,7 +35,7 @@ class Image extends GravatarImage
      * @param  string|null  $presetName  Optional preset name to apply
      */
     public function __construct(
-        private readonly array $config,
+        public readonly array $config,
         ?string $email = null,
         ?string $presetName = null,
     ) {
