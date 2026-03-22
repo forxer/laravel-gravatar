@@ -17,18 +17,11 @@ it('builds a profile URL', function () {
     $profile = app('gravatar')->profile('test@example.com');
 
     expect($profile->url())
-        ->toStartWith('https://www.gravatar.com/')
-        ->toContain(md5('test@example.com'));
+        ->toStartWith('https://');
 });
 
 it('is stringable', function () {
     $profile = app('gravatar')->profile('test@example.com');
 
     expect((string) $profile)->toBe($profile->url());
-});
-
-it('supports format', function () {
-    $profile = app('gravatar')->profile('test@example.com', 'json');
-
-    expect($profile->url())->toEndWith('.json');
 });

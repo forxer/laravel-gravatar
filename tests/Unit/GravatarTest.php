@@ -36,13 +36,12 @@ it('creates a Profile instance via profile()', function () {
         ->toBeInstanceOf(Profile::class);
 });
 
-it('creates a Profile with format', function () {
+it('creates a Profile without format parameter', function () {
     $gravatar = app('gravatar');
-    $profile = $gravatar->profile('test@example.com', 'json');
+    $profile = $gravatar->profile('test@example.com');
 
     expect($profile)
-        ->toBeInstanceOf(Profile::class)
-        ->and($profile->format)->toBe('json');
+        ->toBeInstanceOf(Profile::class);
 });
 
 it('can be created via static create()', function () {

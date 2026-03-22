@@ -57,11 +57,10 @@ class Gravatar
      * Return a new Gravatar profile instance for the specified email address.
      *
      * @param  string|null  $email  The email address to generate the profile for
-     * @param  string|null  $format  Optional format (json, xml, php, vcf, qr)
      * @return Profile The configured Gravatar profile instance
      */
-    public function profile(?string $email = null, ?string $format = null): Profile
+    public function profile(?string $email = null): Profile
     {
-        return new Profile($email)->format($format);
+        return new Profile($email);
     }
 }

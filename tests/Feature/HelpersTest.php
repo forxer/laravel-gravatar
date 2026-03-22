@@ -27,10 +27,8 @@ it('returns Profile instance via gravatar_profile()', function () {
         ->toBeInstanceOf(Profile::class);
 });
 
-it('returns Profile with format via gravatar_profile()', function () {
-    $profile = gravatar_profile('test@example.com', 'json');
+it('returns Profile without format parameter via gravatar_profile()', function () {
+    $profile = gravatar_profile('test@example.com');
 
-    expect($profile)
-        ->toBeInstanceOf(Profile::class)
-        ->and($profile->format)->toBe('json');
+    expect($profile)->toBeInstanceOf(Profile::class);
 });

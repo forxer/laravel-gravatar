@@ -24,11 +24,10 @@ if (! function_exists('gravatar_profile')) {
      * Return a new Gravatar Profile instance.
      *
      * @param  string|null  $email  The email address to generate the profile for
-     * @param  string|null  $format  Optional format (json, xml, php, vcf, qr)
      * @return Profile The configured Gravatar profile instance
      */
-    function gravatar_profile(?string $email = null, ?string $format = null): Profile
+    function gravatar_profile(?string $email = null): Profile
     {
-        return app('gravatar')->profile($email, $format);
+        return app('gravatar')->profile($email);
     }
 }

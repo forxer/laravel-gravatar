@@ -15,7 +15,7 @@ use LaravelGravatar\Profile;
  *
  * @method static Image image(string|null $email = null, string|null $presetName = null) Create a new Gravatar image instance
  * @method static Image avatar(string|null $email = null, string|null $presetName = null) Alias for image() method
- * @method static Profile profile(string|null $email = null, string|null $format = null) Create a new Gravatar profile instance
+ * @method static Profile profile(string|null $email = null) Create a new Gravatar profile instance
  *
  * @see \LaravelGravatar\Gravatar
  */

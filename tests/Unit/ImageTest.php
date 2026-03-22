@@ -26,8 +26,8 @@ it('builds a URL without preset', function () {
     $image = app('gravatar')->image('test@example.com');
 
     expect($image->url())
-        ->toStartWith('https://www.gravatar.com/avatar/')
-        ->and($image->url())->toContain(md5('test@example.com'));
+        ->toStartWith('https://gravatar.com/avatar/')
+        ->and($image->url())->toContain(hash('sha256', 'test@example.com'));
 });
 
 it('is stringable', function () {
@@ -208,7 +208,7 @@ it('accepts null values in preset for optional keys', function () {
 
 it('returns base64 string on successful HTTP response', function () {
     Http::fake([
-        'www.gravatar.com/*' => Http::response('fake-image-data', 200),
+        'gravatar.com/*' => Http::response('fake-image-data', 200),
     ]);
 
     $result = app('gravatar')->image('test@example.com')->toBase64();
@@ -220,7 +220,7 @@ it('returns base64 string on successful HTTP response', function () {
 
 it('returns null on failed HTTP response', function () {
     Http::fake([
-        'www.gravatar.com/*' => Http::response('', 404),
+        'gravatar.com/*' => Http::response('', 404),
     ]);
 
     Log::shouldReceive('warning')->once();
@@ -232,7 +232,7 @@ it('returns null on failed HTTP response', function () {
 
 it('returns null on HTTP exception', function () {
     Http::fake([
-        'www.gravatar.com/*' => fn () => throw new Exception('Connection failed'),
+        'gravatar.com/*' => fn () => throw new Exception('Connection failed'),
     ]);
 
     Log::shouldReceive('warning')->once();
