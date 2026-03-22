@@ -1,7 +1,7 @@
 UPGRADE
 =======
 
-From 5.0/5.1 to 5.2
+From 5.x to 6.x
 -------------------
 
 This version updates the underlying `forxer/gravatar` library from v6 to v7. Several breaking changes affect profile-related functionality.
@@ -19,7 +19,7 @@ $profile = Gravatar::profile('user@example.com', 'json');
 $profile->format('xml');
 $profile->formatJson();
 
-// After (v5.2)
+// After (v6.x)
 $profile = gravatar_profile('user@example.com');
 $profile = Gravatar::profile('user@example.com');
 ```
@@ -33,7 +33,7 @@ The parent library removed `getData()`. The Laravel wrapper now provides its own
 $data = $profile->getData('user@example.com');
 $name = $data['entry'][0]['displayName'];
 
-// After (v5.2) — Laravel HTTP client, flat JSON, no email param
+// After (v6.x) — Laravel HTTP client, flat JSON, no email param
 $data = gravatar_profile('user@example.com')->getData();
 $name = $data['display_name'];
 $avatar = $data['avatar_url'];
@@ -51,7 +51,7 @@ $image->initials = 'JD';
 $image->initialsName = 'John Doe';
 $image->forceDefault = true;
 
-// After (v5.2) — use methods
+// After (v6.x) — use methods
 $image->email('user@example.com');
 $image->initials('JD');
 $image->initialsName('John Doe');
@@ -75,7 +75,7 @@ $image->forceDefault(null);
 $image->forceDefault(false);
 ```
 
-### New features in v5.2
+### New features in 6.x
 
 #### Profile::getData() with Laravel HTTP client
 
