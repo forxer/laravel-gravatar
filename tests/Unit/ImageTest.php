@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use Gravatar\Exception\InvalidDefaultImageException;
+use Gravatar\Exception\InvalidImageExtensionException;
+use Gravatar\Exception\InvalidMaxRatingImageException;
 use Gravatar\Image as GravatarImage;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -129,7 +132,7 @@ it('rejects invalid extension in preset', function () {
 
     $gravatar = new Gravatar(config('gravatar'));
     $gravatar->image('test@example.com', 'test')->url();
-})->throws(InvalidArgumentException::class);
+})->throws(InvalidImageExtensionException::class);
 
 it('validates rating values', function (string $rating) {
     config()->set('gravatar.presets.test', ['max_rating' => $rating]);
@@ -145,7 +148,7 @@ it('rejects invalid rating in preset', function () {
 
     $gravatar = new Gravatar(config('gravatar'));
     $gravatar->image('test@example.com', 'test')->url();
-})->throws(InvalidArgumentException::class);
+})->throws(InvalidMaxRatingImageException::class);
 
 it('validates default_image values', function (string $default) {
     config()->set('gravatar.presets.test', ['default_image' => $default]);
@@ -170,14 +173,14 @@ it('rejects invalid default_image', function () {
 
     $gravatar = new Gravatar(config('gravatar'));
     $gravatar->image('test@example.com', 'test')->url();
-})->throws(InvalidArgumentException::class);
+})->throws(InvalidDefaultImageException::class);
 
 it('requires boolean for force_default', function () {
     config()->set('gravatar.presets.test', ['force_default' => 'yes']);
 
     $gravatar = new Gravatar(config('gravatar'));
     $gravatar->image('test@example.com', 'test')->url();
-})->throws(InvalidArgumentException::class, 'must be a boolean');
+})->throws(TypeError::class);
 
 it('accepts boolean true for force_default', function () {
     config()->set('gravatar.presets.test', ['force_default' => true]);

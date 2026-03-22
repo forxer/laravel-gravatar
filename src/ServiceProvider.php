@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaravelGravatar;
 
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 /**
@@ -11,7 +12,7 @@ use Illuminate\Support\ServiceProvider as BaseServiceProvider;
  *
  * Registers the Gravatar service and publishes configuration files.
  */
-class ServiceProvider extends BaseServiceProvider
+class ServiceProvider extends BaseServiceProvider implements DeferrableProvider
 {
     /**
      * Register the Gravatar service in the container.
@@ -23,6 +24,8 @@ class ServiceProvider extends BaseServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/gravatar.php', 'gravatar');
 
         $this->app->singleton('gravatar', fn ($app): Gravatar => new Gravatar($app['config']['gravatar']));
+
+        $this->app->alias('gravatar', Gravatar::class);
     }
 
     /**
@@ -37,5 +40,15 @@ class ServiceProvider extends BaseServiceProvider
                 __DIR__.'/../config/gravatar.php' => $this->app->configPath('gravatar.php'),
             ], 'gravatar-config');
         }
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array<int, string>
+     */
+    public function provides(): array
+    {
+        return ['gravatar', Gravatar::class];
     }
 }

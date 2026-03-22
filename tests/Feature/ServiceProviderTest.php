@@ -9,6 +9,12 @@ it('registers gravatar singleton', function () {
     expect(app('gravatar'))->toBeInstanceOf(Gravatar::class);
 });
 
+it('resolves via FQCN alias', function () {
+    expect(app(Gravatar::class))
+        ->toBeInstanceOf(Gravatar::class)
+        ->toBe(app('gravatar'));
+});
+
 it('returns same instance as singleton', function () {
     expect(app('gravatar'))->toBe(app('gravatar'));
 });
@@ -27,6 +33,12 @@ it('has presets in config', function () {
     expect(config('gravatar.presets'))
         ->toBeArray()
         ->toHaveKeys(['gravatar', 'small', 'medium', 'large']);
+});
+
+it('provides gravatar bindings', function () {
+    $provider = new ServiceProvider(app());
+
+    expect($provider->provides())->toBe(['gravatar', Gravatar::class]);
 });
 
 it('publishes config file', function () {
