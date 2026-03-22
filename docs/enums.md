@@ -1,7 +1,7 @@
 Type-Safe Enums and Fluent Methods
 ====================================
 
-Laravel Gravatar v5 (using `forxer/gravatar` v6) introduces type-safe enums and fluent shorthand methods for a better developer experience.
+Laravel Gravatar (using `forxer/gravatar` v7) provides type-safe enums and fluent shorthand methods for a better developer experience.
 
 ## Why Use Enums?
 
@@ -53,18 +53,6 @@ DefaultImage::WAVATAR        // Generated face
 DefaultImage::RETRO          // 8-bit pixelated face
 DefaultImage::ROBOHASH       // Generated robot
 DefaultImage::BLANK          // Transparent PNG
-```
-
-### ProfileFormat
-
-```php
-use Gravatar\Enum\ProfileFormat;
-
-ProfileFormat::JSON  // JSON format
-ProfileFormat::XML   // XML format
-ProfileFormat::PHP   // PHP serialized
-ProfileFormat::VCF   // vCard format
-ProfileFormat::QR    // QR code image
 ```
 
 ## Using Enums
@@ -151,17 +139,6 @@ $avatar = gravatar('user@example.com')
     ->defaultImageRetro()          // Retro
     ->defaultImageRobohash()       // Robohash
     ->defaultImageBlank();         // Blank
-```
-
-### Profile Format Shortcuts
-
-```php
-$profile = gravatar_profile('user@example.com')
-    ->formatJson()   // JSON format
-    ->formatXml()    // XML format
-    ->formatPhp()    // PHP format
-    ->formatVcf()    // vCard format
-    ->formatQr();    // QR code
 ```
 
 ## Combining Fluent Methods

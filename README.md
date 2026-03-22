@@ -110,7 +110,7 @@ class User extends Model
 - **Enum-based validation** - Preset values validated against type-safe enums at runtime
 - **Base64 conversion** - Convert avatars to data URLs
 - **PHP 8.4 property hooks** - Direct property access with validation
-- **Type-safe enums** - `Rating`, `Extension`, `DefaultImage`, `ProfileFormat`
+- **Type-safe enums** - `Rating`, `Extension`, `DefaultImage`
 - **Fluent shorthand methods** - `extensionWebp()`, `ratingPg()`, `defaultImageRobohash()`
 
 ## Version History

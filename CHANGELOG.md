@@ -1,6 +1,34 @@
 CHANGELOG
 =========
 
+5.2.0 (2026-03-22)
+------------------
+
+### Breaking Changes
+
+- **Updated to `forxer/gravatar` 7.0** - inherits all breaking changes from the parent library:
+  - SHA-256 hashing replaces MD5 for all URLs
+  - Image URLs now use `https://gravatar.com/` (canonical domain, no `www`)
+  - Profile URLs migrated to Gravatar REST API v3: `https://api.gravatar.com/v3/profiles/{sha256}`
+  - `ProfileFormat` enum, `ProfileHasFormat` trait and `InvalidProfileFormatException` removed (API v3 returns JSON only)
+  - `profile()` and `profiles()` no longer accept a `$format` parameter
+  - `Profile::getData()` removed from parent library
+  - `email`, `initials`, `initialsName` and `forceDefault` properties are now `private(set)` — use methods instead of direct assignment
+  - `forceDefault()` method no longer accepts `null`
+- **Removed `$format` parameter** from `Gravatar::profile()`, `gravatar_profile()` helper, and facade
+- **Removed `ProfileFormat` references** from Profile class and facade PHPDoc
+
+### New Features
+
+- **`Profile::getData()`**: New Laravel-specific implementation using `Http` facade to fetch profile data from Gravatar API v3 (replaces removed parent method)
+- **`force_default` validation**: Preset values for `force_default` must be boolean (prevents TypeError with gravatar v7)
+
+### Improvements
+
+- **Test suite**: Added Pest test suite with Orchestra Testbench (89 tests, 113 assertions)
+- **Bug fix**: `default_preset` config option now works correctly (was unreachable due to early return in `applyPreset()`)
+
+
 5.1.0 (2026-03-20)
 ------------------
 

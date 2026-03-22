@@ -132,14 +132,14 @@ $avatar = gravatar('user@example.com')->withInitials('JD');
 $avatar = gravatar('user@example.com')->withInitialsName('John Doe');
 ```
 
-**3. Using direct properties:**
+**3. Using helper methods (direct):**
 
 ```php
 $avatar = gravatar('user@example.com');
 $avatar->defaultImage = 'initials';
-$avatar->initials = 'JD';
+$avatar->initials('JD');
 // or
-$avatar->initialsName = 'John Doe';
+$avatar->initialsName('John Doe');
 ```
 
 ### Maximum Rating
@@ -240,11 +240,11 @@ if ($avatar->forcingDefault()) {
 }
 ```
 
-**3. Using direct property:**
+**3. Using helper method (bool):**
 
 ```php
 $avatar = gravatar('user@example.com');
-$avatar->forceDefault = true;
+$avatar->forceDefault(true);
 
 // Reading the property
 echo $avatar->forceDefault ? 'forced' : 'not forced';
@@ -279,42 +279,19 @@ $avatar->extensionWebp();               // Fluent shorthand
 <img src="{{ gravatar($user->email)->size(120)->defaultImage('identicon')->maxRating('pg') }}" alt="Avatar">
 ```
 
-## Profile Format
+## Profiles
 
-For Gravatar profiles, you can specify the output format:
-
-**Options**: `'json'`, `'xml'`, `'php'`, `'vcf'`, `'qr'`
-
-**1. Using helper method:**
-
-```php
-$profile = gravatar_profile('user@example.com')->format('json');
-
-// Or pass format as second argument
-$profile = gravatar_profile('user@example.com', 'json');
-
-// Getter mode
-$current = $profile->format(); // Returns current format
-```
-
-**2. Using convenience methods (fluent shorthand):**
-
-```php
-$profile = gravatar_profile('user@example.com')->formatJson();
-$profile = gravatar_profile('user@example.com')->formatXml();
-$profile = gravatar_profile('user@example.com')->formatPhp();
-$profile = gravatar_profile('user@example.com')->formatVcf();
-$profile = gravatar_profile('user@example.com')->formatQr();
-```
-
-**3. Using direct property:**
+Gravatar profiles use the API v3 which returns JSON only. Format selection is no longer available.
 
 ```php
 $profile = gravatar_profile('user@example.com');
-$profile->format = 'xml';
+echo $profile; // Profile URL
 
-// Reading the property
-echo $profile->format; // 'xml'
+// Fetch profile data
+$data = $profile->getData();
+if ($data) {
+    echo $data['display_name'];
+}
 ```
 
 ## Next Steps

@@ -33,7 +33,7 @@ You can also call it without an email and set it later:
 
 ```php
 $avatar = gravatar();
-$avatar->email = 'user@example.com';
+$avatar->email('user@example.com');
 $avatar->size(120);
 ```
 
@@ -48,17 +48,15 @@ $avatar = gravatar('user@example.com', 'small');
 The `gravatar_profile()` helper returns a `LaravelGravatar\Profile` instance for Gravatar profile URLs:
 
 ```php
-// HTML profile URL
+// Profile URL (API v3)
 $profile = gravatar_profile('user@example.com');
 echo $profile;
 
-// JSON profile
-$profileJson = gravatar_profile('user@example.com', 'json');
-
-// Other formats
-$profileXml = gravatar_profile('user@example.com', 'xml');
-$profileVcf = gravatar_profile('user@example.com', 'vcf');
-$profileQr = gravatar_profile('user@example.com', 'qr');
+// Fetch profile data
+$data = gravatar_profile('user@example.com')->getData();
+if ($data) {
+    echo $data['display_name'];
+}
 ```
 
 ## Facade
@@ -76,7 +74,7 @@ $avatar = Gravatar::image('user@example.com')
 $avatar = Gravatar::avatar('user@example.com');
 
 // Create a profile
-$profile = Gravatar::profile('user@example.com', 'json');
+$profile = Gravatar::profile('user@example.com');
 
 // Access the service instance
 $service = Gravatar::create();
@@ -98,7 +96,7 @@ class UserController extends Controller
             ->size(120)
             ->defaultImage('identicon');
 
-        $profile = $gravatar->profile($user->email, 'json');
+        $profile = $gravatar->profile($user->email);
 
         return view('users.show', [
             'user' => $user,
@@ -123,9 +121,6 @@ All Gravatar instances implement `__toString()`, so you can use them directly in
 {{-- Profile link --}}
 <a href="{{ gravatar_profile($user->email) }}">View Profile</a>
 
-{{-- Profile JSON --}}
-<a href="{{ gravatar_profile($user->email, 'json') }}">Profile Data</a>
-
 {{-- Using facade --}}
 <img src="{{ Gravatar::image($user->email)->size(100) }}" alt="Avatar">
 ```
@@ -147,11 +142,11 @@ $avatar = gravatar()->email('user@example.com');
 $current = $avatar->email(); // Returns current email
 ```
 
-**2. Using direct property:**
+**2. Using helper method (setter):**
 
 ```php
 $avatar = gravatar();
-$avatar->email = 'user@example.com';
+$avatar->email('user@example.com');
 
 // Reading the property
 echo $avatar->email; // 'user@example.com'

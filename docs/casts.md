@@ -139,15 +139,14 @@ Usage:
 // Get profile URL
 $profileUrl = $user->email->url();
 
-// Get JSON profile
-$jsonProfile = $user->email->formatJson();
+// Fetch profile data
+$data = $user->email->getData();
 ```
 
 In Blade:
 
 ```blade
 <a href="{{ $user->email }}">View Gravatar Profile</a>
-<a href="{{ $user->email->formatJson() }}">Profile JSON</a>
 ```
 
 ## Multiple Casts on Same Model

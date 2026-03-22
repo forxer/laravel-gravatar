@@ -1,6 +1,112 @@
 UPGRADE
 =======
 
+From 5.0/5.1 to 5.2
+-------------------
+
+This version updates the underlying `forxer/gravatar` library from v6 to v7. Several breaking changes affect profile-related functionality.
+
+### Breaking changes
+
+#### 1. Profile format removed
+
+The Gravatar API v3 only returns JSON. All format-related code has been removed:
+
+```php
+// Before (v5.0/v5.1)
+$profile = gravatar_profile('user@example.com', 'json');
+$profile = Gravatar::profile('user@example.com', 'json');
+$profile->format('xml');
+$profile->formatJson();
+
+// After (v5.2)
+$profile = gravatar_profile('user@example.com');
+$profile = Gravatar::profile('user@example.com');
+```
+
+#### 2. Profile::getData() changed
+
+The parent library removed `getData()`. The Laravel wrapper now provides its own implementation using Laravel's HTTP client:
+
+```php
+// Before (v5.0/v5.1) — parent library method
+$data = $profile->getData('user@example.com');
+$name = $data['entry'][0]['displayName'];
+
+// After (v5.2) — Laravel HTTP client, flat JSON, no email param
+$data = gravatar_profile('user@example.com')->getData();
+$name = $data['display_name'];
+$avatar = $data['avatar_url'];
+$location = $data['location'];
+```
+
+#### 3. Some properties are now read-only
+
+The `email`, `initials`, `initialsName` and `forceDefault` properties can no longer be assigned directly:
+
+```php
+// Before (v5.0/v5.1)
+$image->email = 'user@example.com';
+$image->initials = 'JD';
+$image->initialsName = 'John Doe';
+$image->forceDefault = true;
+
+// After (v5.2) — use methods
+$image->email('user@example.com');
+$image->initials('JD');
+$image->initialsName('John Doe');
+$image->enableForceDefault();
+```
+
+Reading still works: `echo $image->email;`
+
+#### 4. URLs changed
+
+Image URLs now use `https://gravatar.com/` (no `www`) and SHA-256 hashes.
+Profile URLs use `https://api.gravatar.com/v3/profiles/{sha256}`.
+
+#### 5. forceDefault() no longer accepts null
+
+```php
+// Before
+$image->forceDefault(null);
+
+// After
+$image->forceDefault(false);
+```
+
+### New features in v5.2
+
+#### Profile::getData() with Laravel HTTP client
+
+```php
+$profile = gravatar_profile('user@example.com');
+$data = $profile->getData();
+
+if ($data) {
+    echo $data['display_name'];
+    echo $data['avatar_url'];
+    echo $data['location'];
+}
+```
+
+Custom timeout:
+
+```php
+$data = $profile->getData(timeout: 10);
+```
+
+### Migration steps
+
+1. **Remove all `ProfileFormat` usage**: delete `use Gravatar\Enum\ProfileFormat` imports
+2. **Remove `$format` parameter** from `gravatar_profile()` and `Gravatar::profile()` calls
+3. **Update `getData()` calls**: remove email parameter, update response structure (`$data['display_name']` instead of `$data['entry'][0]['displayName']`)
+4. **Replace direct property assignments** for `email`, `initials`, `initialsName`, `forceDefault` with method calls
+5. **Replace `forceDefault(null)`** with `forceDefault(false)`
+6. **Update URL assertions** in tests if applicable
+7. **Test your application thoroughly**
+
+
 From 4.x to 5.x
 ---------------
 
@@ -147,7 +253,6 @@ $profile = Gravatar::profile('email@example.com');
 
 // After (v5.x) - dedicated helper available
 $profile = gravatar_profile('email@example.com');
-$profile = gravatar_profile('email@example.com', 'json');
 ```
 
 #### 2. Improved `gravatar()` helper
@@ -158,7 +263,7 @@ The `gravatar()` helper now always returns an `Image` instance for consistency:
 // Both return Image instances
 $avatar = gravatar('email@example.com');
 $avatar = gravatar();  // Email can be set later
-$avatar->email = 'email@example.com';
+$avatar->email('email@example.com');
 ```
 
 #### 3. Type-safe enums

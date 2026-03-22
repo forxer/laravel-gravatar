@@ -51,7 +51,7 @@ php artisan tinker
 
 ```php
 >>> gravatar('test@example.com')->size(120)->url()
-=> "//www.gravatar.com/avatar/55502f40dc8b7c769880b10874abc9d0?s=120"
+=> "https://gravatar.com/avatar/...?s=120"
 ```
 
 ## Next Steps

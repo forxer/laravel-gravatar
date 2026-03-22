@@ -159,57 +159,37 @@ class CacheUserAvatars extends Command
 
 ## Working with Profiles
 
-### Profile Formats
+Gravatar profiles use the REST API v3 which returns JSON only.
+
+### Profile URL
 
 ```php
-// HTML profile page
 $profile = gravatar_profile('user@example.com');
-echo $profile; // https://www.gravatar.com/[hash]
-
-// JSON data
-$jsonProfile = gravatar_profile('user@example.com', 'json');
-
-// XML data
-$xmlProfile = gravatar_profile('user@example.com')->formatXml();
-
-// vCard
-$vcf = gravatar_profile('user@example.com')->formatVcf();
-
-// QR Code
-$qr = gravatar_profile('user@example.com')->formatQr();
+echo $profile; // https://api.gravatar.com/v3/profiles/{sha256_hash}
 ```
 
 ### Fetching Profile Data
 
-You can fetch profile data using Laravel's HTTP client or use the built-in `getData()` method:
-
-**Method 1: Using getData() (recommended)**
+The `getData()` method uses Laravel's HTTP client to fetch profile data:
 
 ```php
 $profile = gravatar_profile('user@example.com');
-$data = $profile->getData('user@example.com');
+$data = $profile->getData();
 
 if ($data) {
-    $displayName = $data['entry'][0]['displayName'] ?? null;
-    $avatar = $data['entry'][0]['thumbnailUrl'] ?? null;
-    // ... other profile fields
+    $displayName = $data['display_name'] ?? null;
+    $avatarUrl = $data['avatar_url'] ?? null;
+    $location = $data['location'] ?? null;
 }
 ```
 
-**Method 2: Using Laravel's HTTP client**
+With custom timeout:
 
 ```php
-use Illuminate\Support\Facades\Http;
-
-$profile = gravatar_profile('user@example.com', 'json');
-$response = Http::get($profile->url());
-
-if ($response->successful()) {
-    $data = $response->json();
-    // Access profile data
-    $displayName = $data['entry'][0]['displayName'] ?? null;
-}
+$data = $profile->getData(timeout: 10);
 ```
+
+The method returns `null` on failure and logs a warning automatically.
 
 ## Property Hooks (PHP 8.4)
 
@@ -325,14 +305,14 @@ $avatar = gravatar('user@example.com')->withInitials('JD');
 $avatar = gravatar('user@example.com')->withInitialsName('John Doe');
 ```
 
-**3. Using direct properties:**
+**3. Using helper methods (direct):**
 
 ```php
 $avatar = gravatar('user@example.com');
 $avatar->defaultImage = 'initials';
-$avatar->initials = 'AB';
+$avatar->initials('AB');
 // or
-$avatar->initialsName = 'John Doe';
+$avatar->initialsName('John Doe');
 ```
 
 ### In Models
