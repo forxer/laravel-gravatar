@@ -36,6 +36,6 @@ enum PresetKey: string
      */
     public static function isValid(string $key): bool
     {
-        return \in_array($key, self::values(), true);
+        return self::tryFrom($key) !== null;
     }
 }

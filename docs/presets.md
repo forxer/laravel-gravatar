@@ -269,8 +269,7 @@ When validation fails, you'll receive detailed error messages:
 
 **Invalid key:**
 ```
-InvalidArgumentException: Gravatar image could not find method to use "invalid_key" key
-Allowed preset keys are: "size", "default_image", "max_rating", "extension", "force_default", "initials", "initials_name".
+InvalidArgumentException: Gravatar image could not find method to use "invalid_key" key. Allowed preset keys are: "size", "default_image", "max_rating", "extension", "force_default", "initials", "initials_name".
 ```
 
 **Invalid extension:**

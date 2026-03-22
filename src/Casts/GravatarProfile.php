@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace LaravelGravatar\Casts;
 
-use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use LaravelGravatar\Profile;
@@ -24,8 +23,6 @@ class GravatarProfile implements CastsAttributes
      * @param  mixed  $value  The email address value
      * @param  array<string, mixed>  $attributes  All model attributes
      * @return Profile The configured Gravatar profile instance
-     *
-     * @throws BindingResolutionException When the service container cannot resolve the binding
      */
     public function get(Model $model, string $key, mixed $value, array $attributes): Profile
     {

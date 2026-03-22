@@ -418,16 +418,29 @@
   <img src="{{ gravatar($email)->size(1) }}" alt="Taille minimale: 1px" width="1">
   <img src="{{ gravatar($email)->size(2048) }}" alt="Taille maximale: 2048px" style="max-width: 200px;">
 
-  <h3>34. toBase64() - Conversion en base64</h3>
+  <h3>34. toBase64() - Conversion en base64 (Content-Type dynamique)</h3>
   @php
-  $base64Image = gravatar($email)->size(80);
-  $base64Data = $base64Image->toBase64();
+  $base64Png = gravatar($email)->size(80)->toBase64();
+  $base64Jpg = gravatar($email)->size(80)->extension('jpg')->toBase64();
+  $base64Webp = gravatar($email)->size(80)->extension('webp')->toBase64();
   @endphp
-  @if($base64Data)
-    <img src="{{ $base64Data }}" alt="Image base64" width="80">
-    <p>Image convertie en base64 data URL ({{ strlen($base64Data) }} caractères)</p>
+  @if ($base64Png)
+    <img src="{{ $base64Png }}" alt="Base64 PNG" width="80">
+    <p>PNG : {{ substr($base64Png, 0, 30) }}... ({{ strlen($base64Png) }} caractères)</p>
   @else
-    <p>Impossible de récupérer l'image en base64</p>
+    <p>Impossible de récupérer l'image PNG en base64</p>
+  @endif
+  @if ($base64Jpg)
+    <img src="{{ $base64Jpg }}" alt="Base64 JPG" width="80">
+    <p>JPG : {{ substr($base64Jpg, 0, 30) }}... ({{ strlen($base64Jpg) }} caractères)</p>
+  @else
+    <p>Impossible de récupérer l'image JPG en base64</p>
+  @endif
+  @if ($base64Webp)
+    <img src="{{ $base64Webp }}" alt="Base64 WebP" width="80">
+    <p>WebP : {{ substr($base64Webp, 0, 30) }}... ({{ strlen($base64Webp) }} caractères)</p>
+  @else
+    <p>Impossible de récupérer l'image WebP en base64</p>
   @endif
 
   <h3>35. Tests - Code Quality</h3>

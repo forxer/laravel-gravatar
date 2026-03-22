@@ -27,7 +27,7 @@ vendor/bin/rector process
 vendor/bin/rector process --dry-run
 ```
 
-Tests use **Pest** with **Orchestra Testbench** for Laravel integration. 89 tests covering presets, validation, casts, facade, helpers, and service provider.
+Tests use **Pest** with **Orchestra Testbench** for Laravel integration. 90 tests covering presets, validation, casts, facade, helpers, and service provider.
 
 ## Architecture
 
@@ -37,7 +37,7 @@ Tests use **Pest** with **Orchestra Testbench** for Laravel integration. 89 test
 
 ### Key classes
 
-- **`Gravatar`** — Main service class, registered as `'gravatar'` singleton. Factory for `Image` and `Profile` instances.
+- **`Gravatar`** — Main service (`readonly class`), registered as `'gravatar'` singleton. Factory for `Image` and `Profile` instances.
 - **`Image`** — Extends parent with preset support (resolved from `config/gravatar.php`), base64 conversion via Laravel HTTP client, and enum-based preset validation.
 - **`Profile`** — Extends parent with `getData()` method using Laravel HTTP client to fetch profile data from API v3.
 - **`ServiceProvider`** — Registers singleton, merges config, publishes config file under tag `gravatar-config`.
@@ -48,7 +48,7 @@ Tests use **Pest** with **Orchestra Testbench** for Laravel integration. 89 test
 
 ### Preset system
 
-Presets are defined in `config/gravatar.php` under the `presets` key. When applied, `Image::applyPreset()` validates keys against `PresetKey` enum and values against parent library enums (`Extension`, `Rating`, `DefaultImage`), then calls the corresponding methods via `Str::camel()` conversion.
+Presets are defined in `config/gravatar.php` under the `presets` key. When applied, `Image::applyPreset()` validates keys against `PresetKey` enum (via `tryFrom()`) and values against parent library enums (`Extension`, `Rating`, `DefaultImage`), then calls the corresponding methods via `Str::camel()` conversion.
 
 ## Code Style
 

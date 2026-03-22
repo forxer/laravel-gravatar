@@ -70,7 +70,7 @@ Convert Gravatar images to base64-encoded data URLs for embedding directly in HT
 $avatar = gravatar('user@example.com')->size(80);
 $base64 = $avatar->toBase64();
 
-// Returns: data:image/png;base64,iVBORw0KGgoAAAANS...
+// Returns: data:image/{content-type};base64,iVBORw0KGgoAAAANS...
 ```
 
 ### With Custom Timeout
@@ -152,7 +152,7 @@ class CacheUserAvatars extends Command
 
 ### Important Notes
 
-- Gravatar always returns PNG images regardless of the extension specified
+- The `Content-Type` header from the HTTP response is used for the data URL (e.g., `image/jpeg` for `.jpg`, `image/webp` for `.webp`), with a fallback to `image/png`
 - Failed fetches are logged automatically for debugging
 - Consider caching base64 data as it can be large
 - Network timeouts may occur for slow connections
@@ -241,29 +241,19 @@ echo $avatar->email;       // 'user@example.com'
 
 ### Asymmetric Visibility (PHP 8.4)
 
-Laravel Gravatar uses PHP 8.4's asymmetric visibility feature for internal properties that should be readable but not writable from outside:
+Laravel Gravatar uses PHP 8.4's asymmetric visibility feature for the `presetName` property:
 
 ```php
 $avatar = gravatar('user@example.com', 'medium');
 
 // ✅ Reading is public
 echo $avatar->presetName;  // 'medium'
-echo $avatar->config['default_preset'];  // Access config
 
 // ❌ Writing is private (will cause error)
 // $avatar->presetName = 'other';  // Error: Cannot modify private(set) property
-// $avatar->config = [];  // Error: Cannot modify private(set) property
 ```
 
-**Protected properties:**
-- **`presetName`** - Uses `public private(set)` - The currently applied preset name (read-only from outside, can be modified internally via `setPreset()`)
-- **`config`** - Uses `public readonly` - The configuration array from Laravel config (completely immutable after construction)
-
-**Visibility types explained:**
-- `public private(set)` - Anyone can read, only the class can write (used for `presetName` which changes via presets)
-- `public readonly` - Anyone can read, no one can write after construction (used for `config` which never changes)
-
-This ensures configuration integrity while providing transparency about the current state.
+**`presetName`** uses `public private(set)` — anyone can read the current preset name, but only the class can modify it internally via `setPreset()`.
 
 **Use case:**
 
@@ -274,9 +264,6 @@ $avatar = gravatar($email, 'large');
 if ($avatar->presetName === 'large') {
     // Preset is applied
 }
-
-// Access configuration settings
-$defaultPreset = $avatar->config['default_preset'] ?? null;
 ```
 
 ## Customizing with Initials

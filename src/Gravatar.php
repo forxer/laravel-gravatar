@@ -10,13 +10,13 @@ namespace LaravelGravatar;
  * This class provides factory methods to create Gravatar Image and Profile instances
  * with Laravel-specific configuration and preset support.
  */
-class Gravatar
+readonly class Gravatar
 {
     /**
      * @param  array<string, mixed>  $config  The Gravatar configuration array
      */
     public function __construct(
-        private readonly array $config,
+        private array $config,
     ) {}
 
     /**

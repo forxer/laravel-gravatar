@@ -15,13 +15,6 @@ it('extends the parent Gravatar Image', function () {
     expect($image)->toBeInstanceOf(GravatarImage::class);
 });
 
-it('stores config as public readonly property', function () {
-    $image = app('gravatar')->image('test@example.com');
-
-    expect($image->config)->toBeArray()
-        ->and($image->config)->toHaveKey('presets');
-});
-
 it('builds a URL without preset', function () {
     $image = app('gravatar')->image('test@example.com');
 
@@ -206,9 +199,9 @@ it('accepts null values in preset for optional keys', function () {
 
 // --- Base64 conversion ---
 
-it('returns base64 string on successful HTTP response', function () {
+it('returns base64 string with content type from response', function () {
     Http::fake([
-        'gravatar.com/*' => Http::response('fake-image-data', 200),
+        'gravatar.com/*' => Http::response('fake-image-data', 200, ['Content-Type' => 'image/png']),
     ]);
 
     $result = app('gravatar')->image('test@example.com')->toBase64();
@@ -216,6 +209,26 @@ it('returns base64 string on successful HTTP response', function () {
     expect($result)
         ->toStartWith('data:image/png;base64,')
         ->and($result)->toBe('data:image/png;base64,'.base64_encode('fake-image-data'));
+});
+
+it('returns base64 string with jpeg content type for jpg extension', function () {
+    Http::fake([
+        'gravatar.com/*' => Http::response('fake-jpeg-data', 200, ['Content-Type' => 'image/jpeg']),
+    ]);
+
+    $result = app('gravatar')->image('test@example.com')->extension('jpg')->toBase64();
+
+    expect($result)->toBe('data:image/jpeg;base64,'.base64_encode('fake-jpeg-data'));
+});
+
+it('returns base64 string with webp content type for webp extension', function () {
+    Http::fake([
+        'gravatar.com/*' => Http::response('fake-webp-data', 200, ['Content-Type' => 'image/webp']),
+    ]);
+
+    $result = app('gravatar')->image('test@example.com')->extension('webp')->toBase64();
+
+    expect($result)->toBe('data:image/webp;base64,'.base64_encode('fake-webp-data'));
 });
 
 it('returns null on failed HTTP response', function () {

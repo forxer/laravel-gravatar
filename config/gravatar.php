@@ -21,7 +21,7 @@ return [
     | Avatar Presets
     |--------------------------------------------------------------------------
     |
-    | Here you may configure as many avatar preset as you wish.
+    | Here you may configure as many avatar presets as you wish.
     |
     */
 
@@ -74,7 +74,7 @@ return [
             |
             | Possible values:
             | - null value to fallback to the default Gravatar
-            | - a string represanting the URL of your own default image
+            | - a string representing the URL of your own default image
             | - 'initials': uses the profile name as initials, with a generated background and foreground color
             | - 'color': a generated color
             | - '404': do not load any image if none is associated with the email hash, instead return an HTTP 404 (File Not Found) response
@@ -95,7 +95,7 @@ return [
             |--------------------------------------------------------------------------
             |
             | If for some reason you wanted to force the default image
-            | to always be load, put it to true.
+            | to always be loaded, put it to true.
             |
             */
 
@@ -138,7 +138,7 @@ return [
 
         /*
         |--------------------------------------------------------------------------
-        | Another Presets
+        | Other Presets
         |--------------------------------------------------------------------------
         |
         | Define here your own presets.

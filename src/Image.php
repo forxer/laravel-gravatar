@@ -38,7 +38,7 @@ class Image extends GravatarImage
      * @param  string|null  $presetName  Optional preset name to apply
      */
     public function __construct(
-        public readonly array $config,
+        private readonly array $config,
         ?string $email = null,
         ?string $presetName = null,
     ) {
@@ -92,9 +92,9 @@ class Image extends GravatarImage
             }
 
             $imageData = $response->body();
+            $contentType = $response->header('Content-Type') ?? 'image/png';
 
-            // Gravatar always returns PNG images
-            return 'data:image/png;base64,'.base64_encode($imageData);
+            return 'data:'.$contentType.';base64,'.base64_encode($imageData);
         } catch (Exception $exception) {
             Log::warning('Failed to convert Gravatar to base64', [
                 'email' => $this->email,
@@ -163,7 +163,7 @@ class Image extends GravatarImage
         foreach ($presetValues as $k => $v) {
             if (! PresetKey::isValid($k)) {
                 throw new InvalidArgumentException(
-                    \sprintf('Gravatar image could not find method to use "%s" key', $k).
+                    \sprintf('Gravatar image could not find method to use "%s" key. ', $k).
                     \sprintf('Allowed preset keys are: "%s".', implode('", "', PresetKey::values()))
                 );
             }
@@ -171,11 +171,7 @@ class Image extends GravatarImage
             // Validate enum values before applying
             $this->validatePresetValue($k, $v);
 
-            if (\strlen((string) $k) === 1) {
-                $this->{$k}($v);
-            } else {
-                $this->{Str::camel($k)}($v);
-            }
+            $this->{Str::camel($k)}($v);
         }
 
         return $this;
@@ -204,13 +200,13 @@ class Image extends GravatarImage
         }
 
         $error = match ($key) {
-            PresetKey::EXTENSION->value => \in_array($value, Extension::values())
+            PresetKey::EXTENSION->value => Extension::tryFrom($value) !== null
                 ? null
                 : \sprintf('Invalid extension "%s". Valid values: %s', $value, implode(', ', Extension::values())),
-            PresetKey::MAX_RATING->value => \in_array($value, Rating::values())
+            PresetKey::MAX_RATING->value => Rating::tryFrom($value) !== null
                 ? null
                 : \sprintf('Invalid rating "%s". Valid values: %s', $value, implode(', ', Rating::values())),
-            PresetKey::DEFAULT_IMAGE->value => ! \in_array($value, DefaultImage::values()) && ! filter_var($value, FILTER_VALIDATE_URL)
+            PresetKey::DEFAULT_IMAGE->value => DefaultImage::tryFrom($value) === null && ! filter_var($value, FILTER_VALIDATE_URL)
                 ? \sprintf('Invalid default image "%s". Valid values: %s or a valid URL', $value, implode(', ', DefaultImage::values()))
                 : null,
             default => null,

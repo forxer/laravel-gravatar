@@ -25,8 +25,18 @@ CHANGELOG
 
 ### Improvements
 
-- **Test suite**: Added Pest test suite with Orchestra Testbench (89 tests, 113 assertions)
+- **Test suite**: Added Pest test suite with Orchestra Testbench (90 tests, 113 assertions)
 - **Bug fix**: `default_preset` config option now works correctly (was unreachable due to early return in `applyPreset()`)
+- **Bug fix**: `toBase64()` now uses the `Content-Type` header from the HTTP response instead of hardcoding `image/png`, correctly handling jpg, webp, gif extensions
+- **Bug fix**: Fixed missing separator in invalid preset key error message
+- **Fix**: Config typos corrected (`represanting`, `to always be load`, `avatar preset`, `Another Presets`)
+- **Refactor**: `PresetKey::isValid()` and `validatePresetValue()` now use idiomatic `tryFrom()` instead of `in_array()`
+- **Refactor**: `Image::$config` visibility changed from `public readonly` to `private readonly`
+- **Refactor**: `Gravatar` is now a `readonly class`
+- **Refactor**: `GravatarImage` cast `$presetName` is now `readonly`
+- **Cleanup**: Removed dead code branch for single-character preset keys (no longer exist in gravatar v7)
+- **Cleanup**: Removed unused `BindingResolutionException` import from `GravatarProfile` cast
+- **Cleanup**: Removed deprecated `FirstClassCallableRector` from rector skip list
 
 
 5.1.0 (2026-03-20)

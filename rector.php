@@ -2,7 +2,6 @@
 
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
-use Rector\Php81\Rector\Array_\FirstClassCallableRector;
 use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 use RectorLaravel\Rector\Class_\UnifyModelDatesWithCastsRector;
 use RectorLaravel\Rector\FuncCall\RemoveDumpDataDeadCodeRector;
@@ -31,18 +30,13 @@ return RectorConfig::configure()
         __DIR__.'/src',
     ])
 
-    // Up from PHP X.x to 8.2
+    // PHP 8.4
     ->withPhpSets()
 
     // only PHP 8.4
     // ->withPhpSets(php84: true)
 
     ->withSkip([
-        // Désactivation de cette règle car elle
-        // transforme :     array_map('intval',
-        // en :             array_map(intval(...),
-        FirstClassCallableRector::class,
-
         AddOverrideAttributeToOverriddenMethodsRector::class,
     ])
     ->withRules([

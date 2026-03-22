@@ -19,7 +19,7 @@ class GravatarImage implements CastsAttributes
      * @param  string|null  $presetName  Optional preset name to apply to all instances
      */
     public function __construct(
-        protected ?string $presetName = null,
+        protected readonly ?string $presetName = null,
     ) {}
 
     /**
@@ -34,8 +34,7 @@ class GravatarImage implements CastsAttributes
     public function get(Model $model, string $key, mixed $value, array $attributes): Image
     {
         return app('gravatar')
-            ->image($value)
-            ->setPreset($this->presetName);
+            ->image($value, $this->presetName);
     }
 
     /**

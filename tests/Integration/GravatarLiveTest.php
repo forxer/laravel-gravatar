@@ -45,7 +45,8 @@ it('converts image to base64 from live server', function () {
 
     expect($result)
         ->not->toBeNull()
-        ->toStartWith('data:image/png;base64,');
+        ->toStartWith('data:image/')
+        ->toContain(';base64,');
 });
 
 it('applies preset and builds valid URL', function () {
