@@ -20,15 +20,15 @@
     },
     "require": {
         "php": "^8.4",
-        "laravel/framework": "^13.0",
+        "laravel/framework": "^12.0 || ^13.0",
         "forxer/gravatar": "^7.0"
     },
     "require-dev": {
         "driftingly/rector-laravel": "^2.2.0",
         "laravel/pint": "^1.29.0",
         "orchestra/testbench": "^11.0",
-        "pestphp/pest": "^4.0",
-        "pestphp/pest-plugin-laravel": "^4.0",
+        "pestphp/pest": "^4.4.3",
+        "pestphp/pest-plugin-laravel": "^4.1",
         "rector/rector": "^2.3.9"
     },
     "autoload": {

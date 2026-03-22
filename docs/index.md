@@ -11,7 +11,7 @@ Laravel Gravatar is a Laravel package built on top of the [forxer/gravatar](http
 - **Facade support** - `Gravatar::image()` and `Gravatar::profile()`
 - **Service Provider** - Automatic registration and configuration
 - **Configuration presets** - Define reusable avatar configurations with automatic validation
-- **Enum-based validation** - Runtime validation of preset values using type-safe enums
+- **Preset key validation** - Preset keys validated against `PresetKey` enum, values validated by parent library's property hooks
 - **Eloquent casts** - Cast model attributes to Gravatar instances
 - **Base64 conversion** - Convert avatars to data URLs using Laravel HTTP client
 - **PHP 8.4 features** - Full support for property hooks, asymmetric visibility, enums, and modern PHP

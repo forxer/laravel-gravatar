@@ -107,7 +107,7 @@ class User extends Model
 - **Facade support** - `Gravatar::image()` and `Gravatar::profile()`
 - **Eloquent casts** - Seamless model integration
 - **Preset configurations** - Define reusable avatar settings with automatic validation
-- **Enum-based validation** - Preset values validated against type-safe enums at runtime
+- **Preset key validation** - Preset keys validated against `PresetKey` enum, values validated by parent library's property hooks
 - **Base64 conversion** - Convert avatars to data URLs
 - **PHP 8.4 property hooks** - Direct property access with validation
 - **Type-safe enums** - `Rating`, `Extension`, `DefaultImage`

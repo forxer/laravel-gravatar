@@ -21,16 +21,19 @@ CHANGELOG
 ### New Features
 
 - **`Profile::getData()`**: New Laravel-specific implementation using `Http` facade to fetch profile data from Gravatar API v3 (replaces removed parent method)
-- **`force_default` validation**: Preset values for `force_default` must be boolean (prevents TypeError with gravatar v7)
+- **`force_default` validation**: Preset values for `force_default` must be boolean (enforced by parent library's property hooks)
 
 ### Improvements
 
-- **Test suite**: Added Pest test suite with Orchestra Testbench (90 tests, 113 assertions)
+- **Test suite**: Added Pest test suite with Orchestra Testbench (92 tests, 115 assertions)
+- **Service provider**: Now implements `DeferrableProvider` for lazy loading
+- **FQCN binding**: Added `Gravatar::class` alias alongside `'gravatar'` string binding for type-hinted DI
 - **Bug fix**: `default_preset` config option now works correctly (was unreachable due to early return in `applyPreset()`)
 - **Bug fix**: `toBase64()` now uses the `Content-Type` header from the HTTP response instead of hardcoding `image/png`, correctly handling jpg, webp, gif extensions
 - **Bug fix**: Fixed missing separator in invalid preset key error message
 - **Fix**: Config typos corrected (`represanting`, `to always be load`, `avatar preset`, `Another Presets`)
-- **Refactor**: `PresetKey::isValid()` and `validatePresetValue()` now use idiomatic `tryFrom()` instead of `in_array()`
+- **Refactor**: `PresetKey::isValid()` now uses idiomatic `tryFrom()` instead of `in_array()`
+- **Refactor**: Removed `validatePresetValue()` — validation delegated to parent library's property hooks (avoids divergence)
 - **Refactor**: `Image::$config` visibility changed from `public readonly` to `private readonly`
 - **Refactor**: `Gravatar` is now a `readonly class`
 - **Refactor**: `GravatarImage` cast `$presetName` is now `readonly`

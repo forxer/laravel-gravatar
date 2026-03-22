@@ -200,15 +200,7 @@ echo $avatar->extension; // 'webp'
 
 ## Preset Validation
 
-Laravel Gravatar **automatically validates** all preset values using enums for type safety.
-
-### Validated Keys
-
-The following keys are validated at runtime:
-
-- **`extension`** - Validated against `Gravatar\Enum\Extension`
-- **`max_rating`** - Validated against `Gravatar\Enum\Rating`
-- **`default_image`** - Validated against `Gravatar\Enum\DefaultImage` or URL
+Preset configurations are validated at two levels: **keys** are validated by the Laravel package, **values** are validated by the parent library's property hooks.
 
 ### Key Validation
 
@@ -235,7 +227,7 @@ All preset **keys** are validated against the `PresetKey` enum:
 
 ### Value Validation
 
-Enum-backed values are validated automatically:
+Values are validated by the parent library's property hooks when the preset is applied:
 
 ```php
 // ✅ Valid values
@@ -274,17 +266,17 @@ InvalidArgumentException: Gravatar image could not find method to use "invalid_k
 
 **Invalid extension:**
 ```
-InvalidArgumentException: Invalid extension "bmp". Valid values: jpg, jpeg, png, gif, webp
+InvalidImageExtensionException: The extension "bmp" is not a valid one, extension image for Gravatar can be: "jpg", "jpeg", "gif", "png", "webp"
 ```
 
 **Invalid rating:**
 ```
-InvalidArgumentException: Invalid rating "nc17". Valid values: g, pg, r, x
+InvalidMaxRatingImageException: Invalid rating "nc17" specified, only allowed to be used are: "g", "pg", "r", "x"
 ```
 
 **Invalid default image:**
 ```
-InvalidArgumentException: Invalid default image "invalid". Valid values: initials, color, 404, mp, identicon, monsterid, wavatar, retro, robohash, blank or a valid URL
+InvalidDefaultImageException: The default image "invalid" is not a recognized gravatar "default" and is not a valid URL, default gravatar can be: initials, color, 404, mp, identicon, monsterid, wavatar, retro, robohash, blank
 ```
 
 ## PresetKey Enum Helper Methods
