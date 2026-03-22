@@ -5,33 +5,10 @@
   $gravatarImage = gravatar($email);
 @endphp
 
-  <h2>Tests Laravel Gravatar v5.0.0</h2>
-
-  <div style="background: #e3f2fd; padding: 20px; margin: 20px 0; border-left: 4px solid #2196F3;">
-    <h3>🎉 Nouveautés v5.0.0</h3>
-    <ul>
-      <li><strong>PHP 8.4+</strong>: Property Hooks, Asymmetric Visibility, Strict Types</li>
-      <li><strong>Laravel 12+</strong>: Patterns modernes (app() helper, singleton optimisé)</li>
-      <li><strong>forxer/gravatar 7.0</strong>: Propriétés <code>email</code>, <code>initials</code>, <code>initialsName</code>, <code>forceDefault</code> en <code>private(set)</code></li>
-      <li><strong>Asymmetric Visibility</strong>: Propriétés <code>config</code> et <code>presetName</code> en lecture publique, écriture privée</li>
-      <li><strong>PresetKey enum</strong>: Validation des clés de preset via enum</li>
-      <li><strong>Code Quality</strong>: Early returns, PHPDoc complet avec array shapes</li>
-      <li><strong>Type Safety</strong>: Return types ajoutés partout, corrections de bugs PHPDoc</li>
-    </ul>
-  </div>
-
-  <div style="background: #fff3e0; padding: 20px; margin: 20px 0; border-left: 4px solid #ff9800;">
-    <h3>📖 Documentation Order</h3>
-    <p>Toutes les propriétés sont documentées dans cet ordre:</p>
-    <ol>
-      <li><strong>Helper methods</strong>: <code>-&gt;size(120)</code> (setter/getter dual-mode)</li>
-      <li><strong>Convenience methods</strong>: <code>-&gt;extensionWebp()</code> (fluent shorthand)</li>
-      <li><strong>Direct properties</strong>: <code>$avatar-&gt;size = 120</code> (PHP 8.4 property hooks)</li>
-    </ol>
-  </div>
+  <h2>Tests Laravel Gravatar v6.0.0</h2>
 
   <div style="background: #f3e5f5; padding: 20px; margin: 20px 0; border-left: 4px solid #9c27b0;">
-    <h3>🔍 Tests de Propriétés PHP 8.4</h3>
+    <h3>Tests de Propriétés PHP 8.4</h3>
     @php
     $php84Test = gravatar('php84@test.com');
 
@@ -75,7 +52,7 @@
   <img src="{{ gravatar('email@exemple.com')->withInitialsName('John Doe') }}" alt="withInitialsName">
   <img src="{{ gravatar('email@exemple.com')->withInitials('JD') }}" alt="withInitials">
 
-  <h3>4c. Initiales - 3) Helper methods (v7: private(set))</h3>
+  <h3>4c. Initiales - 3) Helper methods</h3>
   @php
   $initialsImage = gravatar('initials@test.com');
   $initialsImage->defaultImage = 'initials';
@@ -191,7 +168,7 @@
   @endphp
   <p>État via enableForceDefault(): {{ $checkForce->forcingDefault() ? 'oui' : 'non' }}</p>
 
-  <h3>9c. Force default - 3) Helper method (v7: private(set))</h3>
+  <h3>9c. Force default - 3) Helper method</h3>
   @php
   $forceImage = gravatar($email);
   $forceImage->forceDefault(true);
@@ -257,14 +234,14 @@
   <h3>14. Mélange helper methods et property access</h3>
   @php
   $mixedImage = Gravatar::image('mixed@test.com');
-  $mixedImage->email('mixed-new@test.com');  // Helper method (v7: email est private(set))
+  $mixedImage->email('mixed-new@test.com');  // Helper method (email est private(set))
   $mixedImage->size(140);  // Helper
   $mixedImage->extension = 'webp';  // Property (set hook)
   $mixedImage->maxRating('r');  // Helper
   @endphp
   <img src="{{ $mixedImage }}" alt="Méthodes mixtes" width="140">
 
-  <h3>15. Profils Gravatar (v7: API v3, JSON uniquement)</h3>
+  <h3>15. Profils Gravatar (API v3, JSON uniquement)</h3>
   @php
   $profile = gravatar_profile($email);
   @endphp
@@ -309,12 +286,22 @@
   $profileUrl = gravatar_profile($email);
   @endphp
   <p>URL du profil : <a href="{{ $profileUrl }}">{{ $profileUrl }}</a></p>
-  <p>Note : les formats (json, xml, php, vcf, qr) ont été supprimés en v7. L'API v3 retourne uniquement du JSON.</p>
+  <p>Note : l'API v3 retourne uniquement du JSON.</p>
 
-  <h3>21. Profile - getData() supprimé en v7</h3>
-  <p>La méthode <code>getData()</code> a été supprimée. Utilisez votre propre client HTTP pour interroger l'API v3 :</p>
-  <pre><code>$response = Http::get(gravatar_profile($email)->url());
-$data = $response->json(); // structure plate : display_name, avatar_url, location...</code></pre>
+  <h3>21. Profile::getData() - Laravel HTTP client</h3>
+  @php
+  $profileData = gravatar_profile($email)->getData();
+  @endphp
+  @if ($profileData)
+    <p>✅ Données du profil récupérées avec getData()</p>
+    <ul>
+      <li>Display Name: {{ $profileData['display_name'] ?? 'N/A' }}</li>
+      <li>Avatar URL: {{ $profileData['avatar_url'] ?? 'N/A' }}</li>
+      <li>Location: {{ $profileData['location'] ?? 'N/A' }}</li>
+    </ul>
+  @else
+    <p>❌ Impossible de récupérer les données du profil (réseau ou profil privé)</p>
+  @endif
 
   <h3>22. copy() - Copie d'instance</h3>
   @php
@@ -372,7 +359,7 @@ $data = $response->json(); // structure plate : display_name, avatar_url, locati
   <img src="{{ $enumDefault1 }}" alt="DefaultImage::ROBOHASH via property">
   <img src="{{ $enumDefault2 }}" alt="DefaultImage::RETRO via helper">
 
-  <h3>28. Profil - Helper et Facade (v7: plus de ProfileFormat)</h3>
+  <h3>28. Profil - Helper et Facade</h3>
   @php
   $profileHelper = gravatar_profile($email);
   $profileFacade = \LaravelGravatar\Facades\Gravatar::profile($email);
@@ -393,7 +380,7 @@ $data = $response->json(); // structure plate : display_name, avatar_url, locati
   <img src="{{ $fullEnum }}" alt="Full enum combination" width="200">
   <p>Config: size={{ $fullEnum->size }}, ext={{ $fullEnum->extension }}, rating={{ $fullEnum->maxRating }}, default={{ $fullEnum->defaultImage }}</p>
 
-  <h3>30. Test avec email null puis assigné (v7: email private(set))</h3>
+  <h3>30. Test avec email null puis assigné</h3>
   @php
   $noEmailImage = gravatar();
   $noEmailImage->size = 100;
@@ -443,38 +430,7 @@ $data = $response->json(); // structure plate : display_name, avatar_url, locati
     <p>Impossible de récupérer l'image en base64</p>
   @endif
 
-  <h3>35. Eloquent Cast - GravatarImage</h3>
-  <p>Exemple d'utilisation dans un modèle:</p>
-  <pre><code>use LaravelGravatar\Casts\GravatarImage;
-
-class User extends Model
-{
-    protected $casts = [
-        'gravatar' => GravatarImage::class,
-        // ou avec preset:
-        'gravatar' => GravatarImage::class.':small',
-    ];
-}
-
-// Usage dans controller:
-$user->gravatar->size(120);
-echo $user->gravatar;</code></pre>
-
-  <h3>36. Eloquent Cast - GravatarProfile</h3>
-  <p>Exemple d'utilisation dans un modèle:</p>
-  <pre><code>use LaravelGravatar\Casts\GravatarProfile;
-
-class User extends Model
-{
-    protected $casts = [
-        'gravatar' => GravatarProfile::class,
-    ];
-}
-
-// Usage dans controller:
-echo $user->gravatar; // URL du profil</code></pre>
-
-  <h3>37. Tests - Code Quality</h3>
+  <h3>35. Tests - Code Quality</h3>
   <div style="background: #e8f5e9; padding: 20px; margin: 20px 0; border-left: 4px solid #4caf50;">
     <h4>✅ Laravel 12 Patterns</h4>
     @php
@@ -620,15 +576,8 @@ echo $user->gravatar; // URL du profil</code></pre>
       <li><strong>Extension:</strong> {{ implode(', ', \Gravatar\Enum\Extension::values()) }}</li>
       <li><strong>Rating:</strong> {{ implode(', ', \Gravatar\Enum\Rating::values()) }}</li>
       <li><strong>DefaultImage:</strong> {{ implode(', ', array_slice(\Gravatar\Enum\DefaultImage::values(), 0, 5)) }}... ({{ count(\Gravatar\Enum\DefaultImage::values()) }} total)</li>
-      <li><strong>ProfileFormat:</strong> supprimé en v7 (API v3 JSON uniquement)</li>
+      <li><strong>ProfileFormat:</strong> supprimé (API v3 JSON uniquement)</li>
     </ul>
-  </div>
-
-  <div style="background: #e1f5fe; padding: 20px; margin: 20px 0; text-align: center;">
-    <h3>🎊 Laravel Gravatar v5.0.0 - Prêt pour Production!</h3>
-    <p><strong>PHP 8.4 ✓ Laravel 12/13 ✓ forxer/gravatar 7.0 ✓</strong></p>
-    <p><strong>Enums ✓ Validation ✓ Type Safety ✓</strong></p>
-    <p>Tous les tests démontrent les nouvelles fonctionnalités et améliorations</p>
   </div>
 
 @endsection
